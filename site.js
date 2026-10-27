@@ -390,6 +390,73 @@
   document.addEventListener("click",function(e){ var a=e.target.closest&&e.target.closest("[data-ask-pick]"); if(!a) return; var box=document.querySelector('[data-ask="events"]'); if(!box) return;
     var s=box.querySelector('[name="opt"]'); if(s){ s.selectedIndex=+a.getAttribute("data-ask-pick"); s.dispatchEvent(new Event("change",{bubbles:true})); } });
 
+  /* Çıralı sayfası: figürler sayfa kaydıkça yürür (kaydırma durunca durur) */
+  (function(){
+    var ws=[].slice.call(document.querySelectorAll(".walk")); if(!ws.length) return;
+    var reduce=matchMedia("(prefers-reduced-motion:reduce)").matches, ticking=0;
+    function upd(){ ticking=0; var vh=innerHeight, y=scrollY;
+      ws.forEach(function(w){ var r=w.getBoundingClientRect(); if(r.bottom<-50||r.top>vh+50) return;
+        var p=(vh-r.top)/(vh+r.height); p=Math.max(0,Math.min(1,p)); var W=r.width;
+        w.querySelectorAll(".wk-fig").forEach(function(f){ var x0=+f.dataset.x0, x1=+f.dataset.x1, fw=f.offsetWidth;
+          var x=(x0+(x1-x0)*p)*(W-fw); f.style.setProperty("--x",x.toFixed(1)+"px");
+          if(!reduce) f.classList.toggle("is-b",Math.floor(y/(+f.dataset.step||34))%2===1); }); }); }
+    addEventListener("scroll",function(){ if(!ticking){ ticking=1; requestAnimationFrame(upd); } },{passive:true});
+    addEventListener("resize",upd); upd();
+  })();
+
+  /* Chimaera amblemi: önce kurgu ızgarası ve daireler, sonra çizgiler, en son dolgu. Tıklayınca yeniden çizer. */
+  (function(){
+    var svg=document.querySelector(".chim .chim-art"); if(!svg||!svg.querySelector(".chim-guides")) return;
+    if(matchMedia("(prefers-reduced-motion:reduce)").matches){ svg.classList.add("is-go"); return; }
+    svg.querySelectorAll(".cg-h,.cg-v").forEach(function(e){ e.setAttribute("pathLength","1"); });
+    var k=0; svg.querySelectorAll("path,circle").forEach(function(e){ if(e.closest(".chim-guides")) return;
+      if(e.getAttribute("stroke-dasharray")||e.getAttribute("stroke")==="none"||(!e.closest("[stroke]")&&!e.getAttribute("stroke"))) return;
+      var L=0; try{ L=e.getTotalLength(); }catch(x){} if(!L) return;
+      e.classList.add("cb"); e.style.setProperty("--l",Math.ceil(L)+1); e.style.setProperty("--k",k++); });
+    function go(){ svg.classList.add("is-reset"); svg.classList.remove("is-go"); void svg.getBoundingClientRect(); svg.classList.remove("is-reset");
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){ svg.classList.add("is-go"); }); }); }
+    svg.addEventListener("click",go);
+    if("IntersectionObserver" in window){ var io=new IntersectionObserver(function(es){ if(es[0].isIntersecting){ io.disconnect(); go(); } },{threshold:.5}); io.observe(svg); } else svg.classList.add("is-go");
+  })();
+
+  /* ana sayfa yolculuk haritası: imleçle katman kayması, yolun çizilmesi, duraklar */
+  (function(){
+    var jm=document.querySelector(".jm"); if(!jm) return;
+    var out=jm.querySelector(".jm-out"), road=jm.querySelector(".jm-road"), mot=jm.querySelector(".jm-car animateMotion");
+    var order=["havalimani","antalya","kemer","tekirova","tahtali","ulupinar","yanartas","kimera","kumsal","olympos"], cur=7;
+    var NS="http://www.w3.org/2000/svg", ring=document.createElementNS(NS,"circle"); ring.setAttribute("class","jm-ring");
+    var lang=document.documentElement.getAttribute("lang")||"tr", L={tr:"Durak",en:"Stop",de:"Halt",ru:"Остановка"}[lang.slice(0,2)]||"Durak";
+    var bilingual=!!jm.querySelector(".jm-intro .en");
+    function lab(){ return bilingual ? (document.documentElement.getAttribute("data-lang")==="en"?"Stop":"Durak") : L; }
+    var steps=document.createElement("div"); steps.className="jm-steps";
+    steps.innerHTML='<button type="button" data-d="-1" aria-label="&#8592;">&#8592;</button><button type="button" data-d="1" aria-label="&#8594;">&#8594;</button><span></span>';
+    jm.querySelector(".jm-card").appendChild(steps);
+    function show(k){ var tp=jm.querySelector('template[data-k="'+k+'"]'); if(!tp) return; cur=order.indexOf(k);
+      out.innerHTML=""; out.appendChild(tp.content.cloneNode(true)); out.style.animation="none"; void out.offsetWidth; out.style.animation="";
+      jm.querySelectorAll(".jm-pin").forEach(function(p){ var on=p.dataset.k===k; p.classList.toggle("is-on",on); p.setAttribute("aria-pressed",on?"true":"false"); if(on) p.insertBefore(ring,p.firstChild); });
+      steps.querySelector("span").textContent=lab()+" "+(cur+1)+" / "+order.length; }
+    steps.addEventListener("click",function(e){ var b=e.target.closest("button"); if(!b) return; show(order[(cur+ +b.dataset.d+order.length)%order.length]); });
+    jm.querySelectorAll(".jm-pin").forEach(function(p){
+      p.addEventListener("click",function(){ show(p.dataset.k); });
+      p.addEventListener("mouseenter",function(){ if(matchMedia("(hover:hover)").matches) show(p.dataset.k); });
+      p.addEventListener("keydown",function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); show(p.dataset.k); } });
+    });
+    var len=road.getTotalLength?Math.ceil(road.getTotalLength()):2400; jm.style.setProperty("--len",len);
+    var reduce=matchMedia("(prefers-reduced-motion:reduce)").matches, timers=[];
+    function run(){ timers.forEach(clearTimeout); timers=[]; jm.classList.remove("is-run","is-done"); void road.getBoundingClientRect();
+      if(reduce){ jm.classList.add("is-done"); show("kimera"); return; }
+      requestAnimationFrame(function(){ jm.classList.add("is-run"); try{ mot.beginElement(); }catch(e){} });
+      [["havalimani",0],["kemer",1500],["tekirova",2600],["ulupinar",4300],["kimera",5500]].forEach(function(s){ timers.push(setTimeout(function(){ show(s[0]); },s[1])); });
+      timers.push(setTimeout(function(){ jm.classList.add("is-done"); },5600)); }
+    jm.querySelector(".jm-play").addEventListener("click",run);
+    show("kimera");
+    if("IntersectionObserver" in window){ var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ io.disconnect(); run(); } }); },{threshold:.45}); io.observe(jm); } else run();
+    if(matchMedia("(hover:hover) and (pointer:fine)").matches && !reduce){ var raf=0;
+      jm.addEventListener("mousemove",function(e){ if(raf) return; raf=requestAnimationFrame(function(){ raf=0; var r=jm.getBoundingClientRect();
+        jm.style.setProperty("--mx",((e.clientX-r.left)/r.width-.5)*2); jm.style.setProperty("--my",((e.clientY-r.top)/r.height-.5)*2); }); });
+      jm.addEventListener("mouseleave",function(){ jm.style.setProperty("--mx",0); jm.style.setProperty("--my",0); }); }
+  })();
+
   /* hikâye haritası: noktaya dokununca kart; Pratik / Efsane katmanı */
   (function(){
     var at=document.querySelector(".atlas"); if(!at) return;

@@ -882,3 +882,120 @@ body.hh-veiled .top.top-over .marks{border-color:rgba(55,62,45,.25)}
 .vb-shrink .vloop{--vs:0;clip-path:inset(calc(var(--vs) * 7%) calc(var(--vs) * 10%) round calc(var(--vs) * 22px));will-change:clip-path}
 .vb-shrink .vloop video{transform:scale(calc(1 + var(--vs) * .06));transform-origin:50% 40%;will-change:transform}
 @media (max-width:700px){.vb-shrink .vloop{clip-path:inset(calc(var(--vs) * 5%) calc(var(--vs) * 6%) round calc(var(--vs) * 16px))}}
+
+/* ana sayfa: Kimera'ya yolculuk haritası (imleçle derinlik, yol çizimi, tıklanabilir duraklar) */
+.jm{position:relative;overflow:hidden;background:var(--paper);color:var(--ink);isolation:isolate;--mx:0;--my:0}
+.jm-map{position:relative;width:100%;aspect-ratio:1600/820;max-height:calc(100svh - var(--hdr-h,78px));min-height:560px}
+.jm-svg{position:absolute;inset:0;width:100%;height:100%;color:var(--ink);overflow:visible}
+.jm-svg text{font:500 15px/1 var(--f-sans);letter-spacing:.04em;fill:var(--ink)}
+.jm-svg .jm-s{font:600 14px/1 var(--f-sans);letter-spacing:.2em}
+.jm-svg .jm-xs{font:500 12px/1 var(--f-sans);letter-spacing:.08em;opacity:.55}
+.jm-svg .jm-sea-t{font:600 14px/1 var(--f-sans);letter-spacing:.32em;opacity:.5}
+.jm-svg .jm-alt{font-size:13px;opacity:.6}
+html:not([data-lang="en"]) .jm-svg tspan.en,html[data-lang="en"] .jm-svg tspan.tr{display:none}
+.jm-l{transition:transform .9s cubic-bezier(.2,.7,.2,1);will-change:transform}
+.jm-far{transform:translate(calc(var(--mx) * -10px),calc(var(--my) * -6px))}
+.jm-near{transform:translate(calc(var(--mx) * -22px),calc(var(--my) * -12px))}
+.jm-land,.jm-pins{transform:translate(calc(var(--mx) * -30px),calc(var(--my) * -16px))}
+.jm-sea{transform:translate(calc(var(--mx) * 16px),calc(var(--my) * 8px))}
+.jm-car{transform:translate(calc(var(--mx) * -30px),calc(var(--my) * -16px));transition:transform .9s cubic-bezier(.2,.7,.2,1);opacity:0}
+.jm.is-run .jm-car{opacity:1}
+.jm-sea path{color:#7f98a6}
+.jm-boat{animation:jmBob 5s ease-in-out infinite;transform-box:fill-box;transform-origin:center;opacity:.6}
+@keyframes jmBob{50%{transform:translateY(-4px) rotate(-2deg)}}
+.jm-road{stroke:#c8733f;stroke-dasharray:var(--len,2400);stroke-dashoffset:var(--len,2400);transition:stroke-dashoffset 5.5s cubic-bezier(.45,0,.25,1)}
+.jm.is-run .jm-road{stroke-dashoffset:0}
+.jm.is-done .jm-road{stroke-dasharray:10 8;transition:none}
+.jm-pin{cursor:pointer;outline:none}
+.jm-pin .jm-hit{fill:transparent;stroke:none}
+.jm-pin .jm-dot{fill:var(--paper);stroke:var(--ink);stroke-width:1.6;transition:r .3s,fill .3s}
+.jm-pin .jm-ic,.jm-pin .jm-ruin{fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round}
+.jm-pin .jm-flame{fill:#d9783f;transform-box:fill-box;transform-origin:50% 100%;animation:jmFlick 1.6s ease-in-out infinite}
+@keyframes jmFlick{30%{transform:scale(.92,1.06) skewX(3deg)}60%{transform:scale(1.04,.95) skewX(-2deg)}}
+.jm-pin .jm-glow{animation:jmGlow 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes jmGlow{50%{transform:scale(1.25);opacity:.6}}
+.jm-pin .jm-star{fill:var(--ink);transition:fill .3s}
+.jm-pin text{transition:opacity .3s,font-weight .3s;paint-order:stroke;stroke:var(--paper);stroke-width:5px;stroke-linejoin:round}
+.jm-pin.jm-home text{font-weight:700;font-size:17px}
+.jm-pin:hover .jm-dot,.jm-pin:focus-visible .jm-dot,.jm-pin.is-on .jm-dot{r:9;fill:#c8733f;stroke:#c8733f}
+.jm-pin.is-on .jm-star,.jm-pin:hover .jm-star{fill:#c8733f}
+.jm-pin.is-on text{font-weight:700}
+.jm-pin:focus-visible .jm-hit{stroke:var(--ink);stroke-width:1;stroke-dasharray:3 3}
+.jm-pin.is-on::after{content:none}
+.jm-ring{fill:none;stroke:#c8733f;stroke-width:1.4;pointer-events:none;animation:jmRing 2s ease-out infinite}
+@keyframes jmRing{from{r:8;opacity:.9}to{r:34;opacity:0}}
+.jm-ui{position:absolute;inset:0;display:grid;grid-template-columns:minmax(0,4fr) minmax(0,4fr) minmax(0,4fr);align-items:end;padding-block:clamp(24px,4vw,56px);pointer-events:none}
+.jm-ui > *{pointer-events:auto}
+.jm-intro{grid-column:1;align-self:start;display:grid;gap:12px;background:color-mix(in srgb,var(--paper) 88%,transparent);padding:clamp(16px,2vw,24px) clamp(16px,2vw,24px) clamp(16px,2vw,24px) 0;backdrop-filter:blur(2px)}
+.jm-intro h2{margin:0}
+.jm-facts{list-style:none;margin:6px 0 0;padding:14px 0 0;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,auto);gap:6px 20px;justify-content:start}
+.jm-facts li{display:grid;gap:2px}
+.jm-facts b{font:400 26px/1 var(--f-display)}
+.jm-facts span{font:600 10.5px/1.35 var(--f-sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.jm-play{all:unset;cursor:pointer;justify-self:start;display:inline-flex;align-items:center;gap:10px;font:600 10.5px/1 var(--f-sans);letter-spacing:.18em;text-transform:uppercase;padding:12px 16px;border:1px solid var(--ink);margin-top:4px;transition:background .3s,color .3s}
+.jm-play svg{width:12px;height:12px;fill:currentColor}
+.jm-play:hover,.jm-play:focus-visible{background:var(--ink);color:var(--on-dark)}
+.jm-card{grid-column:3;align-self:end;background:var(--paper);border:1px solid var(--line);padding:clamp(18px,2.2vw,28px);box-shadow:0 18px 40px -28px rgba(0,0,0,.35);min-height:210px}
+.jm-out{display:grid;gap:10px;animation:heroIn .35s ease both}
+.jm-out p{font-size:15px;line-height:1.65;margin:0}
+.jm-steps{display:flex;gap:6px;margin-top:6px}
+.jm-steps button{all:unset;cursor:pointer;width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);font:500 16px/1 var(--f-sans)}
+.jm-steps button:hover{border-color:var(--ink)}
+.jm-steps span{align-self:center;font:600 10.5px/1 var(--f-sans);letter-spacing:.14em;color:var(--muted);margin-left:6px}
+@media (prefers-reduced-motion:reduce){.jm-l,.jm-car{transition:none;transform:none}.jm-road{transition:none;stroke-dashoffset:0}.jm-boat,.jm-flame,.jm-glow,.jm-ring{animation:none}}
+@media (max-width:900px){
+  .jm-map{aspect-ratio:auto;height:min(118vw,620px);min-height:0;max-height:none;overflow:hidden}
+  .jm-svg{width:200%;left:-62%;top:-4%;height:108%}
+  .jm-ui{position:relative;inset:auto;grid-template-columns:1fr;gap:18px;padding-block:8px 48px}
+  .jm-intro,.jm-card{grid-column:1}
+  .jm-intro{background:none;padding:0;order:2}
+  .jm-card{order:1;min-height:0}
+  .jm-facts b{font-size:22px}
+  .jm-l,.jm-car{transform:none}
+}
+.jm-intro{background:none;backdrop-filter:none;padding-left:0}
+.jm-map::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--paper) 0,color-mix(in srgb,var(--paper) 85%,transparent) 22%,transparent 42%);pointer-events:none}
+@media (max-width:900px){.jm-map::after{content:none}}
+@media (max-width:900px){
+  .jm-intro{order:1}.jm-card{order:2}
+  .jm-map{height:min(104vw,560px)}
+  .jm-svg text{font-size:21px}.jm-pin.jm-home text{font-size:24px}.jm-svg .jm-alt{font-size:17px}
+  .jm-facts{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px 12px}
+}
+
+/* Chimaera: kurgu çizgileriyle kendini çizen amblem (beyaz) */
+.chim .chim-art{color:var(--on-dark);cursor:pointer;overflow:visible}
+.chim .chim-art .chim-fill{fill:var(--on-dark);fill-opacity:.1;transition:fill-opacity 1s ease 3.1s}
+.chim .chim-art .chim-fill-stroke{stroke-opacity:.12}
+.chim-guides{opacity:.32;transition:opacity 1.6s ease 3.6s}
+.chim-guides .cg-h,.chim-guides .cg-v{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1s cubic-bezier(.6,0,.2,1)}
+.chim-guides .cg-h{transition-delay:calc(var(--i) * 70ms)}
+.chim-guides .cg-v{transition-delay:calc(.45s + var(--i) * 55ms)}
+.chim-guides .cg-c{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.1s cubic-bezier(.5,0,.2,1) calc(1.15s + var(--i) * 110ms)}
+.chim-art .cb{stroke-dasharray:var(--l) var(--l);stroke-dashoffset:var(--l);transition:stroke-dashoffset 1.5s cubic-bezier(.55,0,.25,1) calc(1.9s + var(--k) * 28ms)}
+.chim-art text{opacity:0;transition:opacity 1s ease 3.4s;letter-spacing:7px}
+.chim-art.is-go .chim-guides .cg-h,.chim-art.is-go .chim-guides .cg-v,.chim-art.is-go .chim-guides .cg-c,.chim-art.is-go .cb{stroke-dashoffset:0}
+.chim-art.is-go .chim-guides{opacity:.13}
+.chim-art.is-go text{opacity:1}
+.chim-art:not(.is-go) .chim-fill{fill-opacity:0}
+.chim .chim-art .chim-fill.cb{transition:stroke-dashoffset 1.5s cubic-bezier(.55,0,.25,1) calc(1.9s + var(--k) * 28ms),fill-opacity 1s ease 3.1s}
+.chim-art.is-reset *{transition:none!important}
+@media (prefers-reduced-motion:reduce){.chim-art .cb,.chim-guides *{stroke-dasharray:none!important}.chim-art text{opacity:1}.chim-guides{opacity:.13}}
+
+/* Çıralı: kaydırdıkça yürüyen kaya resmi figürleri */
+.walk{position:relative;height:clamp(96px,11vw,150px);color:var(--ink);overflow:hidden;margin-block:clamp(8px,2vw,24px)}
+.walk-in{position:absolute;inset:0 0 10px}
+.wk-fig{position:absolute;left:0;bottom:0;transform:translate3d(var(--x,0px),var(--dy,0px),0);will-change:transform}
+.wk-fig[data-flip] .wk{transform:scaleX(-1)}
+.wk{display:block;height:auto;width:calc(var(--w) * var(--sz,1) * 1px);overflow:visible}
+.walk{--sz:1.5}
+@media (max-width:700px){.walk{--sz:.8}}
+.wk .fb{display:none}
+.wk-fig.is-b .fa{display:none}.wk-fig.is-b .fb{display:inline}
+.wk-fig.is-b .wk-boat ~ *,.wk-fig.is-b{--bob:-2px}
+.wk-fig .wk{translate:0 var(--bob,0px);transition:translate .2s}
+.wk-ground{position:absolute;left:0;right:0;bottom:4px;width:100%;height:12px;opacity:.55}
+.walk-sea .wk-ground{color:#7f98a6;opacity:.8}
+.wk-fire{transform-box:fill-box;transform-origin:50% 100%;animation:jmFlick 1.3s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.wk-fire{animation:none}}
+.chim .chim-art circle[fill="currentColor"]{transition:opacity .6s ease 3s}.chim .chim-art:not(.is-go) circle[fill="currentColor"]{opacity:0}
