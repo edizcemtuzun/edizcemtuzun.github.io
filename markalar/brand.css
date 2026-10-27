@@ -1,0 +1,168 @@
+/* Kimera ailesi · marka siteleri (Erizo, Huysuz Çoban, Arya Spa)
+   Kimera'nın iskeleti: geniş boşluk, 12 kolon, sakin dizgi. Renk, yazı ve doku her markanın kendi kimliğinden. */
+:root{--bg:#f3efe7;--paper:#faf7f1;--ink:#26271f;--muted:#6f6d62;--line:rgba(38,39,31,.16);--acc:#2f6a45;--on:#f6f2ea;
+  --f-d:"Cormorant Garamond",Georgia,serif;--f-t:"Cormorant Garamond",Georgia,serif;--f-s:"Manrope","Helvetica Neue",Arial,sans-serif;
+  --gap:clamp(16px,2vw,28px);--sec:clamp(64px,8vw,128px);--max:1400px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.75 var(--f-s);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,video{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+html[data-lang="en"] .tr{display:none!important}
+html:not([data-lang="en"]) .en{display:none!important}
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:max(20px,env(safe-area-inset-left,0px))}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--gap)}
+.sec{padding-block:var(--sec)}
+.sec-t{padding-block:clamp(44px,5vw,80px)}
+h1,h2,h3,h4{margin:0;font-weight:400;text-wrap:balance}
+p{margin:0;max-width:58ch;text-wrap:pretty}
+.eyebrow{display:block;font:600 11px/1.4 var(--f-s);letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+.d-xl{font:400 clamp(52px,9vw,148px)/.92 var(--f-d);letter-spacing:-.01em}
+.d-l{font:400 clamp(36px,5vw,72px)/1.02 var(--f-d)}
+.d-m{font:400 clamp(26px,3vw,42px)/1.12 var(--f-d)}
+.lead{font:400 clamp(19px,1.7vw,24px)/1.55 var(--f-t);max-width:44ch}
+.small{font-size:13.5px;line-height:1.6}
+.muted{color:var(--muted)}
+.stack{display:grid;gap:18px;align-content:start}
+.img{position:relative;overflow:hidden;background:rgba(0,0,0,.06)}
+.img img,.img video{width:100%;height:100%;object-fit:cover}
+.r34{aspect-ratio:3/4}.r45{aspect-ratio:4/5}.r43{aspect-ratio:4/3}.r32{aspect-ratio:3/2}.r169{aspect-ratio:16/9}.r11{aspect-ratio:1}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--ink);color:var(--on);border:1px solid var(--ink);text-decoration:none;font:600 11px/1 var(--f-s);letter-spacing:.22em;text-transform:uppercase;padding:16px 24px;cursor:pointer;transition:background .3s,color .3s}
+.btn:hover{background:transparent;color:var(--ink)}
+.btn.ghost{background:transparent;color:inherit;border-color:currentColor}
+.btn.ghost:hover{background:currentColor}
+.btn.ghost:hover span{color:var(--bg)}
+.more{display:inline-flex;gap:12px;align-items:center;font:600 11px/1 var(--f-s);letter-spacing:.22em;text-transform:uppercase;text-decoration:none;padding-bottom:7px;border-bottom:1px solid currentColor}
+.more::after{content:"→"}
+
+/* başlık */
+.bh{position:fixed;inset:0 0 auto;z-index:50;transition:background .35s,color .35s,box-shadow .35s;color:#fff}
+.bh .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:76px}
+.bh nav{display:flex;gap:26px;font:500 11.5px/1 var(--f-s);letter-spacing:.16em;text-transform:uppercase}
+.bh nav a{text-decoration:none;padding-block:6px;border-bottom:1px solid transparent}
+.bh nav a:hover{border-bottom-color:currentColor}
+.bh .r{display:flex;align-items:center;gap:18px}
+.bh .lg{all:unset;cursor:pointer;font:600 11px/1 var(--f-s);letter-spacing:.18em}
+.bh .lg b{font-weight:600;opacity:1}.bh .lg i{font-style:normal;opacity:.45}
+.bh .btn{background:transparent;border-color:currentColor;color:inherit;padding:12px 18px}
+.bh .btn:hover{background:#fff;color:var(--ink)}
+.bh.solid{background:var(--bg);color:var(--ink);box-shadow:0 1px 0 var(--line)}
+.bh.solid .btn{background:var(--ink);color:var(--on);border-color:var(--ink)}
+.brandmark{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brandmark img{height:30px;width:auto}
+.bh:not(.solid) .brandmark img{filter:brightness(0) invert(1)}
+.kimera-by{font:500 10px/1 var(--f-s);letter-spacing:.22em;text-transform:uppercase;opacity:.7;text-decoration:none}
+@media (max-width:960px){.bh nav{display:none}}
+
+/* hero */
+.hero{position:relative;min-height:100svh;display:grid;align-items:end;color:#fff;isolation:isolate}
+.hero .bgm{position:absolute;inset:0;z-index:-1}
+.hero .bgm img,.hero .bgm video{width:100%;height:100%;object-fit:cover}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.38) 0,rgba(0,0,0,0) 26%,rgba(0,0,0,0) 48%,rgba(0,0,0,.55) 100%)}
+.hero .wrap{width:100%;padding-bottom:clamp(36px,6vw,80px)}
+.hero .row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:24px;margin-top:22px}
+.hero .lead{color:rgba(255,255,255,.92)}
+.hero .eyebrow{color:rgba(255,255,255,.8)}
+
+/* bloklar */
+.split{display:grid;grid-template-columns:1fr 1fr;min-height:min(92svh,860px)}
+.split .txt{padding:var(--sec) clamp(24px,6vw,96px);display:grid;gap:22px;align-content:center}
+.split .img{min-height:100%}
+.band-ink{background:var(--ink);color:var(--on)}
+.band-ink .eyebrow,.band-ink .muted{color:rgba(246,242,234,.68)}
+.band-acc{background:var(--acc);color:var(--on)}
+.band-acc .eyebrow{color:rgba(246,242,234,.75)}
+.band-paper{background:var(--paper)}
+.quote{font:italic 400 clamp(26px,3.4vw,50px)/1.22 var(--f-t);max-width:26ch}
+.list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.list li{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr) auto;gap:var(--gap);padding:18px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.list b{font:400 22px/1.25 var(--f-d)}
+.list i{font-style:normal;font-variant-numeric:tabular-nums;white-space:nowrap}
+.band-ink .list,.band-ink .list li{border-color:rgba(246,242,234,.18)}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
+.cards figure{margin:0;display:grid;gap:12px}
+.cards figcaption b{display:block;font:400 22px/1.2 var(--f-d)}
+.facts{list-style:none;margin:0;padding:0}
+.facts li{display:grid;grid-template-columns:130px 1fr;gap:16px;padding:14px 0;border-top:1px solid var(--line)}
+.facts li:last-child{border-bottom:1px solid var(--line)}
+.facts b{font:600 10.5px/1.6 var(--f-s);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.band-ink .facts li{border-color:rgba(246,242,234,.18)}
+.band-ink .facts b{color:rgba(246,242,234,.6)}
+.ig{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.ig a{display:block}.ig .img{aspect-ratio:1}
+.ig .img img{transition:transform .6s ease}.ig a:hover img{transform:scale(1.04)}
+.foot{padding-block:56px 40px;font-size:13.5px}
+.foot .grid > div{display:grid;gap:8px;align-content:start}
+.foot a{text-decoration:none}.foot a:hover{text-decoration:underline}
+.foot .bottom{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;opacity:.7}
+.mbar{display:none}
+@media (max-width:860px){
+  .grid > *{grid-column:1 / -1!important}
+  .split{grid-template-columns:1fr;min-height:0}.split .img{aspect-ratio:4/5}
+  .cards{grid-template-columns:1fr 1fr}
+  .ig{grid-template-columns:repeat(3,1fr)}
+  .list li{grid-template-columns:1fr auto}.list li > span{grid-column:1 / -1;order:3}
+  .facts li{grid-template-columns:1fr}
+  .mbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;position:fixed;inset:auto 0 0;z-index:40;padding:10px max(12px,env(safe-area-inset-left,0px)) calc(10px + env(safe-area-inset-bottom,0px));background:var(--bg);box-shadow:0 -1px 0 var(--line)}
+  body{padding-bottom:76px}
+}
+@media (min-width:861px){
+  .c1-5{grid-column:1 / span 5}.c1-6{grid-column:1 / span 6}.c1-7{grid-column:1 / span 7}.c7-12{grid-column:7 / span 6}.c8-12{grid-column:8 / span 5}.c6-12{grid-column:6 / span 7}.c2-7{grid-column:2 / span 6}.c9-12{grid-column:9 / span 4}.c4-10{grid-column:4 / span 7}.c1-4{grid-column:1 / span 4}.c5-12{grid-column:5 / span 8}.c1-12{grid-column:1 / -1}.c3-10{grid-column:3 / span 8}
+}
+.self-end{align-self:end}.self-c{align-self:center}
+
+/* talep kutusu (WhatsApp + arama) */
+.ask{display:grid;gap:18px;padding:clamp(18px,2.4vw,28px);border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+.band-ink .ask,.band-acc .ask{background:rgba(255,255,255,.05);border-color:rgba(246,242,234,.25);color:var(--on)}
+.ask-f{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.ask label{display:grid;gap:6px;font:600 10.5px/1.2 var(--f-s);letter-spacing:.14em;text-transform:uppercase}
+.ask .w{grid-column:1 / -1}
+.ask select,.ask input{all:unset;box-sizing:border-box;width:100%;min-height:44px;padding:10px 12px;border:1px solid currentColor;border-color:color-mix(in srgb,currentColor 35%,transparent);font:400 15px/1.3 var(--f-s);letter-spacing:0;text-transform:none;cursor:pointer}
+.band-ink .ask select,.band-ink .ask input,.band-acc .ask select,.band-acc .ask input{color-scheme:dark}
+.ask option,.ask optgroup{color:#222}
+.ask .go{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.ask .ch{display:flex;flex-wrap:wrap;gap:10px}.ask .ch[hidden]{display:none}
+.band-ink .ask .btn,.band-acc .ask .btn{background:var(--on);color:var(--ink);border-color:var(--on)}
+.band-ink .ask .btn.ghost,.band-acc .ask .btn.ghost{background:transparent;color:var(--on)}
+.ask .pv{margin:0;font:italic 400 15px/1.55 var(--f-t);opacity:.75;max-width:62ch}
+
+/* görünür olunca */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .9s ease,transform .9s ease}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+
+/* ---------- ERIZO: gece yeşili, kor turuncusu, el yazısı kıvrımı ---------- */
+body.erizo{--bg:#f2eee5;--paper:#f8f5ee;--ink:#1f2a22;--muted:#5f675c;--acc:#2c6a45;--ember:#d0683a;--on:#f3eee4}
+body.erizo .swoosh{display:block;width:min(560px,80%);height:auto;color:var(--acc)}
+body.erizo .hero .swoosh{color:#fff;opacity:.95}
+body.erizo .ember{color:var(--ember)}
+body.erizo .d-xl.spaced{font-family:var(--f-d);letter-spacing:.42em;font-size:clamp(40px,7vw,108px);margin-right:-.42em}
+body.erizo .dish{display:grid;gap:14px}
+body.erizo .dish h3{font:400 clamp(28px,2.6vw,38px)/1.1 var(--f-d)}
+body.erizo .night{background:#141b16;color:var(--on)}
+
+/* ---------- HUYSUZ ÇOBAN: toprak, saman, kömür grisi; geometrik başlık + el yazısı ---------- */
+body.huysuz{--bg:#efe9dd;--paper:#f7f2e8;--ink:#2e2d2a;--muted:#6c675c;--acc:#a8472f;--hay:#c9a86a;--on:#f5efe3;
+  --f-d:"Josefin Sans","Futura",sans-serif;--f-t:"Lora",Georgia,serif;--f-s:"Josefin Sans","Futura",sans-serif}
+body.huysuz{font-family:var(--f-t);font-size:17px}
+body.huysuz .d-xl,body.huysuz .d-l{font-weight:700;text-transform:uppercase;letter-spacing:.02em;line-height:.95}
+body.huysuz .d-m{font-family:var(--f-t);font-style:italic}
+body.huysuz .lead{font-family:var(--f-t)}
+body.huysuz .list b,body.huysuz .cards figcaption b{font-family:var(--f-s);font-weight:700;text-transform:uppercase;font-size:17px;letter-spacing:.06em}
+body.huysuz .tag{display:inline-block;font:700 10.5px/1 var(--f-s);letter-spacing:.18em;text-transform:uppercase;padding:7px 10px;border:1.5px solid currentColor}
+body.huysuz .paper-grain{background-color:var(--paper);background-image:radial-gradient(rgba(60,50,30,.07) 1px,transparent 1px);background-size:5px 5px}
+body.huysuz .band-hay{background:var(--hay);color:#2e2d2a}
+body.huysuz .note{font:italic 400 clamp(22px,2.4vw,34px)/1.35 var(--f-t)}
+
+/* ---------- ARYA SPA: kireç beyazı, buhar, taş; ince geniş harfli sans ---------- */
+body.arya{--bg:#f1efea;--paper:#f8f7f3;--ink:#2b2d2c;--muted:#76786f;--acc:#3d6a68;--on:#f4f2ec;
+  --f-d:"Jost","Futura",sans-serif;--f-t:"Cormorant Garamond",Georgia,serif;--f-s:"Jost","Futura",sans-serif}
+body.arya .d-xl,body.arya .d-l{font-weight:300;letter-spacing:.22em;text-transform:uppercase;line-height:1.05}
+body.arya .d-xl{font-size:clamp(44px,7.5vw,118px);margin-right:-.22em}
+body.arya .d-m{font-family:var(--f-t)}
+body.arya .list b{font-family:var(--f-t);font-size:23px}
+body.arya .steam{background:radial-gradient(120% 80% at 50% 0%,#fff 0,var(--paper) 45%,var(--bg) 100%)}
+body.arya .drop{width:44px;height:auto}
+body.arya .band-ink{background:#223634}
+@media (max-width:700px){.kimera-by{display:none}.bh .btn{padding:10px 12px}}
