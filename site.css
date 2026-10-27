@@ -811,3 +811,69 @@ body.hh-veiled .top.top-over .marks{border-color:rgba(55,62,45,.25)}
 @media (max-width:860px){.sd-ill{display:none}}
 .gloss.gloss-2{grid-template-columns:repeat(2,minmax(0,1fr));max-width:1080px}
 @media (max-width:860px){.gloss.gloss-2{grid-template-columns:1fr}}
+/* Olympos zaman çizelgesi: solda dikey çizgi, eşit aralıklar */
+.tl-ill{border-top:0;position:relative;display:grid;gap:clamp(18px,2.2vw,30px)}
+.tl-ill::before{content:"";position:absolute;left:25px;top:26px;bottom:26px;width:1px;background:currentColor;opacity:.28}
+.tl-ill li{grid-template-columns:52px minmax(0,7.5em) minmax(0,1fr);gap:22px;padding-block:0;border-bottom:0;align-items:start}
+.tl-ill .tl-ic{width:52px;height:52px;padding:10px;margin:0;border-radius:50%;border:1px solid rgba(239,232,220,.3);background:var(--ink);position:relative;z-index:1;box-sizing:border-box}
+.tl-ill li > b,.tl-ill li > span{padding-top:12px}
+.tl-ill li > span{line-height:1.65}
+@media (max-width:860px){.tl-ill li{grid-template-columns:52px 1fr;row-gap:4px}.tl-ill li > span{grid-column:2;padding-top:0}}
+/* anlamlı satır bölmeleri: söz öbekleri bölünmez */
+.ph{white-space:nowrap}
+@media (max-width:360px){.ph{white-space:normal}}
+/* Arya Spa: sinematik tam ekran açılış */
+.spa-cine{position:relative;height:calc(100svh - var(--hdr-h,78px));min-height:560px;max-height:1000px;overflow:hidden;background:#1c1714;color:#f4efe6;display:grid;align-items:end}
+.spa-cine .sc-media{position:absolute;inset:0;aspect-ratio:auto}
+.spa-cine .sc-media video{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.04);animation:scDrift 24s ease-in-out infinite alternate}
+@keyframes scDrift{to{transform:scale(1.1) translate(-1%,0)}}
+.spa-cine .sc-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,15,12,.82) 0,rgba(20,15,12,.5) 38%,rgba(20,15,12,.08) 70%),linear-gradient(0deg,rgba(20,15,12,.6) 0,rgba(20,15,12,0) 40%)}
+.spa-cine .sc-in{position:relative;z-index:1;display:grid;gap:clamp(14px,1.8vw,24px);justify-items:start;padding-block:clamp(40px,7vw,96px);max-width:var(--max,1440px)}
+.spa-cine .eyebrow{color:#d8cbb8;opacity:.9}
+.spa-cine .lk-full{color:#f4efe6;width:clamp(180px,19vw,290px)}
+.spa-cine .lead{color:#e9e1d4;max-width:30em;margin:0;text-wrap:pretty}
+.spa-cine .sc-act{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.spa-cine .btn{background:#f4efe6;color:#2e2421;border-color:#f4efe6}
+.spa-cine .btn:hover{background:transparent;color:#f4efe6}
+.spa-cine .sc-h{font:500 11px/1.4 var(--f-sans);letter-spacing:.2em;text-transform:uppercase;color:#d8cbb8}
+@media (prefers-reduced-motion:reduce){.spa-cine .sc-media video{animation:none}}
+@media (max-width:700px){.spa-cine{height:calc(100svh - var(--hdr-h,66px) - 70px)}.spa-cine .sc-shade{background:linear-gradient(0deg,rgba(20,15,12,.9) 0,rgba(20,15,12,.45) 55%,rgba(20,15,12,.15) 100%)}}
+.br-d{display:none}
+@media (min-width:861px){.br-d{display:inline}.hh-intro .lead{max-width:40em}}
+.tl-ill li{grid-template-columns:52px 8.2em minmax(0,1fr)}
+.tl-ill li > b{white-space:nowrap;font-size:19px}
+@media (max-width:860px){.tl-ill li{grid-template-columns:52px 1fr}}
+.book-btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn.wa-btn{display:inline-flex;align-items:center;gap:10px;background:transparent;border:1px solid rgba(239,232,220,.55);color:var(--on-dark)}
+.btn.wa-btn svg{width:16px;height:16px;fill:currentColor}
+.btn.wa-btn:hover{background:var(--on-dark);color:var(--ink)}
+/* sayfa başlığında silik, yukarıdan çekilmiş döngü */
+.ph-bgv{position:relative;overflow:hidden;isolation:isolate}
+.ph-bgv .ph-bg{position:absolute;inset:0;z-index:-1;aspect-ratio:auto}
+.ph-bgv .ph-bg video{width:100%;height:100%;object-fit:cover;opacity:.2;filter:saturate(.55)}
+.ph-bgv .ph-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(241,236,227,.35) 0,var(--sand) 100%)}
+.ph-bgv .ph-bg{background:transparent}
+
+/* ---------- Mr. Pepper: turuncu biber, beyaz zemin, havuz mavisi ---------- */
+.is-pepper{--pep:#e84e1b}
+.pep-hero{overflow:hidden;display:grid;grid-template-columns:1fr 1fr;height:calc(100svh - var(--hdr-h,78px));min-height:560px;max-height:960px;background:#fbf8f3}
+.pep-hero .ph-txt{display:grid;align-content:center;justify-items:start;gap:clamp(16px,2vw,26px);padding:clamp(32px,6vw,96px)}
+.pep-hero .lk-full{display:block;width:clamp(220px,24vw,380px);height:auto;color:var(--pep)}
+.pep-hero .lead{max-width:24em;margin:0;text-wrap:pretty}
+.pep-hero .ph-media{position:relative;aspect-ratio:auto;height:100%;min-height:0;overflow:hidden}
+.pep-hero .ph-media video{position:absolute;inset:0}
+.pep-hero .ph-media video{width:100%;height:100%;object-fit:cover}
+.ph-act{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.ph-h{font:500 11px/1.4 var(--f-sans);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.btn.pep-btn{background:var(--pep);border-color:var(--pep);color:#fff}
+.btn.pep-btn:hover{background:#c43f12;border-color:#c43f12}
+.pep-chili{width:64px;height:auto;color:var(--pep);opacity:.9}
+.pep-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 var(--gap)}
+.pep-facts li{display:grid;grid-template-columns:1fr;gap:6px;border-top:2px solid var(--pep);padding-top:14px}
+.pep-facts li > *{min-width:0}
+.pep-oven-t{width:100%}.pep-oven-t h2{max-width:16em;text-wrap:balance}.pep-oven-t p{max-width:30em}
+.band-pep{background:#1f3b48;color:#eef3f2}
+.band-pep .eyebrow{color:#a9c6cc}
+.band-pep h2{color:#fff}
+.pep-cta{margin-top:8px}
+@media (max-width:860px){.pep-hero{grid-template-columns:1fr;height:auto;max-height:none}.pep-hero .ph-media{height:auto;aspect-ratio:4/5}.pep-facts{grid-template-columns:1fr 1fr}}
