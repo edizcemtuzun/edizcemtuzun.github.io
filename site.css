@@ -1013,3 +1013,15 @@ html:not([data-lang="en"]) .jm-svg tspan.en,html[data-lang="en"] .jm-svg tspan.t
 .chim-dots button.is-on::before{background:var(--on-dark);opacity:1}
 .chim-dots button:focus-visible{outline:1px dashed var(--on-dark)}
 @media (prefers-reduced-motion:reduce){.chim-guides *,.chim-scene .cb{stroke-dasharray:none!important}.chim-guides{opacity:.13}.chim-frame{opacity:1}}
+
+/* ortam sesi düğmesi: küçük, çoğu zaman silik */
+.snd{all:unset;box-sizing:border-box;position:fixed;left:max(14px,env(safe-area-inset-left,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:39;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;cursor:pointer;color:var(--ink);background:color-mix(in srgb,var(--sand) 82%,transparent);border:1px solid var(--line);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transform:scale(.8);transition:opacity .6s ease,transform .6s ease;pointer-events:none}
+.snd.is-ready{opacity:.28;transform:scale(.86);pointer-events:auto}
+.snd.is-show,.snd:hover,.snd:focus-visible{opacity:1;transform:none}
+.snd:focus-visible{outline:1px dashed var(--ink);outline-offset:3px}
+.snd svg{width:16px;height:16px}
+.snd .snd-x{display:none}.snd.is-off .snd-x{display:inline}.snd.is-off .snd-w{display:none}
+.snd:not(.is-off) .snd-w{animation:sndW 2.4s ease-in-out infinite}
+@keyframes sndW{50%{opacity:.35}}
+@media (max-width:980px){.snd{bottom:calc(78px + env(safe-area-inset-bottom,0px))}}
+@media (prefers-reduced-motion:reduce){.snd .snd-w{animation:none}}
