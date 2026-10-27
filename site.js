@@ -424,7 +424,7 @@
   /* menü: üzerine gelince sayfanın görseli imleci izler, satır hafifçe kayar */
   (function(){
     var dm=document.querySelector(".drawer-main"); if(!dm) return;
-    var IMG={home:"garden-aerial",odalar:"room-interior",akdeniz:"ak-hero",erizo:"erizo-terrace",pepper:"pep-salad",spa:"spa-stones-garden",farm:"farm-greenhouse",yoga:"yoga-shala",events:"event-halloween",inspires:"nat-portrait",story:"cirali-bay"};
+    var IMG={home:"garden-aerial",odalar:"room-interior",akdeniz:"ak-hero",erizo:"erizo-terrace",pepper:"pep-salad",spa:"spa-water",farm:"farm-greenhouse",yoga:"yoga-shala",events:"event-halloween",inspires:"nat-portrait",story:"cirali-bay"};
     var keys=["home"].concat(PAGES.map(function(p){return p.k;}));
     var pv=document.createElement("div"); pv.className="dm-pv"; pv.setAttribute("aria-hidden","true"); document.getElementById("drawer").appendChild(pv);
     var cache={};
