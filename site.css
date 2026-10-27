@@ -809,3 +809,5 @@ body.hh-veiled .top.top-over .marks{border-color:rgba(55,62,45,.25)}
 @media (prefers-reduced-motion:no-preference){.door-ill rect:first-child{stroke-dasharray:600;stroke-dashoffset:600;animation:drawD 3s ease .3s forwards}}
 @keyframes drawD{to{stroke-dashoffset:0}}
 @media (max-width:860px){.sd-ill{display:none}}
+.gloss.gloss-2{grid-template-columns:repeat(2,minmax(0,1fr));max-width:1080px}
+@media (max-width:860px){.gloss.gloss-2{grid-template-columns:1fr}}
