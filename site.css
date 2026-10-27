@@ -779,3 +779,33 @@ body.hh-veiled .top.top-over .marks img{filter:grayscale(1) brightness(.35)}
 body.hh-veiled .top.top-over .marks{border-color:rgba(55,62,45,.25)}
 .hh-bottom > *{transition:opacity 1.4s ease}
 .hh.is-veiled .hh-bottom > *{opacity:0}
+
+/* Arya Spa: Eylül içeriklerinden — koyu kahve, adaçayı bej, ince çizgi */
+.spa-umber{background:#2e2421;color:#efe8dd}
+.spa-umber .eyebrow{color:#c9b9a3}
+.spa-umber .txt{padding:clamp(36px,5vw,88px) clamp(24px,5vw,80px);align-content:center}
+.spa-umber h2{color:#f4efe6;text-wrap:balance}
+.spa-umber p{color:#dcd2c3;max-width:34em}
+.sp-duo{display:grid;grid-template-columns:minmax(0,180px) 1fr;gap:20px;align-items:end;margin-top:clamp(12px,2vw,24px)}
+.sp-duo .small{color:#b9ad9c;margin:0}
+@media (max-width:560px){.sp-duo{grid-template-columns:1fr 1fr}}
+.spa-sage{background:#cbc5b0;color:#2e2421}
+.spa-sage .eyebrow{color:#5b5245}
+.spa-sage .small{color:#3d342d}
+.gloss{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,4vw,64px);border-top:1px solid rgba(46,36,33,.25);padding-top:clamp(28px,3vw,44px)}
+.gloss article{align-content:start}
+.gloss .h4{margin:0;text-wrap:balance}
+.gloss p{text-wrap:pretty;max-width:36em}
+.gl-ill{width:132px;height:auto;fill:none;stroke:currentColor;stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round;margin-bottom:10px;opacity:.85}
+@media (max-width:860px){.gloss{grid-template-columns:1fr}}
+.sp-note p{font:400 clamp(17px,1.4vw,20px)/1.5 var(--f-text);text-wrap:pretty}
+.spa-door{position:relative;overflow:hidden;background:#2e2421;color:#efe8dd;padding-block:clamp(56px,8vw,120px)}
+.spa-door .sd-bg{position:absolute;inset:0;opacity:.22}
+.spa-door .sd-bg img{width:100%;height:100%;object-fit:cover;filter:saturate(.6)}
+.spa-door .sd-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#2e2421 0,rgba(46,36,33,.5) 50%,#2e2421 100%)}
+.spa-door .wrap{position:relative}
+.spa-door h2{color:#f4efe6;text-wrap:balance}.spa-door p{color:#dcd2c3;max-width:32em}.spa-door .eyebrow{color:#c9b9a3}
+.door-ill{width:min(150px,60%);height:auto;fill:none;stroke:#d8cbb8;stroke-width:1;opacity:.9}
+@media (prefers-reduced-motion:no-preference){.door-ill rect:first-child{stroke-dasharray:600;stroke-dashoffset:600;animation:drawD 3s ease .3s forwards}}
+@keyframes drawD{to{stroke-dashoffset:0}}
+@media (max-width:860px){.sd-ill{display:none}}

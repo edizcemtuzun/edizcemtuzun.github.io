@@ -164,5 +164,19 @@ body.arya .d-m{font-family:var(--f-t)}
 body.arya .list b{font-family:var(--f-t);font-size:23px}
 body.arya .steam{background:radial-gradient(120% 80% at 50% 0%,#fff 0,var(--paper) 45%,var(--bg) 100%)}
 body.arya .drop{width:44px;height:auto}
-body.arya .band-ink{background:#223634}
+body.arya .band-ink{background:#2e2421}
+/* Eylül içeriklerinden: koyu kahve, adaçayı bej, çizgi illüstrasyonlar */
+body.arya .band-umber{background:#2e2421;color:#efe8dd}
+body.arya .band-umber .muted,body.arya .band-umber .eyebrow{color:#c9b9a3}
+body.arya .band-sage{background:#cbc5b0;color:#2e2421}
+body.arya .band-sage .muted,body.arya .band-sage .eyebrow{color:#5b5245}
+body.arya .gloss{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,4vw,64px);border-top:1px solid rgba(46,36,33,.25);padding-top:clamp(28px,3vw,44px)}
+body.arya .gloss h3{font:400 28px/1.15 var(--f-t)}
+body.arya .gl-ill{width:132px;height:auto;fill:none;stroke:currentColor;stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round;opacity:.85}
+body.arya .water{position:relative;min-height:min(88svh,820px);display:grid;align-items:end;color:#f4efe6;overflow:hidden}
+body.arya .water img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+body.arya .water::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(46,36,33,0) 45%,rgba(46,36,33,.75) 100%)}
+body.arya .water .wrap{position:relative;z-index:1;padding-bottom:clamp(36px,6vw,80px)}
+body.arya .water h2{font:300 clamp(26px,3.4vw,50px)/1.25 var(--f-s);letter-spacing:.16em;text-transform:uppercase;max-width:22ch}
+@media (max-width:860px){body.arya .gloss{grid-template-columns:1fr}}
 @media (max-width:700px){.kimera-by{display:none}.bh .btn{padding:10px 12px}}
