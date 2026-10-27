@@ -404,19 +404,32 @@
     addEventListener("resize",upd); upd();
   })();
 
-  /* Chimaera amblemi: önce kurgu ızgarası ve daireler, sonra çizgiler, en son dolgu. Tıklayınca yeniden çizer. */
+  /* Chimaera: önce kurgu ızgarası ve amblem, ardından efsaneyi anlatan 4 sahne; çizilir, silinir, döner */
   (function(){
-    var svg=document.querySelector(".chim .chim-art"); if(!svg||!svg.querySelector(".chim-guides")) return;
-    if(matchMedia("(prefers-reduced-motion:reduce)").matches){ svg.classList.add("is-go"); return; }
+    var svg=document.querySelector(".chim .chim-art"); if(!svg||!svg.querySelector(".chim-scene")) return;
+    var sc=[].slice.call(svg.querySelectorAll(".chim-scene")), box=svg.parentNode;
+    var caps=[].slice.call(box.querySelectorAll(".chim-cap > span")), dots=[].slice.call(box.querySelectorAll(".chim-dots button"));
+    var reduce=matchMedia("(prefers-reduced-motion:reduce)").matches, cur=0, t=0, vis=false, started=false;
     svg.querySelectorAll(".cg-h,.cg-v").forEach(function(e){ e.setAttribute("pathLength","1"); });
-    var k=0; svg.querySelectorAll("path,circle").forEach(function(e){ if(e.closest(".chim-guides")) return;
-      if(e.getAttribute("stroke-dasharray")||e.getAttribute("stroke")==="none"||(!e.closest("[stroke]")&&!e.getAttribute("stroke"))) return;
+    sc.forEach(function(g){ var k=0; g.querySelectorAll("path,circle,ellipse").forEach(function(e){
+      if(e.getAttribute("stroke-dasharray")||e.getAttribute("stroke")==="none") return;
       var L=0; try{ L=e.getTotalLength(); }catch(x){} if(!L) return;
-      e.classList.add("cb"); e.style.setProperty("--l",Math.ceil(L)+1); e.style.setProperty("--k",k++); });
-    function go(){ svg.classList.add("is-reset"); svg.classList.remove("is-go"); void svg.getBoundingClientRect(); svg.classList.remove("is-reset");
-      requestAnimationFrame(function(){ requestAnimationFrame(function(){ svg.classList.add("is-go"); }); }); }
-    svg.addEventListener("click",go);
-    if("IntersectionObserver" in window){ var io=new IntersectionObserver(function(es){ if(es[0].isIntersecting){ io.disconnect(); go(); } },{threshold:.5}); io.observe(svg); } else svg.classList.add("is-go");
+      e.classList.add("cb"); e.style.setProperty("--l",Math.ceil(L)+2); e.style.setProperty("--k",k++); }); });
+    function ui(n){ caps.forEach(function(c){ c.classList.toggle("is-on",+c.dataset.s===n); }); dots.forEach(function(d){ var on=+d.dataset.s===n; d.classList.toggle("is-on",on); d.setAttribute("aria-current",on?"true":"false"); }); }
+    function draw(n,first){ cur=n; sc.forEach(function(g,i){ g.style.setProperty("--d0",first&&i===0?"1.9s":".25s"); if(i===n){ g.classList.add("is-go"); } }); ui(n); }
+    function hold(n){ var g=sc[n], ks=g.querySelectorAll(".cb").length; return 1900+ks*30+ (n===0&&!started?1700:0) + 4200; }
+    function next(n){ clearTimeout(t); sc[cur].classList.remove("is-go");
+      t=setTimeout(function(){ draw(n,false); loop(); }, 1100); }
+    function loop(){ clearTimeout(t); if(!vis) return; t=setTimeout(function(){ next((cur+1)%sc.length); }, hold(cur)); }
+    if(reduce){ svg.classList.add("is-go"); sc[0].classList.add("is-go"); ui(0);
+      dots.forEach(function(d){ d.addEventListener("click",function(){ sc[cur].classList.remove("is-go"); draw(+d.dataset.s); }); }); return; }
+    function start(){ svg.classList.add("is-go"); draw(0,true); loop(); started=true; }
+    dots.forEach(function(d){ d.addEventListener("click",function(){ var n=+d.dataset.s; if(n===cur) return; next(n); }); });
+    svg.addEventListener("click",function(){ next((cur+1)%sc.length); });
+    ui(0);
+    if("IntersectionObserver" in window){ new IntersectionObserver(function(es){ vis=es[0].isIntersecting;
+        if(vis&&!started) start(); else if(vis) loop(); else clearTimeout(t); },{threshold:.4}).observe(svg); }
+    else { vis=true; start(); }
   })();
 
   /* ana sayfa yolculuk haritası: imleçle katman kayması, yolun çizilmesi, duraklar */
