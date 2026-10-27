@@ -28,6 +28,9 @@
   ];
   var page = document.body.getAttribute("data-page") || "home";
   document.body.classList.add("is-"+page);
+  /* marka ikonları: ana sayfada ve marka sayfalarında; bir kez tıklandıktan sonra tüm sayfalarda üst barda kalır */
+  var showMarks = page==="home" || page==="erizo" || page==="spa" || page==="farm";
+  try{ if(localStorage.getItem("kimera-marks")==="1") showMarks=true; }catch(e){}
   var ROUTES = window.KIMERA_ROUTES || null;
   var LANG = document.documentElement.getAttribute("data-lang") || "tr";
   function H(k, file){ return ROUTES ? ROUTES[k][LANG] : file; }
@@ -46,11 +49,11 @@
   var header =
     '<div class="draft">'+t("TASLAK ÖNİZLEME · Kesikli çerçeveler bekleyen görsel ve bilgileri gösterir · Rezervasyon butonları canlı Elektraweb sayfasını açar","DRAFT PREVIEW · Dashed frames mark photos and details still to come · Booking buttons open the live Elektraweb page")+'</div>'+
     '<header class="top" id="top"><div class="wrap top-row">'+
-      '<div class="top-left"><div class="brand"><a class="home-amb" href="'+H("home","./")+'" aria-label="Kimera · '+(ROUTES?t("Ana sayfa","Home"):"Ana sayfa")+'"><svg class="menu-amb" viewBox="0 0 174.39 104.19" aria-hidden="true"><use href="#k-amblem"/></svg></a><button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="drawer" aria-label="'+(ROUTES?t("Menü","Menu"):"Menü / Menu")+'"><span class="burger" aria-hidden="true"><i></i><i></i></span><svg class="menu-chev" viewBox="0 0 12 20" aria-hidden="true"><path d="M2 2l8 8-8 8"/></svg></button></div><nav class="quick" aria-label="Kısayollar">'+quick+'</nav>'+(page==="home"?'<nav class="marks" aria-label="Kimera markaları">'+
-        '<a href="'+H("erizo","erizo.html")+'" title="Erizo Gastro & Bar"><img src="'+(ROUTES?"/":"")+'img/mark-erizo-e.svg" alt="Erizo" width="66" height="20" class="m-eri"></a>'+
+      '<div class="top-left"><div class="brand"><a class="home-amb" href="'+H("home","./")+'" aria-label="Kimera · '+(ROUTES?t("Ana sayfa","Home"):"Ana sayfa")+'"><svg class="menu-amb" viewBox="0 0 174.39 104.19" aria-hidden="true"><use href="#k-amblem"/></svg></a><button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="drawer" aria-label="'+(ROUTES?t("Menü","Menu"):"Menü / Menu")+'"><span class="burger" aria-hidden="true"><i></i><i></i></span><svg class="menu-chev" viewBox="0 0 12 20" aria-hidden="true"><path d="M2 2l8 8-8 8"/></svg></button></div><nav class="quick" aria-label="Kısayollar">'+quick+'</nav>'+(showMarks?'<nav class="marks'+(page==="home"?' marks-fade':'')+'" aria-label="Kimera markaları">'+
+        '<a href="'+H("erizo","erizo.html")+'"'+(page==="erizo"?' aria-current="page"':'')+' title="Erizo Gastro & Bar"><img src="'+(ROUTES?"/":"")+'img/mark-erizo-e.svg" alt="Erizo" width="66" height="20" class="m-eri"></a>'+
         '<a href="'+H("erizo","erizo.html")+'#mr-pepper" title="Mr. Pepper"><img src="'+(ROUTES?"/":"")+'img/mark-pepper.png" alt="Mr. Pepper" width="46" height="24" class="m-pep"></a>'+
-        '<a href="'+H("spa","arya-spa.html")+'" title="Arya Spa"><img src="'+(ROUTES?"/":"")+'img/mark-arya-drop.svg" alt="Arya Spa" width="17" height="24"></a>'+
-        '<a href="'+H("farm","huysuz-coban.html")+'" title="Huysuz Çoban"><img src="'+(ROUTES?"/":"")+'img/mark-huysuz-m.svg" alt="Huysuz Çoban" width="17" height="24"></a>'+
+        '<a href="'+H("spa","arya-spa.html")+'"'+(page==="spa"?' aria-current="page"':'')+' title="Arya Spa"><img src="'+(ROUTES?"/":"")+'img/mark-arya-drop.svg" alt="Arya Spa" width="17" height="24"></a>'+
+        '<a href="'+H("farm","huysuz-coban.html")+'"'+(page==="farm"?' aria-current="page"':'')+' title="Huysuz Çoban"><img src="'+(ROUTES?"/":"")+'img/mark-huysuz-m.svg" alt="Huysuz Çoban" width="17" height="24"></a>'+
       '</nav>':'')+'</div>'+
       '<div class="top-right"><div class="lang-dd"><button type="button" class="lang-btn" aria-haspopup="true" aria-expanded="false" aria-label="Dil / Language"><span class="lang-cur">TR</span><svg class="dd-chev" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5"/></svg></button>'+
         '<div class="lang-menu" hidden><button type="button" id="l-tr" data-set="tr" lang="tr">Türkçe</button><button type="button" id="l-en" data-set="en" lang="en">English</button>'+(ROUTES?'<button type="button" id="l-de" data-set="de" lang="de">Deutsch</button><button type="button" id="l-ru" data-set="ru" lang="ru">Русский</button>':'')+'</div></div>'+
@@ -176,6 +179,32 @@
   function hdrH(){ document.documentElement.style.setProperty("--hdr-h", top.offsetHeight+"px"); }
   hdrH(); window.addEventListener("resize", hdrH);
   window.addEventListener("scroll", onScroll, {passive:true}); onScroll();
+
+  /* ana sayfa hero perdesi: ilk aşağı kaydırmada metin ve beyaz perde yavaşça kalkar, en üste dönünce geri gelir */
+  (function(){
+    if(!hero || !hero.querySelector(".hh-veil")) return;
+    if(/[?&]v=klasik/.test(location.search)){ document.documentElement.classList.add("v-klasik"); return; }
+    var veiled=false, lock=0;
+    function set(v){ if(v===veiled) return; veiled=v; hero.classList.toggle("is-veiled",v); document.body.classList.toggle("hh-veiled",v); lock=Date.now(); }
+    set(window.scrollY<4);
+    var atTop=function(){ return window.scrollY<4; };
+    function want(dir,e){
+      if(!drawer.hidden) return;
+      if(dir>0 && veiled && atTop()){ if(e&&e.cancelable) e.preventDefault(); set(false); }
+      else if(dir>0 && veiled){ set(false); }
+      else if(dir<0 && !veiled && atTop() && Date.now()-lock>700){ if(e&&e.cancelable) e.preventDefault(); set(true); }
+      else if(dir>0 && Date.now()-lock<700 && atTop()){ if(e&&e.cancelable) e.preventDefault(); }
+    }
+    window.addEventListener("wheel",function(e){ if(Math.abs(e.deltaY)<2) return; want(e.deltaY>0?1:-1,e); },{passive:false});
+    var ty=null;
+    window.addEventListener("touchstart",function(e){ ty=e.touches[0].clientY; },{passive:true});
+    window.addEventListener("touchmove",function(e){ if(ty==null) return; var d=ty-e.touches[0].clientY; if(Math.abs(d)<14) return; want(d>0?1:-1,e); ty=null; },{passive:false});
+    window.addEventListener("keydown",function(e){
+      if(/input|select|textarea/i.test((e.target.tagName||""))) return;
+      var k=e.key; if(k==="ArrowDown"||k==="PageDown"||k===" ") want(1,e); else if(k==="ArrowUp"||k==="PageUp"||k==="Home") want(-1,e);
+    });
+    window.addEventListener("scroll",function(){ if(!atTop() && veiled) set(false); },{passive:true});
+  })();
 
   /* tarih + kişi çubuğu: tıklayınca açılan iki aylık takvim */
   var BBN=0;
@@ -379,8 +408,28 @@
 
   /* anasayfa: menü yanındaki marka ikonları kaydırınca sağdan sola silinir */
   (function(){ var m=document.querySelector(".marks"); if(!m) return;
+    m.addEventListener("click",function(e){ if(e.target.closest("a")){ try{ localStorage.setItem("kimera-marks","1"); }catch(_){} } });
+    if(!m.classList.contains("marks-fade")) return;
     function f(){ var p=Math.min(1,Math.max(0,window.scrollY/260)); m.style.setProperty("--mk",p); m.classList.toggle("is-gone",p>=1); }
     window.addEventListener("scroll",f,{passive:true}); f(); })();
+
+  /* menü: üzerine gelince sayfanın görseli imleci izler, satır hafifçe kayar */
+  (function(){
+    var dm=document.querySelector(".drawer-main"); if(!dm) return;
+    var IMG={home:"garden-aerial",odalar:"room-interior",akdeniz:"ak-hero",erizo:"erizo-terrace",spa:"spa-hotstone",farm:"farm-greenhouse",yoga:"yoga-shala",events:"event-halloween",inspires:"nat-portrait",story:"cirali-bay"};
+    var keys=["home"].concat(PAGES.map(function(p){return p.k;}));
+    var pv=document.createElement("div"); pv.className="dm-pv"; pv.setAttribute("aria-hidden","true"); document.getElementById("drawer").appendChild(pv);
+    var cache={};
+    dm.querySelectorAll("a").forEach(function(a,i){
+      var k=keys[i]; if(!k||!IMG[k]) return;
+      var src=ROUTES ? "/img/"+IMG[k]+"-640.webp" : "img/"+IMG[k]+".jpg";
+      a.addEventListener("mouseenter",function(){ if(!cache[k]){ cache[k]=new Image(); cache[k].src=src; } pv.style.backgroundImage="url("+src+")"; pv.classList.add("on"); });
+      a.addEventListener("mouseleave",function(){ pv.classList.remove("on"); });
+    });
+    var tx=0,ty=0,x=0,y=0,raf=0;
+    function loop(){ x+=(tx-x)*0.16; y+=(ty-y)*0.16; pv.style.transform="translate("+x+"px,"+y+"px) translate(-50%,-50%) rotate("+((tx-x)*0.04)+"deg)"; raf=Math.abs(tx-x)+Math.abs(ty-y)>0.5?requestAnimationFrame(loop):0; }
+    dm.addEventListener("mousemove",function(e){ tx=e.clientX+150; ty=e.clientY; if(!raf) raf=requestAnimationFrame(loop); });
+  })();
   /* Büyük harfle yazılan yabancı adlar: Türkçe sayfada "INSPİRES" yerine "INSPIRES" görünsün */
   (function(){
     var RE=/(@[\w.]+|\b(?:Kimera|Inspires|Natalia|Chobanyan|White|Olives|Drive|Erizo|Federico|Ecomania|Experience|Instagram|Twin|Family|Grapefruit|Tangerine|Lounge|Hotel|Halloween|Creates|Takeover|Rooftop|Roof|Gastro)\b)/g;

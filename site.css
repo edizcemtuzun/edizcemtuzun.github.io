@@ -730,3 +730,52 @@ html[data-lang="tr"] tspan.en,html[data-lang="en"] tspan.tr{display:none}
 .tl-ic{width:44px;height:44px;color:var(--apricot);margin-top:-6px}
 .tl-ill li:hover .tl-ic{transform:translateY(-2px);transition:transform .4s}
 @media (max-width:860px){.tl-ill li{grid-template-columns:40px 1fr}.tl-ill li > span{grid-column:2}.ill-valley{max-width:340px}}
+
+/* menü öğeleri: üzerine gelince */
+.drawer-main a{position:relative;overflow:hidden}
+.drawer-main a::after{content:"";position:absolute;left:0;bottom:-1px;height:1px;width:100%;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.drawer-main a b{display:inline-block;transition:transform .55s cubic-bezier(.2,.7,.2,1),font-style .2s}
+.drawer-main a b::before{content:"→";display:inline-block;font-size:.6em;vertical-align:.18em;width:0;opacity:0;overflow:hidden;transition:width .55s cubic-bezier(.2,.7,.2,1),opacity .4s,margin .55s}
+.drawer-main a small{display:block!important;opacity:0;transform:translateX(-12px);transition:opacity .45s,transform .55s cubic-bezier(.2,.7,.2,1)}
+.drawer-main a:hover b,.drawer-main a:focus-visible b{transform:translateX(6px);font-style:italic}
+.drawer-main a:hover b::before,.drawer-main a:focus-visible b::before{width:1.2em;opacity:1;margin-right:.25em}
+.drawer-main a:hover::after,.drawer-main a:focus-visible::after{transform:scaleX(1)}
+.drawer-main a:hover small,.drawer-main a:focus-visible small{opacity:1;transform:none}
+.drawer-main:hover a:not(:hover) b{opacity:.45;transition:opacity .4s,transform .55s}
+.dm-pv{position:fixed;left:0;top:0;z-index:46;width:240px;aspect-ratio:4/5;background:center/cover no-repeat var(--ph);pointer-events:none;opacity:0;scale:.86;transition:opacity .35s ease,scale .45s cubic-bezier(.2,.7,.2,1),background-image .2s;box-shadow:0 24px 50px -30px rgba(0,0,0,.45)}
+.dm-pv.on{opacity:1;scale:1}
+@media (hover:none),(max-width:860px){.dm-pv{display:none}.drawer-main a small{display:none!important}}
+@media (prefers-reduced-motion:reduce){.drawer-main a b,.drawer-main a::after,.dm-pv{transition:none}}
+
+/* ---------- ana sayfa hero: perde (beyaz %75) + giriş metni ---------- */
+.hh-veil{position:absolute;inset:0;background:rgba(248,245,239,.75);pointer-events:none;opacity:0;transition:opacity 1.6s cubic-bezier(.4,0,.2,1)}
+.hh-intro{display:grid;justify-items:center;gap:clamp(12px,1.6vw,20px);max-width:min(760px,92vw);color:var(--ink);opacity:0;transform:translateY(10px);transition:opacity 1.2s cubic-bezier(.4,0,.2,1),transform 1.4s cubic-bezier(.4,0,.2,1);margin-top:clamp(10px,2vw,26px)}
+.hh-intro .eyebrow{color:var(--muted)}
+.hh-intro .h2{margin:0;font-size:clamp(34px,4.6vw,72px);line-height:1.05;text-wrap:balance}
+.hh-intro .lead{margin:0;max-width:34em;font-size:clamp(17px,1.5vw,23px);line-height:1.5;text-wrap:pretty;color:var(--ink)}
+.hh-logo{transition:color 1.4s ease,filter 1.4s ease}
+.hh-hint{position:absolute;left:50%;bottom:clamp(24px,5vh,48px);width:1px;height:44px;background:rgba(55,62,45,.2);overflow:hidden;opacity:0;transition:opacity 1s}
+.hh-hint i{position:absolute;left:0;top:-40%;width:1px;height:40%;background:var(--ink);animation:hint 2.2s cubic-bezier(.6,0,.3,1) infinite}
+@keyframes hint{to{top:100%}}
+.hh-bottom,.hh-shade{transition:opacity 1.4s ease}
+.hh.is-veiled .hh-veil{opacity:1}
+.hh.is-veiled .hh-intro{opacity:1;transform:none;transition-delay:.15s}
+.hh.is-veiled .hh-logo{color:var(--ink);filter:none}
+.hh.is-veiled .hh-hint{opacity:1}
+.hh.is-veiled .hh-bottom,.hh.is-veiled .hh-shade{opacity:0;pointer-events:none}
+.hh:not(.is-veiled) .hh-intro{transform:translateY(-14px)}
+body.hh-veiled .top.top-over,body.hh-veiled .top.top-over .menu-btn,body.hh-veiled .top.top-over .quick a,body.hh-veiled .top.top-over .lang button{color:var(--ink)}
+body.hh-veiled .top.top-over .top-right .btn{border-color:rgba(55,62,45,.45);color:var(--ink);background:rgba(255,255,255,.3)}
+.intro-klasik{display:none}
+html.v-klasik .intro-klasik{display:block}
+html.v-klasik .hh-veil,html.v-klasik .hh-intro,html.v-klasik .hh-hint{display:none}
+@media (max-width:700px){.hh-intro .lead{font-size:16px;line-height:1.45}.hh-intro .h2{font-size:clamp(30px,8.4vw,40px)}.hh-center{gap:12px}.hh-hint{display:none}}
+@media (max-height:720px) and (min-width:701px){.hh-intro .lead{font-size:17px}.hh-intro .h2{font-size:clamp(30px,4vw,52px)}}
+.marks a[aria-current="page"]{opacity:.9}
+/* perde açıkken başlık koyu */
+body.hh-veiled .top.top-over .home-amb,body.hh-veiled .top.top-over .mark,body.hh-veiled .top.top-over .lang-btn{color:var(--ink)}
+body.hh-veiled .top.top-over .hdr-dates{background:rgba(255,255,255,.3);border-color:rgba(55,62,45,.35);color:var(--ink)}
+body.hh-veiled .top.top-over .marks img{filter:grayscale(1) brightness(.35)}
+body.hh-veiled .top.top-over .marks{border-color:rgba(55,62,45,.25)}
+.hh-bottom > *{transition:opacity 1.4s ease}
+.hh.is-veiled .hh-bottom > *{opacity:0}
