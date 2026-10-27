@@ -748,24 +748,21 @@ html[data-lang="tr"] tspan.en,html[data-lang="en"] tspan.tr{display:none}
 @media (prefers-reduced-motion:reduce){.drawer-main a b,.drawer-main a::after,.dm-pv{transition:none}}
 
 /* ---------- ana sayfa hero: perde (beyaz %75) + giriş metni ---------- */
-.hh-veil{position:absolute;inset:0;background:rgba(248,245,239,.75);pointer-events:none;opacity:0;transition:opacity 1.6s cubic-bezier(.4,0,.2,1)}
-.hh-intro{display:grid;justify-items:center;gap:clamp(12px,1.6vw,20px);max-width:min(760px,92vw);color:var(--ink);opacity:0;transform:translateY(10px);transition:opacity 1.2s cubic-bezier(.4,0,.2,1),transform 1.4s cubic-bezier(.4,0,.2,1);margin-top:clamp(10px,2vw,26px)}
-.hh-intro .eyebrow{color:var(--muted)}
+.hh-veil{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(12,13,10,.22),rgba(12,13,10,0) 75%),rgba(14,16,11,.2);pointer-events:none;opacity:0;transition:opacity 1.6s cubic-bezier(.4,0,.2,1)}
+.hh-intro{display:grid;justify-items:center;gap:clamp(12px,1.6vw,20px);max-width:min(760px,92vw);color:var(--on-dark);opacity:0;transform:translateY(10px);transition:opacity 1.2s cubic-bezier(.4,0,.2,1),transform 1.4s cubic-bezier(.4,0,.2,1);margin-top:clamp(10px,2vw,26px)}
+.hh-intro .eyebrow{color:rgba(239,232,220,.82)}
 .hh-intro .h2{margin:0;font-size:clamp(34px,4.6vw,72px);line-height:1.05;text-wrap:balance}
-.hh-intro .lead{margin:0;max-width:34em;font-size:clamp(17px,1.5vw,23px);line-height:1.5;text-wrap:pretty;color:var(--ink)}
+.hh-intro .lead{margin:0;max-width:34em;font-size:clamp(17px,1.5vw,23px);line-height:1.5;text-wrap:pretty;color:var(--on-dark)}
 .hh-logo{transition:color 1.4s ease,filter 1.4s ease}
-.hh-hint{position:absolute;left:50%;bottom:clamp(24px,5vh,48px);width:1px;height:44px;background:rgba(55,62,45,.2);overflow:hidden;opacity:0;transition:opacity 1s}
-.hh-hint i{position:absolute;left:0;top:-40%;width:1px;height:40%;background:var(--ink);animation:hint 2.2s cubic-bezier(.6,0,.3,1) infinite}
+.hh-hint{position:absolute;left:50%;bottom:clamp(24px,5vh,48px);width:1px;height:44px;background:rgba(255,255,255,.25);overflow:hidden;opacity:0;transition:opacity 1s}
+.hh-hint i{position:absolute;left:0;top:-40%;width:1px;height:40%;background:#fff;animation:hint 2.2s cubic-bezier(.6,0,.3,1) infinite}
 @keyframes hint{to{top:100%}}
 .hh-bottom,.hh-shade{transition:opacity 1.4s ease}
 .hh.is-veiled .hh-veil{opacity:1}
 .hh.is-veiled .hh-intro{opacity:1;transform:none;transition-delay:.15s}
-.hh.is-veiled .hh-logo{color:var(--ink);filter:none}
 .hh.is-veiled .hh-hint{opacity:1}
 .hh.is-veiled .hh-bottom,.hh.is-veiled .hh-shade{opacity:0;pointer-events:none}
 .hh:not(.is-veiled) .hh-intro{transform:translateY(-14px)}
-body.hh-veiled .top.top-over,body.hh-veiled .top.top-over .menu-btn,body.hh-veiled .top.top-over .quick a,body.hh-veiled .top.top-over .lang button{color:var(--ink)}
-body.hh-veiled .top.top-over .top-right .btn{border-color:rgba(55,62,45,.45);color:var(--ink);background:rgba(255,255,255,.3)}
 .intro-klasik{display:none}
 html.v-klasik .intro-klasik{display:block}
 html.v-klasik .hh-veil,html.v-klasik .hh-intro,html.v-klasik .hh-hint{display:none}
@@ -773,10 +770,6 @@ html.v-klasik .hh-veil,html.v-klasik .hh-intro,html.v-klasik .hh-hint{display:no
 @media (max-height:720px) and (min-width:701px){.hh-intro .lead{font-size:17px}.hh-intro .h2{font-size:clamp(30px,4vw,52px)}}
 .marks a[aria-current="page"]{opacity:.9}
 /* perde açıkken başlık koyu */
-body.hh-veiled .top.top-over .home-amb,body.hh-veiled .top.top-over .mark,body.hh-veiled .top.top-over .lang-btn{color:var(--ink)}
-body.hh-veiled .top.top-over .hdr-dates{background:rgba(255,255,255,.3);border-color:rgba(55,62,45,.35);color:var(--ink)}
-body.hh-veiled .top.top-over .marks img{filter:grayscale(1) brightness(.35)}
-body.hh-veiled .top.top-over .marks{border-color:rgba(55,62,45,.25)}
 .hh-bottom > *{transition:opacity 1.4s ease}
 .hh.is-veiled .hh-bottom > *{opacity:0}
 
@@ -1025,3 +1018,43 @@ html:not([data-lang="en"]) .jm-svg tspan.en,html[data-lang="en"] .jm-svg tspan.t
 @keyframes sndW{50%{opacity:.35}}
 @media (max-width:980px){.snd{bottom:calc(78px + env(safe-area-inset-bottom,0px))}}
 @media (prefers-reduced-motion:reduce){.snd .snd-w{animation:none}}
+
+.hh.is-veiled .hh-intro{text-shadow:0 1px 18px rgba(0,0,0,.25)}
+.hh.is-veiled .hh-logo{color:#fff}
+
+/* Odalar: ikonlu künye, her oda kendi tonunda, karşılaştırma tablosu */
+.rm-ic{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+.rm-ic.sm{width:18px;height:18px;margin-right:6px;vertical-align:-4px}
+.rm-fruit{width:44px;height:44px;fill:none;stroke:currentColor;stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round;color:#8a5a3c;display:block;margin-bottom:14px}
+.rooms.rooms{border-top:0;display:grid;gap:clamp(14px,1.6vw,22px)}
+.room.rm{background:var(--tint,var(--paper));border:0;padding:clamp(22px,3vw,44px);grid-template-columns:minmax(0,4fr) minmax(0,6fr) minmax(0,2fr);align-items:start;position:relative}
+.room.rm .act{justify-items:end;align-self:start}
+.room.rm .room-thumbs{max-width:none}
+.rm-spec{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));border-top:1px solid rgba(55,62,45,.18)}
+.rm-spec li{display:grid;grid-template-columns:20px 1fr;column-gap:12px;row-gap:2px;padding:14px 12px 14px 0;border-bottom:1px solid rgba(55,62,45,.18);align-content:start}
+.rm-spec .rm-ic{grid-row:span 2;margin-top:2px}
+.rm-k{font:600 10px/1.4 var(--f-sans);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.rm-v{font-size:15px;line-height:1.45}
+.rm-v small{display:block;font-size:12px;color:var(--muted)}
+.rm-extra{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.rm-extra li{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(55,62,45,.25);font-size:13.5px;line-height:1.2;background:rgba(255,255,255,.35)}
+.rm-extra .rm-ic{width:17px;height:17px}
+.cmp-wrap{overflow-x:auto;margin:0 0 10px;-webkit-overflow-scrolling:touch;border-top:1px solid var(--ink)}
+.cmp{width:100%;border-collapse:collapse;min-width:860px;font-size:14px;line-height:1.4}
+.cmp thead th{text-align:left;font:600 10px/1.4 var(--f-sans);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding:14px 12px;vertical-align:bottom;border-bottom:1px solid var(--line)}
+.cmp thead th .rm-ic{display:block;margin-bottom:8px;color:var(--ink)}
+.cmp td,.cmp tbody th{padding:12px;border-bottom:1px solid var(--line);vertical-align:middle;text-align:left;font-weight:400}
+.cmp tbody tr{transition:background .25s}
+.cmp tbody tr:hover{background:var(--tint)}
+.cmp tbody th a{display:flex;align-items:center;gap:10px;font:400 17px/1.2 var(--f-text);white-space:nowrap}
+.cmp tbody th .rm-fruit{width:28px;height:28px;margin:0}
+.cmp .tag{padding:4px 6px}
+.cmp-note{margin:0 0 clamp(28px,4vw,48px)}
+@media (max-width:980px){
+  .room.rm{grid-template-columns:1fr;gap:18px}
+  .room.rm .act{justify-items:start}
+  .rm-fruit{position:absolute;right:clamp(22px,3vw,44px);top:clamp(22px,3vw,44px);margin:0;width:36px;height:36px}
+}
+@media (max-width:560px){.rm-spec{grid-template-columns:1fr 1fr}.rm-spec li{grid-template-columns:1fr;padding-right:8px}.rm-spec .rm-ic{grid-row:auto;margin-bottom:6px}}
+@supports (overflow:clip){body{overflow-x:clip}}
+.cmp tbody th a{text-decoration:none}.cmp tbody th a span{border-bottom:1px solid transparent;transition:border-color .2s}.cmp tbody th a:hover span{border-color:currentColor}
