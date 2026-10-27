@@ -451,6 +451,19 @@
     });
   })();
 
+  /* ana sayfa drone bandı: kaydırdıkça kenarlardan içeri çekilip küçülür, köşeleri yumuşar */
+  (function(){
+    var els=[].slice.call(document.querySelectorAll(".vb-shrink .vloop"));
+    if(!els.length || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
+    var tick=0;
+    function upd(){ tick=0; var vh=window.innerHeight;
+      els.forEach(function(el){ var r=el.getBoundingClientRect();
+        var p=(vh*0.55 - r.top)/(r.height*0.9); p=p<0?0:p>1?1:p; p=p*p*(3-2*p);
+        el.style.setProperty("--vs",p.toFixed(4)); }); }
+    function req(){ if(!tick){ tick=requestAnimationFrame(upd); } }
+    window.addEventListener("scroll",req,{passive:true}); window.addEventListener("resize",req); upd();
+  })();
+
   /* kısa sessiz döngüler: görünürken oynar, dışarıdayken durur; hareket azaltma açıksa yalnızca afiş */
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var loops = document.querySelectorAll(".vloop video");

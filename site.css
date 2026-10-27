@@ -877,3 +877,8 @@ body.hh-veiled .top.top-over .marks{border-color:rgba(55,62,45,.25)}
 .band-pep h2{color:#fff}
 .pep-cta{margin-top:8px}
 @media (max-width:860px){.pep-hero{grid-template-columns:1fr;height:auto;max-height:none}.pep-hero .ph-media{height:auto;aspect-ratio:4/5}.pep-facts{grid-template-columns:1fr 1fr}}
+/* drone bandı: kaydırırken küçülme */
+.vb-shrink{overflow:hidden}
+.vb-shrink .vloop{--vs:0;clip-path:inset(calc(var(--vs) * 7%) calc(var(--vs) * 10%) round calc(var(--vs) * 22px));will-change:clip-path}
+.vb-shrink .vloop video{transform:scale(calc(1 + var(--vs) * .06));transform-origin:50% 40%;will-change:transform}
+@media (max-width:700px){.vb-shrink .vloop{clip-path:inset(calc(var(--vs) * 5%) calc(var(--vs) * 6%) round calc(var(--vs) * 16px))}}
