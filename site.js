@@ -6,8 +6,20 @@
   /* Elektraweb motoru adres parametrelerini kabul ediyor (doğrulandı):
      ?Checkin=YYYY-MM-DD&Checkout=YYYY-MM-DD&Adult=2&child=1&ChildAges=6&language=tr  → seçili tarihlerin fiyatları doğrudan listelenir */
   var ENGINE="https://kimera-lounge.rezervasyonal.com/";
-  function getStay(){ try{ var o=JSON.parse(sessionStorage.getItem("kimera-stay")||"null"); if(o && o.ci && o.co && o.ci>=today()) return o; }catch(e){} return null; }
-  function setStay(o){ try{ sessionStorage.setItem("kimera-stay", JSON.stringify(o)); }catch(e){} }
+  /* Seçilen konaklama (giriş–çıkış, kişi) ve son seçilen randevu günü/kişi sayısı tarayıcıda saklanır;
+     sitenin her yerindeki takvim ve talep kutuları bunlarla hazır açılır. Tarihi geçen kayıt yok sayılır. */
+  function rd(k){ var v=null; try{ v=localStorage.getItem(k); }catch(e){} if(v==null){ try{ v=sessionStorage.getItem(k); }catch(e){} } try{ return JSON.parse(v||"null"); }catch(e){ return null; } }
+  function wr(k,o){ try{ if(o==null) localStorage.removeItem(k); else localStorage.setItem(k, JSON.stringify(o)); }catch(e){} try{ sessionStorage.removeItem(k); }catch(e){} }
+  function getStay(){ var o=rd("kimera-stay"); return (o && o.ci && o.co && o.ci>=today()) ? o : null; }
+  function liveStay(){ var o=rd("kimera-stay"); return (o && o.ci && o.co && o.co>today()) ? o : null; } /* şu an konaklayan misafir dahil */
+  function setStay(o){ wr("kimera-stay",o); }
+  function getPlan(){ var o=rd("kimera-plan"); if(!o) return {}; if(o.date && o.date<today()) delete o.date; return o; }
+  function setPlan(p){ var o=getPlan(); for(var k in p) if(p[k]) o[k]=p[k]; wr("kimera-plan",o); }
+  /* talep kutusu için varsayılan gün: son seçilen gün (konaklama aralığındaysa), yoksa giriş günü (geçmişse bugün) */
+  function planDate(st){ var p=getPlan(), t=today(); st=st||liveStay()||{};
+    if(p.date && (!st.ci || (p.date>=st.ci && p.date<=st.co))) return p.date;
+    if(st.ci) return st.ci<t ? t : st.ci; return p.date||""; }
+  function planPeople(st){ var p=getPlan(); st=st||liveStay()||{}; return p.people || (st.ad?(st.ad+(st.ch||0)):0) || 2; }
   function today(){ var d=new Date(); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); return d.toISOString().slice(0,10); }
   function bookUrl(lang, st){
     if(!st) return BOOK[lang];
@@ -101,19 +113,19 @@
     var l=L(), st=getStay(), kind=el.getAttribute("data-wa")||"";
     if(!kind) kind = page==="pepper"?"pepper":page==="erizo"?"erizo":page==="spa"?"spa":page==="events"?"events":"stay";
     var ev=el.getAttribute("data-wa-ev-"+l);
-    var people=st?(st.ad+(st.ch||0)):0;
+    var pd=planDate(liveStay()), pp=getPlan().people||(st?(st.ad+(st.ch||0)):0), people=pp; var dTxt=pd?fmtD(pd,l):"…";
     if(kind==="event"&&ev) return l==="en"
       ? "Hello, I'd like to reserve for "+ev+(people?" for "+people+" people":"")+". Is there availability?"
       : "Merhaba, "+ev+" için"+(people?" "+people+" kişilik":"")+" rezervasyon yapmak istiyorum. Yer var mı?";
     if(kind==="pepper") return l==="en"
-      ? "Hello, I'd like to ask about a table / a private gathering at Mr. Pepper. Date: "+(st?fmtD(st.ci,l):"…")+" · Guests: "+(people||"…")
-      : "Merhaba, Mr. Pepper'da masa / özel bir davet için bilgi almak istiyorum. Tarih: "+(st?fmtD(st.ci,l):"…")+" · Kişi: "+(people||"…");
+      ? "Hello, I'd like to ask about a table / a private gathering at Mr. Pepper. Date: "+dTxt+" · Guests: "+(people||"…")
+      : "Merhaba, Mr. Pepper'da masa / özel bir davet için bilgi almak istiyorum. Tarih: "+dTxt+" · Kişi: "+(people||"…");
     if(kind==="erizo") return l==="en"
-      ? "Hello, can I book a table at Erizo only (without staying at the hotel)? Date: "+(st?fmtD(st.ci,l):"…")+" · Guests: "+(people||"…")
-      : "Merhaba, otelde konaklamadan sadece Erizo'da masa ayırtabilir miyim? Tarih: "+(st?fmtD(st.ci,l):"…")+" · Kişi: "+(people||"…");
+      ? "Hello, can I book a table at Erizo only (without staying at the hotel)? Date: "+dTxt+" · Guests: "+(people||"…")
+      : "Merhaba, otelde konaklamadan sadece Erizo'da masa ayırtabilir miyim? Tarih: "+dTxt+" · Kişi: "+(people||"…");
     if(kind==="spa") return l==="en"
-      ? "Hello, I'd like to book a treatment at Arya Spa."+(st?" I'm staying "+stayTxt(st,l)+".":" Date: …")
-      : "Merhaba, Arya Spa'da bakım randevusu almak istiyorum."+(st?" Konaklamam: "+stayTxt(st,l)+".":" Tarih: …");
+      ? "Hello, I'd like to book a treatment at Arya Spa."+" Date: "+dTxt+(people?", "+people+" guest"+(people>1?"s":""):"")+"."+(st?" I'm staying "+stayTxt(st,l)+".":"")
+      : "Merhaba, Arya Spa'da bakım randevusu almak istiyorum."+" Tarih: "+dTxt+(people?", "+people+" kişi":"")+"."+(st?" Konaklamam: "+stayTxt(st,l)+".":"");
     if(kind==="events") return l==="en" ? "Hello, I'd like information about upcoming events at Kimera and Erizo." : "Merhaba, Kimera ve Erizo'daki yaklaşan etkinlikler hakkında bilgi almak istiyorum.";
     if(st) return l==="en"
       ? "Hello, I'm looking at "+stayTxt(st,l)+". Do you have availability, and which rooms would you suggest?"
@@ -289,7 +301,7 @@
       sync(); draw();
     });
     cal.querySelectorAll(".cal-nav").forEach(function(b){ b.addEventListener("click",function(){ view.setMonth(view.getMonth()+(+b.dataset.m)); draw(); }); });
-    cal.querySelector(".cal-clear").addEventListener("click",function(){ ci=""; co=""; picking="ci"; try{sessionStorage.removeItem("kimera-stay");}catch(e){} sync(); draw(); });
+    cal.querySelector(".cal-clear").addEventListener("click",function(){ ci=""; co=""; picking="ci"; wr("kimera-stay",null); sync(); draw(); try{ document.dispatchEvent(new CustomEvent("kimera:stay",{detail:f})); }catch(e){} });
     cal.querySelector(".cal-ok").addEventListener("click",close);
     document.addEventListener("click",function(e){ if(!document.contains(cal)) return; if(!cal.hidden && e.composedPath().indexOf(f)<0) close(); });
     document.addEventListener("keydown",function(e){ if(!document.contains(cal)) return; if(e.key==="Escape" && !cal.hidden) close(); });
@@ -333,7 +345,7 @@
     var LG=document.documentElement.getAttribute("data-lang")||"tr", en=LG!=="tr", T=function(a,b){return LG==="tr"?a:LG==="en"?b:I(b);};
     var st=getStay()||{}, id="ak"+(box.dataset.n||(box.dataset.n=++ASKN))+"-";
     var keep=box.__v||{};
-    var dv=keep.date||st.ci||"", pv=keep.people||(st.ad?(st.ad+(st.ch||0)):2);
+    var dv=keep.date||planDate(liveStay()), pv=keep.people||planPeople(liveStay());
     var h='<div class="ask-f">';
     C.fields.forEach(function(f){
       if(f==="opt"){ h+='<label class="ask-c ask-w"><span>'+T(C.optL[0],C.optL[1])+'</span><select name="opt">';
@@ -380,11 +392,21 @@
     }
     function upd(){ var m=msg(); wa.href="https://wa.me/"+C.wa+"?text="+encodeURIComponent(m); prev.textContent="“"+m+"”"; }
     box.addEventListener("input",upd); box.addEventListener("change",upd);
+    /* misafirin burada seçtiği gün ve kişi sayısı diğer kutulara da taşınsın */
+    box.addEventListener("change",function(e){ var n=e.target&&e.target.name; if(n!=="date"&&n!=="people") return;
+      box.__t=box.__t||{}; box.__t[n]=1; var o={}; o[n]=e.target.value; setPlan(o);
+      try{ document.dispatchEvent(new CustomEvent("kimera:plan",{detail:box})); }catch(_){} });
     var ob=box.querySelector(".ask-open"), ch=box.querySelector(".ask-ch");
     ob.addEventListener("click",function(){ upd(); var o=ch.hidden; ch.hidden=!o; ob.setAttribute("aria-expanded",o?"true":"false"); box.classList.toggle("is-open",o); });
     upd();
   }
   document.querySelectorAll("[data-ask]").forEach(renderAsk);
+  /* başka bir yerde tarih / kişi değişince kutular, misafirin kendi değiştirmediği alanları güncelleyerek yeniden kurulur */
+  function refreshAsks(src){ document.querySelectorAll("[data-ask]").forEach(function(b){ if(b===src) return; var v=b.__v, t=b.__t||{};
+    if(v){ if(!t.date) delete v.date; if(!t.people) delete v.people; } var open=b.classList.contains("is-open"); renderAsk(b);
+    if(open){ var o=b.querySelector(".ask-open"); if(o) o.click(); } }); }
+  document.addEventListener("kimera:stay",function(){ document.querySelectorAll("[data-ask]").forEach(function(b){ b.__t={}; }); refreshAsks(null); });
+  document.addEventListener("kimera:plan",function(e){ refreshAsks(e.detail); });
   document.addEventListener("kimera:lang",function(){ document.querySelectorAll("[data-ask]").forEach(function(b){ b.__v=null; renderAsk(b); }); });
   /* etkinlik kartındaki butonlar talep kutusunda o etkinliği seçer */
   document.addEventListener("click",function(e){ var a=e.target.closest&&e.target.closest("[data-ask-pick]"); if(!a) return; var box=document.querySelector('[data-ask="events"]'); if(!box) return;
