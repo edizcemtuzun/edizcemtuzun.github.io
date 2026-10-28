@@ -1,0 +1,25 @@
+{
+  "_not": "Erizo etkinlik programı. Her ay bu listeyi güncelleyin: tarih (YYYY-AA-GG), tür, başlık, metin, afiş (img klasöründeki dosya adı), Instagram bağlantısı. Saat bilinmiyorsa boş bırakın. 'reserve': false ise Yer ayırt düğmesi çıkmaz.",
+  "events": [
+    {"id":"dort-el-1610","date":"2026-10-16","time":"","type":["Dört el","Four hands"],
+     "title":["Bir akşam, iki kıyı.","One evening, two coasts."],
+     "text":["Necmi Ağaç ve Yüksel Demirkıran, Ege ile Akdeniz'in mutfak hafızasını aynı menüde buluşturdu.","Necmi Ağaç and Yüksel Demirkıran brought the Aegean and the Mediterranean together on one menu."],
+     "img":"erizo-team.jpg","alt":["Dört el akşamında mutfak ekibi","The kitchen team on the four-hands evening"],
+     "ig":"https://www.instagram.com/erizorestaurant/p/Dd3bNudiFZx/","reserve":true},
+    {"id":"bar-takeover-2910","date":"2026-10-29","time":"","type":["Bar takeover","Bar takeover"],
+     "title":["Federico Penzo · Nelly White","Federico Penzo · Nelly White"],
+     "text":["Cumhuriyet'in 103. yılında barda Federico Penzo ve kırmızı dokunuşlar; çatıda Nelly White'ın sesiyle mum ışığında akşam yemeği.","For the Republic's 103rd anniversary, Federico Penzo behind the bar with a touch of red; dinner by candlelight on the rooftop with the voice of Nelly White."],
+     "img":"event-federico.jpg","alt":["Bar Takeover afişi, Federico Penzo","Bar Takeover poster, Federico Penzo"],
+     "ig":"https://www.instagram.com/erizorestaurant/p/Dd9Il9xoX3D/","reserve":true},
+    {"id":"anatolian-fusion-3010","date":"2026-10-30","time":"","type":["Misafir şef","Guest chef"],
+     "title":["Anatolian Fusion · Altuğ Tezer","Anatolian Fusion · Altuğ Tezer"],
+     "text":["Anadolu'nun mutfak mirasına kendi yorumuyla bakan bir akşam: tanıdık lezzetler, beklenmedik keşifler, sofrada uzayan sohbetler.","An evening exploring Anatolia's culinary heritage through his own perspective: familiar flavours, unexpected discoveries, conversations that linger."],
+     "img":"event-altug.jpg","alt":["Chef Takeover afişi, Altuğ Tezer","Chef Takeover poster, Altuğ Tezer"],
+     "ig":"https://www.instagram.com/p/DeomXEYITn4/","reserve":true},
+    {"id":"halloween-3110","date":"2026-10-31","time":"","type":["Halloween","Halloween"],
+     "title":["Kimera'nın bu gece misafirleri var.","The Chimera has company tonight."],
+     "text":["Kostümle gelin: akşam yemeği, müzik ve Çıralı'da Halloween.","Come in costume for dinner, music and Halloween in Çıralı."],
+     "img":"event-halloween.jpg","alt":["Halloween in Çıralı afişi","Halloween in Çıralı poster"],
+     "ig":"https://www.instagram.com/erizorestaurant/p/DetzzaPCOmt/","reserve":true}
+  ]
+}

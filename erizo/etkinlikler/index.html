@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="tr" data-lang="tr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bu ay Erizo'da · Erizo Gastro &amp; Bar · Çıralı</title>
+<meta name="description" content="Erizo Gastro & Bar'ın bu ayki programı: misafir şefler, bar takeover geceleri, müzik ve özel sofralar. Takviminize ekleyin, yerinizi ayırtın.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#141b16">
+<link rel="icon" href="/markalar/_img/mark-erizo-e.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/markalar/brand.css">
+<style>
+[hidden]{display:none!important}
+html:not([data-lang="en"]) .en,html[data-lang="en"] .tr{display:none!important}
+body.erizo{background:#141b16;color:var(--on)}
+.mk{display:block;aspect-ratio:322/100;background:currentColor;-webkit-mask:url(/markalar/_img/mark-erizo-e.svg) center/contain no-repeat;mask:url(/markalar/_img/mark-erizo-e.svg) center/contain no-repeat}
+.top{display:flex;justify-content:space-between;align-items:center;padding:18px clamp(18px,4vw,56px);border-bottom:1px solid rgba(243,238,228,.12)}
+.top .mk{width:92px;color:#fff}
+.top .r{display:flex;gap:22px;align-items:center}
+.top a,.top button{all:unset;cursor:pointer;font:600 11px/1 var(--f-s);letter-spacing:.2em;text-transform:uppercase;color:#fff}
+.top .cta{background:#d0683a;padding:13px 16px}
+.wrapx{max-width:1240px;margin:0 auto;padding:0 clamp(18px,4vw,56px)}
+.head{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(24px,4vw,64px);padding:clamp(40px,7vw,104px) 0 clamp(28px,4vw,48px);align-items:end}
+.head h1{margin:0;font:400 clamp(46px,7vw,104px)/.95 var(--f-d)}
+.head .lead{margin:16px 0 0;font-size:17px;opacity:.8;max-width:32em}
+.months{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.months button{all:unset;cursor:pointer;font:600 10.5px/1 var(--f-s);letter-spacing:.18em;text-transform:uppercase;padding:11px 14px;border:1px solid rgba(243,238,228,.25)}
+.months button[aria-pressed="true"]{background:var(--on);color:#141b16}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.cal .dw{font:600 10px/1 var(--f-s);letter-spacing:.14em;text-transform:uppercase;opacity:.5;text-align:center;padding:6px 0}
+.cal .d{aspect-ratio:1;display:grid;place-items:center;font:400 18px/1 var(--f-d);border:1px solid rgba(243,238,228,.08);opacity:.55;position:relative}
+.cal .d.has{opacity:1;border-color:#d0683a;cursor:pointer;background:rgba(208,104,58,.12)}
+.cal .d.has::after{content:"";position:absolute;bottom:7px;width:5px;height:5px;border-radius:50%;background:#d0683a}
+.cal .d.past{opacity:.25}.cal .d.has.past{opacity:.45}
+.cal .d.today{outline:1px dashed rgba(243,238,228,.6);outline-offset:-4px}
+.cal .d:focus-visible{outline:1px solid #fff}
+.list{padding-bottom:clamp(56px,8vw,120px)}
+.ev{display:grid;grid-template-columns:170px minmax(0,1fr) minmax(0,300px);gap:clamp(18px,3vw,40px);padding:clamp(26px,3.5vw,44px) 0;border-top:1px solid rgba(243,238,228,.16);align-items:start;scroll-margin-top:24px}
+.ev .dt{margin:0;font:400 64px/.9 var(--f-d);font-variant-numeric:tabular-nums}
+.ev .dt small{display:block;margin-top:10px;font:600 10.5px/1.5 var(--f-s);letter-spacing:.18em;text-transform:uppercase;color:#d0683a}
+.ev .dt i{display:block;font:500 13px/1.4 var(--f-s);font-style:normal;opacity:.6;margin-top:4px;letter-spacing:0;text-transform:none}
+.ev h2{margin:0 0 12px;font:400 clamp(30px,3vw,44px)/1.05 var(--f-d)}
+.ev p{margin:0;font-size:16px;line-height:1.7;opacity:.85;max-width:36em}
+.ev .act{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.ev .act a,.ev .act button{all:unset;cursor:pointer;font:600 10.5px/1 var(--f-s);letter-spacing:.18em;text-transform:uppercase;padding:14px 16px;border:1px solid rgba(243,238,228,.35)}
+.ev .act .pri{background:#d0683a;border-color:#d0683a;color:#fff}
+.ev .img{aspect-ratio:4/5;overflow:hidden;background:#1c251f}
+.ev .img img{width:100%;height:100%;object-fit:cover;display:block}
+.ev.is-past{opacity:.5}.ev.is-past .pri{display:none}
+.ev.is-hi{animation:hi 1.6s ease}
+@keyframes hi{0%{background:rgba(208,104,58,.18)}100%{background:transparent}}
+.tag{display:inline-block;margin-left:10px;font:600 10px/1 var(--f-s);letter-spacing:.16em;text-transform:uppercase;padding:5px 7px;border:1px solid currentColor;opacity:.7;vertical-align:middle}
+.empty{padding:40px 0 100px;font-size:17px;opacity:.85}
+.foot{border-top:1px solid rgba(243,238,228,.12);padding:28px 0 60px;display:flex;flex-wrap:wrap;gap:12px 28px;font-size:13.5px;opacity:.75}
+.foot a{color:inherit}
+.cal-menu{position:relative;display:inline-block}
+.cal-menu .opts{position:absolute;left:0;top:calc(100% + 6px);z-index:3;background:#f3eee4;color:#1f2a22;display:grid;min-width:210px;box-shadow:0 18px 40px -20px rgba(0,0,0,.6)}
+.cal-menu .opts a{all:unset;cursor:pointer;padding:13px 16px;font:500 14px/1.2 var(--f-s);border-bottom:1px solid rgba(31,42,34,.1)}
+.cal-menu .opts a:hover{background:#e8e1d3}
+@media (max-width:900px){.head{grid-template-columns:1fr}.ev{grid-template-columns:1fr}.ev .img{max-width:420px}.ev .dt{font-size:52px}.top .r a:not(.cta){display:none}}
+</style>
+</head>
+<body class="erizo">
+<header class="top"><a href="/markalar/erizo/" aria-label="Erizo"><span class="mk"></span></a>
+  <div class="r"><a href="/markalar/erizo/">Erizo</a><button class="lg" type="button" aria-label="Dil / Language"><b>TR</b> <i>EN</i></button><a class="cta" href="/erizo/reserve/"><span class="tr">Masa ayırt</span><span class="en">Book a table</span></a></div></header>
+<main class="wrapx">
+  <section class="head">
+    <div>
+      <span class="eyebrow" style="color:#d0683a" id="mlabel"></span>
+      <h1><span class="tr">Bu ay Erizo'da.</span><span class="en">This month at Erizo.</span></h1>
+      <p class="lead"><span class="tr">Misafir şefler, bar takeover geceleri, müzik ve özel sofralar. Takviminize ekleyin, yerinizi ayırtın.</span><span class="en">Guest chefs, bar takeover nights, music and special tables. Add them to your calendar and save your seat.</span></p>
+    </div>
+    <div>
+      <div class="months" id="months" role="group" aria-label="Ay"></div>
+      <div class="cal" id="cal" aria-label="Takvim"></div>
+    </div>
+  </section>
+  <section class="list" id="list" aria-live="polite"></section>
+  <div class="foot"><span><span class="tr">Erizo Gastro &amp; Bar · Kimera'nın çatısında, Çıralı · Akşam yemeği 18.30–23.30 · Bar 01.00'e kadar</span><span class="en">Erizo Gastro &amp; Bar · On Kimera's rooftop, Çıralı · Dinner 6.30–11.30 pm · Bar until 1 am</span></span><a href="tel:+905377768252">+90 537 776 82 52</a><a href="https://www.instagram.com/erizorestaurant/" target="_blank" rel="noopener">@erizorestaurant</a></div>
+</main>
+<script src="/markalar/brand.js"></script>
+<script>
+(function(){
+  var root=document.documentElement, EV=[], cur="", T0=today();
+  function L(){ return root.getAttribute("data-lang")==="en"?1:0; }
+  function today(){ var d=new Date(); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); return d.toISOString().slice(0,10); }
+  function esc(s){ return String(s||"").replace(/[&<>"]/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+  var loc=function(){ return L()?"en-GB":"tr-TR"; };
+  function mName(ym){ var d=new Date(ym+"-15T12:00:00"); var s=d.toLocaleDateString(loc(),{month:"long",year:"numeric"}); return s.charAt(0).toUpperCase()+s.slice(1); }
+  function wd(v){ return new Date(v+"T12:00:00").toLocaleDateString(loc(),{weekday:"long"}); }
+  function next(v){ var d=new Date(v+"T12:00:00"); d.setDate(d.getDate()+1); return d.toISOString().slice(0,10); }
+  function gcal(e){ var l=L(), a=e.date.replace(/-/g,""), b=next(e.date).replace(/-/g,"");
+    return "https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent("Erizo · "+e.title[l])+"&dates="+a+"/"+b+"&details="+encodeURIComponent(e.text[l]+"\n\n"+location.origin+"/erizo/reserve/?etkinlik="+e.id)+"&location="+encodeURIComponent("Erizo Gastro & Bar, Kimera Hotel, Çıralı, Kemer, Antalya"); }
+  function ics(e){ var l=L(), a=e.date.replace(/-/g,""), b=next(e.date).replace(/-/g,""), now=new Date().toISOString().replace(/[-:]/g,"").slice(0,15)+"Z";
+    var t=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Erizo//Etkinlikler//TR","BEGIN:VEVENT","UID:"+e.id+"@kimerahotel.com","DTSTAMP:"+now,"DTSTART;VALUE=DATE:"+a,"DTEND;VALUE=DATE:"+b,
+      "SUMMARY:"+("Erizo · "+e.title[l]).replace(/[,;]/g,"\\$&"),"DESCRIPTION:"+e.text[l].replace(/[,;]/g,"\\$&")+"\\n\\n"+location.origin+"/erizo/reserve/?etkinlik="+e.id,"LOCATION:Erizo Gastro & Bar\\, Kimera Hotel\\, Çıralı\\, Kemer\\, Antalya","END:VEVENT","END:VCALENDAR"].join("\r\n");
+    return "data:text/calendar;charset=utf-8,"+encodeURIComponent(t); }
+  function months(){ var m={}; EV.forEach(function(e){ m[e.date.slice(0,7)]=1; }); var t=T0.slice(0,7); m[t]=1; return Object.keys(m).sort().filter(function(x){ return x>=t || EV.some(function(e){ return e.date.slice(0,7)===x && e.date>=T0; }); }); }
+  function draw(){
+    var l=L(), ms=months(); if(!cur||ms.indexOf(cur)<0){ cur=ms.filter(function(x){ return EV.some(function(e){ return e.date.slice(0,7)===x && e.date>=T0; }); })[0]||ms[0]; }
+    document.getElementById("months").innerHTML=ms.map(function(m){ return '<button type="button" data-m="'+m+'" aria-pressed="'+(m===cur)+'">'+mName(m)+'</button>'; }).join("");
+    document.getElementById("mlabel").textContent=mName(cur);
+    var E=EV.filter(function(e){ return e.date.slice(0,7)===cur; });
+    // takvim
+    var y=+cur.slice(0,4), mo=+cur.slice(5,7)-1, first=new Date(y,mo,1,12), st=(first.getDay()+6)%7, n=new Date(y,mo+1,0).getDate(), h="";
+    var DW=L()?["Mo","Tu","We","Th","Fr","Sa","Su"]:["Pt","Sa","Ça","Pe","Cu","Ct","Pz"]; for(var i=0;i<7;i++) h+='<span class="dw">'+DW[i]+'</span>';
+    for(i=0;i<st;i++) h+='<span></span>';
+    for(var d=1;d<=n;d++){ var v=cur+"-"+(d<10?"0":"")+d, e=E.filter(function(x){ return x.date===v; })[0];
+      h+='<span class="d'+(e?' has':'')+(v<T0?' past':'')+(v===T0?' today':'')+'"'+(e?' tabindex="0" role="button" data-go="'+e.id+'" aria-label="'+esc(d+" · "+e.title[l])+'"':'')+'>'+d+'</span>'; }
+    document.getElementById("cal").innerHTML=h;
+    // liste
+    if(!E.length){ document.getElementById("list").innerHTML='<p class="empty">'+(l?"The programme for this month will be announced soon. You can still book a table for dinner.":"Bu ayın programı yakında duyurulacak. Akşam yemeği için masanızı şimdiden ayırtabilirsiniz.")+' <a href="/erizo/reserve/" style="color:#d0683a">'+(l?"Book a table":"Masa ayırt")+' →</a></p>'; return; }
+    E.sort(function(a,b){ return a.date.localeCompare(b.date); });
+    document.getElementById("list").innerHTML=E.map(function(e){ var past=e.date<T0, dd=e.date.slice(8,10)+"."+e.date.slice(5,7);
+      return '<article class="ev'+(past?' is-past':'')+'" id="'+e.id+'"><p class="dt">'+dd+'<small>'+esc(e.type[l])+'</small><i>'+esc(wd(e.date))+(e.time?' · '+esc(e.time):'')+'</i></p>'+
+        '<div><h2>'+esc(e.title[l])+(past?'<span class="tag">'+(l?"Past":"Geçti")+'</span>':'')+'</h2><p>'+esc(e.text[l])+'</p><div class="act">'+
+        (e.reserve&&!past?'<a class="pri" href="/erizo/reserve/?etkinlik='+encodeURIComponent(e.id)+'&tarih='+e.date+'">'+(l?"Reserve":"Yer ayırt")+'</a>':'')+
+        (!past?'<span class="cal-menu"><button type="button" class="addc" aria-expanded="false">'+(l?"Add to calendar":"Takvime ekle")+'</button><span class="opts" hidden><a href="'+gcal(e)+'" target="_blank" rel="noopener">Google Takvim</a><a href="'+ics(e)+'" download="erizo-'+e.id+'.ics">Apple / Outlook (.ics)</a></span></span>':'')+
+        (e.ig?'<a href="'+e.ig+'" target="_blank" rel="noopener">Instagram</a>':'')+'</div></div>'+
+        (e.img?'<div class="img"><img src="/markalar/_img/'+esc(e.img)+'" alt="'+esc(e.alt?e.alt[l]:e.title[l])+'" loading="lazy"></div>':'')+'</article>'; }).join("");
+  }
+  document.addEventListener("click",function(e){
+    var m=e.target.closest("[data-m]"); if(m){ cur=m.dataset.m; draw(); return; }
+    var g=e.target.closest("[data-go]"); if(g){ var a=document.getElementById(g.dataset.go); if(a){ a.scrollIntoView({behavior:"smooth",block:"start"}); a.classList.remove("is-hi"); void a.offsetWidth; a.classList.add("is-hi"); } return; }
+    var c=e.target.closest(".addc"); document.querySelectorAll(".cal-menu .opts").forEach(function(o){ if(!c||o!==c.nextElementSibling) o.hidden=true; });
+    if(c){ var o=c.nextElementSibling; o.hidden=!o.hidden; c.setAttribute("aria-expanded",String(!o.hidden)); }
+  });
+  document.addEventListener("keydown",function(e){ if((e.key==="Enter"||e.key===" ")&&e.target.dataset&&e.target.dataset.go){ e.preventDefault(); e.target.click(); } });
+  new MutationObserver(function(){ if(EV.length) draw(); }).observe(root,{attributes:true,attributeFilter:["data-lang"]});
+  fetch("/erizo/events.json",{cache:"no-cache"}).then(function(r){ return r.json(); }).then(function(j){ EV=j.events||[];
+    var q=new URLSearchParams(location.search).get("ay"); if(q&&/^\d{4}-\d{2}$/.test(q)) cur=q; draw();
+    if(location.hash){ var a=document.getElementById(location.hash.slice(1)); if(a) setTimeout(function(){ a.scrollIntoView({block:"start"}); },50); } })
+    .catch(function(){ document.getElementById("list").innerHTML='<p class="empty">Program yüklenemedi. <a href="/markalar/erizo/#etkinlik" style="color:#d0683a">Erizo</a></p>'; });
+})();
+</script>
+</body>
+</html>

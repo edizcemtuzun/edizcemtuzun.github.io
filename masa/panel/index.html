@@ -83,7 +83,7 @@ main{max-width:1100px;margin:0 auto;padding:18px max(16px,env(safe-area-inset-le
         h+='<h2 class="day">'+fd(d,"tr")+(d===tday?' <small>Bugün</small>':'')+' <small>'+n+' kişi</small></h2>'; }
       h+='<article class="card" data-s="'+r.status+'" data-id="'+r.id+'"><div class="tm">'+esc(r.time)+'<small>'+r.people+' kişi</small></div>'+
         '<div class="who"><b>'+esc(r.name)+'</b> <span class="st">'+S[r.status]+'</span><div class="m"><a href="tel:'+esc(r.phone)+'" style="color:inherit">'+esc(r.phone)+'</a>'+(r.email?' · '+esc(r.email):'')+' · '+(r.staying==="yes"?"Kimera'da konaklıyor":r.staying==="no"?"Dışarıdan":"Konaklama belirtilmedi")+' · '+(r.lang==="en"?"EN":"TR")+'</div>'+
-        ((r.occasion||r.note)?'<div class="nt">'+(r.occasion?'<b>'+esc(r.occasion)+'</b>'+(r.note?' · ':''):'')+esc(r.note)+'</div>':'')+
+        (r.event?'<div class="nt" style="border-left:2px solid #d0683a"><b>Etkinlik:</b> '+esc(r.event)+'</div>':'')+((r.occasion||r.note)?'<div class="nt">'+(r.occasion?'<b>'+esc(r.occasion)+'</b>'+(r.note?' · ':''):'')+esc(r.note)+'</div>':'')+
         '<div class="m" style="margin-top:6px">Geldiği yer: '+esc(r.source||"doğrudan")+' · '+new Date(r.created).toLocaleString("tr-TR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})+'</div></div>'+
         '<div class="acts"><button class="b ok" data-a="approved">'+(r.status==="approved"?"Onay mesajını yeniden aç":"Onayla · WhatsApp")+'</button>'+(r.status!=="alternative"?'<button class="b alt" data-a="alternative">Başka saat öner</button>':'')+(r.status!=="declined"?'<button class="b no" data-a="declined">Reddet</button>':'')+(r.status!=="pending"?'<button class="b" data-a="pending">Beklemeye al</button>':'')+'</div></article>';
     });

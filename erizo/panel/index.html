@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Erizo · Masa talepleri</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#141b16">
+<link rel="icon" href="/markalar/_img/mark-erizo-e.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Manrope:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#141b16;--card:#1c251f;--on:#f3eee4;--mute:rgba(243,238,228,.6);--line:rgba(243,238,228,.14);--ember:#d0683a;--ok:#5a9b6e;--alt:#c9a55a;--no:#a85a4a}
+[hidden]{display:none!important}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--on);font:400 15px/1.55 Manrope,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.mk{display:block;width:96px;aspect-ratio:322/100;background:currentColor;-webkit-mask:url(/markalar/_img/mark-erizo-e.svg) center/contain no-repeat;mask:url(/markalar/_img/mark-erizo-e.svg) center/contain no-repeat}
+header{position:sticky;top:0;z-index:5;background:rgba(20,27,22,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:14px max(16px,env(safe-area-inset-left))}
+.hd{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between}
+.hd h1{margin:0;font:400 26px/1 "Cormorant Garamond",Georgia,serif}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button,.b{all:unset;cursor:pointer;font:600 10.5px/1 Manrope,Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase;padding:11px 13px;border:1px solid var(--line)}
+.tabs button[aria-pressed="true"]{background:var(--on);color:var(--bg)}
+.tabs i{font-style:normal;opacity:.7;margin-left:6px}
+main{max-width:1100px;margin:0 auto;padding:18px max(16px,env(safe-area-inset-left)) 80px}
+.day{margin:26px 0 10px;font:400 22px/1 "Cormorant Garamond",Georgia,serif;display:flex;gap:12px;align-items:baseline}
+.day small{font:600 10.5px/1 Manrope;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+.card{background:var(--card);border-left:3px solid var(--ember);padding:16px 18px;display:grid;grid-template-columns:90px minmax(0,1fr) auto;gap:6px 18px;margin-bottom:10px}
+.card[data-s="approved"]{border-color:var(--ok)}.card[data-s="alternative"]{border-color:var(--alt)}.card[data-s="declined"]{border-color:var(--no);opacity:.6}
+.tm{font:400 28px/1 "Cormorant Garamond",Georgia,serif}.tm small{display:block;font:600 10.5px/1.5 Manrope;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-top:6px}
+.who b{font-weight:600}.who .m{color:var(--mute);font-size:13.5px}
+.who .nt{margin-top:6px;padding:8px 10px;background:rgba(243,238,228,.06);font-size:14px}
+.st{font:600 10px/1 Manrope;letter-spacing:.16em;text-transform:uppercase;padding:6px 8px;border:1px solid currentColor;justify-self:start}
+.acts{display:flex;flex-direction:column;gap:6px;align-items:stretch;min-width:190px}
+.b.ok{background:var(--ok);border-color:var(--ok)}.b.alt{border-color:var(--alt);color:var(--alt)}.b.no{border-color:var(--no);color:#e39b8b}
+.b{text-align:center}
+.login{max-width:420px;margin:12vh auto;display:grid;gap:14px}
+.login input{font:400 16px Manrope;padding:13px;background:rgba(243,238,228,.06);border:1px solid var(--line);color:var(--on)}
+.login .b{background:var(--ember);border-color:var(--ember);color:#fff}
+.msg{color:var(--mute)}.empty{color:var(--mute);margin:40px 0}
+.err{color:#f0a27d}
+@media (max-width:720px){.card{grid-template-columns:70px 1fr}.acts{grid-column:1/-1;flex-direction:row;flex-wrap:wrap}.acts .b{flex:1 1 140px}}
+</style>
+</head>
+<body>
+<header><div class="hd"><span class="mk" aria-label="Erizo"></span><h1>Masa talepleri</h1>
+  <div class="tabs" role="group" aria-label="Durum"><button data-f="pending" aria-pressed="true">Bekleyen<i id="c-p"></i></button><button data-f="approved" aria-pressed="false">Onaylanan<i id="c-a"></i></button><button data-f="all" aria-pressed="false">Tümü<i id="c-t"></i></button></div>
+  <button class="b" id="out" hidden>Çıkış</button></div></header>
+<main id="app">
+  <form class="login" id="login"><p class="msg">Panel anahtarını girin. Anahtar yalnızca bu cihazda saklanır.</p><input type="password" id="key" autocomplete="current-password" placeholder="Panel anahtarı" required><button class="b" type="submit">Giriş</button><p class="err" id="lerr"></p></form>
+  <div id="list" hidden></div>
+</main>
+<script>
+(function(){
+  var KEY="erizo-admin-key", key=""; try{ key=localStorage.getItem(KEY)||""; }catch(e){}
+  var filt="pending", items=[], tday="", timer=0;
+  var $=function(id){ return document.getElementById(id); };
+  var S={pending:"Bekliyor",approved:"Onaylandı",alternative:"Başka saat önerildi",declined:"Reddedildi"};
+  function esc(s){ return String(s||"").replace(/[&<>"]/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+  function fd(v,l){ return new Date(v+"T12:00:00").toLocaleDateString(l==="en"?"en-GB":"tr-TR",{weekday:"long",day:"numeric",month:"long"}); }
+  function phone(p){ var d=String(p||"").replace(/\D/g,""); if(d.indexOf("0")===0) d="90"+d.slice(1); if(d.length===10&&d[0]==="5") d="90"+d; return d; }
+  function first(n){ return String(n||"").trim().split(/\s+/)[0]; }
+  var TPL={
+    approved:{tr:function(r){ return "Merhaba "+first(r.name)+", Erizo'da "+fd(r.date,"tr")+" saat "+r.time+" için "+r.people+" kişilik masanız ayrıldı. Görüşmek üzere!\nErizo Gastro & Bar · Kimera, Çıralı · +90 537 776 82 52"; },
+              en:function(r){ return "Hello "+first(r.name)+", your table for "+r.people+" at Erizo on "+fd(r.date,"en")+" at "+r.time+" is confirmed. See you soon!\nErizo Gastro & Bar · Kimera, Çıralı · +90 537 776 82 52"; }},
+    alternative:{tr:function(r){ return "Merhaba "+first(r.name)+", Erizo'daki masa talebiniz için teşekkürler. "+fd(r.date,"tr")+" saat "+r.time+" dolu; size … saatini önerebiliriz. Uygun mu?"; },
+              en:function(r){ return "Hello "+first(r.name)+", thank you for your table request at Erizo. "+fd(r.date,"en")+" at "+r.time+" is full; we could offer … instead. Would that work?"; }},
+    declined:{tr:function(r){ return "Merhaba "+first(r.name)+", Erizo'daki masa talebiniz için teşekkürler. Maalesef "+fd(r.date,"tr")+" için yerimiz kalmadı. Başka bir akşam sizi ağırlamaktan memnun oluruz."; },
+              en:function(r){ return "Hello "+first(r.name)+", thank you for your table request at Erizo. Unfortunately we are fully booked on "+fd(r.date,"en")+". We would be glad to welcome you another evening."; }}
+  };
+  function api(method,path,body){ return fetch("/api/erizo"+(path||""),{method:method,headers:{"content-type":"application/json","x-admin-key":encodeURIComponent(key)},body:body?JSON.stringify(body):undefined}).then(function(r){ return r.json().then(function(j){ j.__s=r.status; return j; }); }); }
+  function load(){ return api("GET").then(function(j){
+      if(j.__s===401){ logout("Anahtar hatalı."); return; }
+      if(j.error==="no_key"){ $("list").innerHTML='<p class="err">Panel anahtarı Cloudflare ayarlarında bulunamadı.</p>'; return; }
+      if(!j.ok){ $("list").innerHTML='<p class="err">Sistem henüz kurulmadı ya da ulaşılamıyor ('+esc(j.error||j.__s)+').</p>'; return; }
+      items=j.items; tday=j.today; draw(); }).catch(function(){ $("list").innerHTML='<p class="err">Bağlantı yok; birazdan yeniden denenecek.</p>'; }); }
+  function draw(){
+    var p=items.filter(function(r){ return r.status==="pending"; }).length;
+    $("c-p").textContent=p||""; $("c-a").textContent=items.filter(function(r){ return r.status==="approved"&&r.date>=tday; }).length||""; $("c-t").textContent=items.length||"";
+    document.title=(p?"("+p+") ":"")+"Erizo · Masa talepleri";
+    var L=items.filter(function(r){ return filt==="all" ? true : filt==="approved" ? (r.status==="approved"&&r.date>=tday) : r.status==="pending"; });
+    if(!L.length){ $("list").innerHTML='<p class="empty">'+(filt==="pending"?"Bekleyen talep yok.":"Kayıt yok.")+'</p>'; return; }
+    var h="", d="";
+    L.forEach(function(r){
+      if(r.date!==d){ d=r.date; var n=L.filter(function(x){ return x.date===d&&x.status!=="declined"; }).reduce(function(a,x){ return a+(+x.people||0); },0);
+        h+='<h2 class="day">'+fd(d,"tr")+(d===tday?' <small>Bugün</small>':'')+' <small>'+n+' kişi</small></h2>'; }
+      h+='<article class="card" data-s="'+r.status+'" data-id="'+r.id+'"><div class="tm">'+esc(r.time)+'<small>'+r.people+' kişi</small></div>'+
+        '<div class="who"><b>'+esc(r.name)+'</b> <span class="st">'+S[r.status]+'</span><div class="m"><a href="tel:'+esc(r.phone)+'" style="color:inherit">'+esc(r.phone)+'</a>'+(r.email?' · '+esc(r.email):'')+' · '+(r.staying==="yes"?"Kimera'da konaklıyor":r.staying==="no"?"Dışarıdan":"Konaklama belirtilmedi")+' · '+(r.lang==="en"?"EN":"TR")+'</div>'+
+        (r.event?'<div class="nt" style="border-left:2px solid #d0683a"><b>Etkinlik:</b> '+esc(r.event)+'</div>':'')+((r.occasion||r.note)?'<div class="nt">'+(r.occasion?'<b>'+esc(r.occasion)+'</b>'+(r.note?' · ':''):'')+esc(r.note)+'</div>':'')+
+        '<div class="m" style="margin-top:6px">Geldiği yer: '+esc(r.source||"doğrudan")+' · '+new Date(r.created).toLocaleString("tr-TR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})+'</div></div>'+
+        '<div class="acts"><button class="b ok" data-a="approved">'+(r.status==="approved"?"Onay mesajını yeniden aç":"Onayla · WhatsApp")+'</button>'+(r.status!=="alternative"?'<button class="b alt" data-a="alternative">Başka saat öner</button>':'')+(r.status!=="declined"?'<button class="b no" data-a="declined">Reddet</button>':'')+(r.status!=="pending"?'<button class="b" data-a="pending">Beklemeye al</button>':'')+'</div></article>';
+    });
+    $("list").innerHTML=h;
+  }
+  $("list").addEventListener("click",function(e){ var b=e.target.closest("[data-a]"); if(!b) return; var c=b.closest(".card"), id=c.dataset.id, a=b.dataset.a;
+    var r=items.filter(function(x){ return x.id===id; })[0]; if(!r) return;
+    var w=null; if(TPL[a]){ w=window.open("about:blank","_blank"); }
+    b.textContent="…";
+    api("PATCH","/"+id,{status:a}).then(function(j){
+      if(!j.ok){ if(w) w.close(); alertBox("Güncellenemedi: "+(j.error||j.__s)); load(); return; }
+      if(w){ var txt=TPL[a][r.lang==="en"?"en":"tr"](r); w.location.href="https://wa.me/"+phone(r.phone)+"?text="+encodeURIComponent(txt); }
+      items=items.map(function(x){ return x.id===id?j.item:x; }); draw(); });
+  });
+  function alertBox(m){ var p=document.createElement("p"); p.className="err"; p.textContent=m; $("list").prepend(p); setTimeout(function(){ p.remove(); },5000); }
+  document.querySelectorAll(".tabs button").forEach(function(b){ b.addEventListener("click",function(){ filt=b.dataset.f; document.querySelectorAll(".tabs button").forEach(function(x){ x.setAttribute("aria-pressed",x===b?"true":"false"); }); draw(); }); });
+  function start(){ $("login").hidden=true; $("list").hidden=false; $("out").hidden=false; load(); clearInterval(timer); timer=setInterval(function(){ if(!document.hidden) load(); },60000); }
+  function logout(m){ try{ localStorage.removeItem(KEY); }catch(e){} key=""; clearInterval(timer); $("login").hidden=false; $("list").hidden=true; $("out").hidden=true; $("lerr").textContent=m||""; }
+  $("login").addEventListener("submit",function(e){ e.preventDefault(); key=$("key").value.trim(); try{ localStorage.setItem(KEY,key); }catch(_){} start(); });
+  $("out").addEventListener("click",function(){ logout(""); });
+  document.addEventListener("visibilitychange",function(){ if(!document.hidden&&key) load(); });
+  if(key) start();
+})();
+</script>
+</body>
+</html>

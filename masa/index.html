@@ -54,6 +54,7 @@ fieldset.f{border:0;padding:0;margin:0}
 .go .btn{background:#d0683a;border-color:#d0683a;color:#fff;padding:18px 28px}
 .go .btn[disabled]{opacity:.5;cursor:wait}
 .err{grid-column:1/-1;margin:0;color:#f0a27d;font-size:14px;min-height:1.2em}
+.evb{display:flex;gap:16px;align-items:center;border:1px solid #d0683a;background:rgba(208,104,58,.12);padding:14px 16px;margin:0 0 22px}.evb img{width:64px;height:80px;object-fit:cover;flex:none}.evb b{display:block;font:400 24px/1.1 var(--f-d)}.evb small{display:block;font:600 10.5px/1.4 var(--f-s);letter-spacing:.16em;text-transform:uppercase;color:#d0683a;margin-bottom:4px}.evb a{color:inherit;font-size:13px;opacity:.75}
 .done{display:grid;gap:18px;max-width:34em}
 .done h2{margin:0;font:400 clamp(34px,4vw,52px)/1.05 var(--f-d)}
 .done .sum{border-top:1px solid rgba(243,238,228,.2);border-bottom:1px solid rgba(243,238,228,.2);padding:16px 0;font-size:15px;line-height:1.8}
@@ -68,7 +69,7 @@ fieldset.f{border:0;padding:0;margin:0}
 <body class="erizo">
 <main class="rz">
   <section class="rz-art">
-    <div class="rz-top"><a href="/markalar/erizo/">Erizo</a><button class="lg" type="button" aria-label="Dil / Language"><b>TR</b> <i>EN</i></button></div>
+    <div class="rz-top"><a href="/erizo/events/"><span class="tr">Bu ay Erizo'da</span><span class="en">This month</span></a><button class="lg" type="button" aria-label="Dil / Language"><b>TR</b> <i>EN</i></button></div>
     <picture><source media="(max-width:700px)" srcset="/markalar/_img/erizo-night-top-m.jpg"><img src="/markalar/_img/erizo-night-top.jpg" alt="Gece, mumlarla aydınlanmış Erizo terası, yukarıdan"></picture>
     <div class="in">
       <span class="mk" aria-hidden="true"></span>
@@ -84,7 +85,9 @@ fieldset.f{border:0;padding:0;margin:0}
         <h1><span class="tr">Bir masa ayırtın.</span><span class="en">Book a table.</span></h1>
         <p class="lead"><span class="tr">Tarih, saat ve kişi sayısını seçin. Talebinizi ekibimiz kontrol eder; masanız ayrıldığında WhatsApp'tan onay mesajı gönderir.</span><span class="en">Choose a date, time and party size. Our team checks your request and sends a confirmation on WhatsApp once your table is set aside.</span></p>
       </div>
+      <div class="evb" id="evb" hidden></div>
       <form id="rf" novalidate>
+        <input type="hidden" name="event">
         <label class="f half"><span><span class="tr">Tarih</span><span class="en">Date</span></span><input type="date" name="date" required></label>
         <label class="f half"><span><span class="tr">Varış saati</span><span class="en">Arrival time</span></span>
           <select name="time" required>
@@ -154,14 +157,23 @@ fieldset.f{border:0;padding:0;margin:0}
   var src=["utm_source","utm_medium","utm_campaign"].map(function(k){ return q.get(k); }).filter(Boolean).join(" / ");
   if(q.get("fbclid")) src+=(src?" · ":"")+"Meta"; if(q.get("gclid")) src+=(src?" · ":"")+"Google Ads";
   if(!src && document.referrer){ try{ var rh=new URL(document.referrer).hostname; if(rh!==location.hostname) src=rh; }catch(e){} }
+  /* etkinlikten gelindiyse: etkinliği göster, tarihi ona sabitle */
+  var evId=q.get("etkinlik")||q.get("event");
+  if(evId){ fetch("/erizo/events.json",{cache:"no-cache"}).then(function(r){ return r.json(); }).then(function(j){
+      var e=(j.events||[]).filter(function(x){ return x.id===evId; })[0]; if(!e||e.date<t) return; var l=L()==="en"?1:0;
+      f.event.value=e.title[0]+" ("+e.date+")"; di.value=e.date;
+      var b=document.getElementById("evb"); b.hidden=false;
+      b.innerHTML=(e.img?'<img src="/markalar/_img/'+e.img+'" alt="">':'')+'<div><small>'+fd(e.date)+' · '+e.type[l]+'</small><b>'+e.title[l]+'</b><a href="/erizo/events/#'+e.id+'">'+(l?"Event details":"Etkinlik ayrıntıları")+' →</a></div>';
+      root.addEventListener && new MutationObserver(function(){ var l2=L()==="en"?1:0; b.querySelector("small").textContent=fd(e.date)+" · "+e.type[l2]; b.querySelector("b").textContent=e.title[l2]; }).observe(root,{attributes:true,attributeFilter:["data-lang"]});
+    }).catch(function(){}); }
   function save(n,v){ var o=rd("kimera-plan")||{}; o[n]=v; try{ localStorage.setItem("kimera-plan",JSON.stringify(o)); }catch(e){} }
   di.addEventListener("change",function(){ save("date",di.value); }); ps.addEventListener("change",function(){ save("people",ps.value); });
   function fd(v){ return new Date(v+"T12:00:00").toLocaleDateString(L()==="en"?"en-GB":"tr-TR",{weekday:"long",day:"numeric",month:"long"}); }
   function data(){ var o={}; new FormData(f).forEach(function(v,k){ o[k]=v; }); o.consent=f.consent.checked; o.lang=L(); o.source=src; o.elapsed=Date.now()-t0; return o; }
-  function summary(o){ var en=L()==="en"; return (en?"":"")+fd(o.date)+" · "+o.time+" · "+o.people+(en?(o.people>1?" guests":" guest"):" kişi")+"<br>"+o.name.replace(/</g,"&lt;")+" · "+o.phone.replace(/</g,"&lt;")+(o.occasion?"<br>"+o.occasion:"")+(o.note?"<br>"+o.note.replace(/</g,"&lt;"):""); }
+  function summary(o){ var en=L()==="en"; return (en?"":"")+fd(o.date)+" · "+o.time+" · "+o.people+(en?(o.people>1?" guests":" guest"):" kişi")+"<br>"+o.name.replace(/</g,"&lt;")+" · "+o.phone.replace(/</g,"&lt;")+(o.event?"<br>"+o.event.replace(/</g,"&lt;"):"")+(o.occasion?"<br>"+o.occasion:"")+(o.note?"<br>"+o.note.replace(/</g,"&lt;"):""); }
   function waText(o){ var en=L()==="en"; return en
-      ? "Hello, I'd like to book a table at Erizo. Date: "+fd(o.date)+", "+o.time+", "+o.people+" guests. Name: "+o.name+"."+(o.occasion?" Occasion: "+o.occasion+".":"")+(o.note?" Note: "+o.note:"")
-      : "Merhaba, Erizo'da masa ayırtmak istiyorum. Tarih: "+fd(o.date)+", saat "+o.time+", "+o.people+" kişi. Ad: "+o.name+"."+(o.occasion?" Özel gün: "+o.occasion+".":"")+(o.note?" Not: "+o.note:""); }
+      ? "Hello, I'd like to book a table at Erizo"+(o.event?" for "+o.event:"")+". Date: "+fd(o.date)+", "+o.time+", "+o.people+" guests. Name: "+o.name+"."+(o.occasion?" Occasion: "+o.occasion+".":"")+(o.note?" Note: "+o.note:"")
+      : "Merhaba, Erizo'da "+(o.event?o.event+" için ":"")+"masa ayırtmak istiyorum. Tarih: "+fd(o.date)+", saat "+o.time+", "+o.people+" kişi. Ad: "+o.name+"."+(o.occasion?" Özel gün: "+o.occasion+".":"")+(o.note?" Not: "+o.note:""); }
   var err=document.getElementById("err"), btn=document.getElementById("send");
   var M={tr:{date:"Lütfen bir tarih seçin.",name:"Lütfen adınızı yazın.",phone:"Lütfen WhatsApp kullandığınız telefon numarasını yazın.",consent:"Devam etmek için onay kutusunu işaretleyin.",rate:"Kısa sürede çok fazla talep gönderildi; lütfen biraz sonra deneyin."},
          en:{date:"Please choose a date.",name:"Please enter your name.",phone:"Please enter the phone number you use on WhatsApp.",consent:"Please tick the consent box to continue.",rate:"Too many requests in a short time; please try again shortly."}};

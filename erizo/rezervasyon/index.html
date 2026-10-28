@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="tr" data-lang="tr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Masa ayırt · Erizo Gastro &amp; Bar · Çıralı</title>
+<meta name="description" content="Erizo Gastro & Bar'da masa talebi: tarih, saat ve kişi sayısını seçin; masanız ayrıldığında WhatsApp'tan onay mesajı gelir.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#141b16">
+<link rel="icon" href="/markalar/_img/mark-erizo-e.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/markalar/brand.css">
+<style>
+[hidden]{display:none!important}
+html:not([data-lang="en"]) .en,html[data-lang="en"] .tr{display:none!important}
+.seg label{all:unset;position:relative;display:inline-block}
+body.erizo{background:#141b16;color:var(--on)}
+.mk{display:block;aspect-ratio:322/100;background:currentColor;-webkit-mask:url(/markalar/_img/mark-erizo-e.svg) center/contain no-repeat;mask:url(/markalar/_img/mark-erizo-e.svg) center/contain no-repeat}
+.rz{min-height:100svh;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
+.rz-art{position:relative;overflow:hidden;min-height:340px}
+.rz-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.9)}
+.rz-art::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,14,11,.35),rgba(10,14,11,.15) 40%,rgba(10,14,11,.78))}
+.rz-art .in{position:absolute;left:clamp(22px,4vw,56px);right:clamp(22px,4vw,56px);bottom:clamp(24px,5vw,64px);z-index:1;display:grid;gap:14px}
+.rz-art .mk{width:min(260px,52vw);color:#fff}
+.rz-art .word{font:400 15px/1 var(--f-d);letter-spacing:.62em;text-transform:uppercase}
+.rz-art p{margin:0;max-width:30em;font-size:15px;opacity:.88}
+.rz-top{position:absolute;top:0;left:0;right:0;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:18px clamp(22px,4vw,56px)}
+.rz-top a,.rz-top button{all:unset;cursor:pointer;font:600 11px/1 var(--f-s);letter-spacing:.2em;text-transform:uppercase;color:#fff}
+.rz-form{padding:clamp(28px,5vw,80px) clamp(22px,5vw,88px);display:grid;align-content:center;gap:26px;max-width:860px}
+.rz-form h1{margin:0;font:400 clamp(40px,5vw,68px)/1 var(--f-d)}
+.rz-form .lead{margin:0;font-size:16px;opacity:.82;max-width:36em}
+form{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px 16px}
+.f{display:grid;gap:7px;grid-column:span 2}
+.f.w3{grid-column:span 3}.f.w6{grid-column:1/-1}
+.f>span,.f legend{font:600 10.5px/1.3 var(--f-s);letter-spacing:.18em;text-transform:uppercase;color:rgba(243,238,228,.62)}
+.f input,.f select,.f textarea{font:400 16px/1.4 var(--f-s);color:var(--on);background:rgba(243,238,228,.06);border:1px solid rgba(243,238,228,.22);border-radius:0;padding:13px 14px;width:100%;-webkit-appearance:none;appearance:none}
+.f select{background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:calc(100% - 18px) 55%,calc(100% - 13px) 55%;background-size:5px 5px;background-repeat:no-repeat;padding-right:34px}
+.f select option,.f select optgroup{color:#1f2a22}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:#d0683a;background:rgba(243,238,228,.1)}
+.f textarea{min-height:92px;resize:vertical}
+.f input[type="date"]{color-scheme:dark}
+.f small{font-size:12.5px;opacity:.6}
+fieldset.f{border:0;padding:0;margin:0}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg label{position:relative}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg input+span{display:inline-block;padding:11px 15px;border:1px solid rgba(243,238,228,.22);font:500 14px/1 var(--f-s);cursor:pointer;transition:background .2s,border-color .2s}
+.seg input:checked+span{background:#d0683a;border-color:#d0683a;color:#fff}
+.seg input:focus-visible+span{outline:1px dashed #fff;outline-offset:2px}
+.ok-c{grid-column:1/-1;display:flex;gap:12px;align-items:flex-start;font-size:13.5px;line-height:1.55;opacity:.85}
+.ok-c input{margin-top:3px;accent-color:#d0683a;width:18px;height:18px;flex:none}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.go{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.go .btn{background:#d0683a;border-color:#d0683a;color:#fff;padding:18px 28px}
+.go .btn[disabled]{opacity:.5;cursor:wait}
+.err{grid-column:1/-1;margin:0;color:#f0a27d;font-size:14px;min-height:1.2em}
+.evb{display:flex;gap:16px;align-items:center;border:1px solid #d0683a;background:rgba(208,104,58,.12);padding:14px 16px;margin:0 0 22px}.evb img{width:64px;height:80px;object-fit:cover;flex:none}.evb b{display:block;font:400 24px/1.1 var(--f-d)}.evb small{display:block;font:600 10.5px/1.4 var(--f-s);letter-spacing:.16em;text-transform:uppercase;color:#d0683a;margin-bottom:4px}.evb a{color:inherit;font-size:13px;opacity:.75}
+.done{display:grid;gap:18px;max-width:34em}
+.done h2{margin:0;font:400 clamp(34px,4vw,52px)/1.05 var(--f-d)}
+.done .sum{border-top:1px solid rgba(243,238,228,.2);border-bottom:1px solid rgba(243,238,228,.2);padding:16px 0;font-size:15px;line-height:1.8}
+.done .ref{font:600 11px/1 var(--f-s);letter-spacing:.2em;text-transform:uppercase;opacity:.6}
+.fb{display:flex;flex-wrap:wrap;gap:12px}
+.fb .btn{background:transparent;color:var(--on);border-color:rgba(243,238,228,.5)}
+.info{display:flex;flex-wrap:wrap;gap:8px 22px;font:500 12.5px/1.5 var(--f-s);opacity:.7}
+.info a{color:inherit}
+@media (max-width:900px){.rz{grid-template-columns:1fr}.rz-art{min-height:58svh}.f,.f.w3{grid-column:1/-1}.f.half{grid-column:span 3}}
+</style>
+</head>
+<body class="erizo">
+<main class="rz">
+  <section class="rz-art">
+    <div class="rz-top"><a href="/erizo/events/"><span class="tr">Bu ay Erizo'da</span><span class="en">This month</span></a><button class="lg" type="button" aria-label="Dil / Language"><b>TR</b> <i>EN</i></button></div>
+    <picture><source media="(max-width:700px)" srcset="/markalar/_img/erizo-night-top-m.jpg"><img src="/markalar/_img/erizo-night-top.jpg" alt="Gece, mumlarla aydınlanmış Erizo terası, yukarıdan"></picture>
+    <div class="in">
+      <span class="mk" aria-hidden="true"></span>
+      <span class="word">Gastro &amp; Bar</span>
+      <p><span class="tr">Kimera'nın çatısında, Çıralı. Akşam yemeği 18.30–23.30, bar 01.00'e kadar.</span><span class="en">On Kimera's rooftop, Çıralı. Dinner 6.30–11.30 pm, bar until 1 am.</span></p>
+    </div>
+  </section>
+
+  <section class="rz-form" id="masa">
+    <div id="ask">
+      <div style="display:grid;gap:14px;margin-bottom:26px">
+        <span class="eyebrow" style="color:#d0683a"><span class="tr">Masa talebi</span><span class="en">Table request</span></span>
+        <h1><span class="tr">Bir masa ayırtın.</span><span class="en">Book a table.</span></h1>
+        <p class="lead"><span class="tr">Tarih, saat ve kişi sayısını seçin. Talebinizi ekibimiz kontrol eder; masanız ayrıldığında WhatsApp'tan onay mesajı gönderir.</span><span class="en">Choose a date, time and party size. Our team checks your request and sends a confirmation on WhatsApp once your table is set aside.</span></p>
+      </div>
+      <div class="evb" id="evb" hidden></div>
+      <form id="rf" novalidate>
+        <input type="hidden" name="event">
+        <label class="f half"><span><span class="tr">Tarih</span><span class="en">Date</span></span><input type="date" name="date" required></label>
+        <label class="f half"><span><span class="tr">Varış saati</span><span class="en">Arrival time</span></span>
+          <select name="time" required>
+            <optgroup label="Akşam yemeği · Dinner"><option>18:30</option><option>19:00</option><option>19:30</option><option selected>20:00</option><option>20:30</option><option>21:00</option><option>21:30</option><option>22:00</option><option>22:30</option><option>23:00</option><option>23:30</option></optgroup>
+            <optgroup label="Bar · 01:00"><option>00:00</option><option>00:30</option></optgroup>
+          </select></label>
+        <label class="f half"><span><span class="tr">Kişi</span><span class="en">Guests</span></span><select name="people" required></select></label>
+
+        <label class="f w3"><span><span class="tr">Ad soyad</span><span class="en">Full name</span></span><input name="name" autocomplete="name" required maxlength="80"></label>
+        <label class="f w3"><span><span class="tr">Telefon (WhatsApp)</span><span class="en">Phone (WhatsApp)</span></span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+90 5__ ___ __ __" required maxlength="24"></label>
+        <label class="f w3"><span><span class="tr">E-posta (isteğe bağlı)</span><span class="en">Email (optional)</span></span><input name="email" type="email" autocomplete="email" maxlength="120"></label>
+        <fieldset class="f w3"><legend><span class="tr">Kimera'da konaklıyor musunuz?</span><span class="en">Staying at Kimera?</span></legend>
+          <div class="seg"><label><input type="radio" name="staying" value="yes"><span><span class="tr">Evet</span><span class="en">Yes</span></span></label><label><input type="radio" name="staying" value="no"><span><span class="tr">Hayır</span><span class="en">No</span></span></label></div></fieldset>
+        <fieldset class="f w6"><legend><span class="tr">Özel bir gün mü? (isteğe bağlı)</span><span class="en">A special occasion? (optional)</span></legend>
+          <div class="seg">
+            <label><input type="radio" name="occasion" value="Doğum günü"><span><span class="tr">Doğum günü</span><span class="en">Birthday</span></span></label>
+            <label><input type="radio" name="occasion" value="Yıldönümü"><span><span class="tr">Yıldönümü</span><span class="en">Anniversary</span></span></label>
+            <label><input type="radio" name="occasion" value="İş yemeği"><span><span class="tr">İş yemeği</span><span class="en">Business dinner</span></span></label>
+            <label><input type="radio" name="occasion" value="Diğer"><span><span class="tr">Diğer</span><span class="en">Other</span></span></label>
+          </div></fieldset>
+        <label class="f w6"><span><span class="tr">Not (alerji, istek, masa tercihi)</span><span class="en">Note (allergies, requests, seating)</span></span><textarea name="note" maxlength="600"></textarea></label>
+        <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
+        <label class="ok-c"><input type="checkbox" name="consent" required><span><span class="tr">Bu bilgilerin yalnızca masa talebimin yanıtlanması için Kimera tarafından kullanılmasını ve bana WhatsApp'tan dönüş yapılmasını kabul ediyorum. Kayıtlar 60 gün sonra silinir.</span><span class="en">I agree that Kimera may use these details only to answer my table request and reply to me on WhatsApp. Records are deleted after 60 days.</span></span></label>
+        <p class="err" id="err" role="alert"></p>
+        <div class="go"><button class="btn" type="submit" id="send"><span class="tr">Talebi gönder</span><span class="en">Send request</span></button>
+          <span class="info"><span class="tr">13 kişiden kalabalık gruplar için arayın:</span><span class="en">Groups of 13 or more, please call:</span> <a href="tel:+905377768252">+90 537 776 82 52</a></span></div>
+      </form>
+    </div>
+
+    <div class="done" id="done" hidden>
+      <span class="eyebrow" style="color:#d0683a"><span class="tr">Talebiniz alındı</span><span class="en">Request received</span></span>
+      <h2><span class="tr">Teşekkürler.</span><span class="en">Thank you.</span></h2>
+      <p class="sum" id="sum"></p>
+      <p><span class="tr">Ekibimiz talebinizi kontrol edip WhatsApp'tan size yazacak. Bu henüz bir onay değil; onay mesajı gelince masanız ayrılmış olur.</span><span class="en">Our team will check your request and write to you on WhatsApp. This is not yet a confirmation; your table is set aside once the confirmation message arrives.</span></p>
+      <span class="ref" id="ref"></span>
+      <div class="fb"><a class="btn" href="/markalar/erizo/"><span class="tr">Erizo'yu keşfet</span><span class="en">Discover Erizo</span></a></div>
+    </div>
+
+    <div class="done" id="fallback" hidden>
+      <span class="eyebrow" style="color:#d0683a"><span class="tr">Son bir adım</span><span class="en">One last step</span></span>
+      <h2><span class="tr">Talebi WhatsApp'tan gönderin.</span><span class="en">Send the request on WhatsApp.</span></h2>
+      <p class="sum" id="sum2"></p>
+      <p><span class="tr">Talep sistemine şu an ulaşılamıyor. Mesajınız hazır; WhatsApp'tan göndermeniz yeterli.</span><span class="en">The request system can't be reached right now. Your message is ready; just send it on WhatsApp.</span></p>
+      <div class="fb"><a class="btn" id="wa" target="_blank" rel="noopener" href="https://wa.me/905305171717" style="background:#d0683a;border-color:#d0683a;color:#fff">WhatsApp</a><a class="btn" href="tel:+905377768252"><span class="tr">Ara</span><span class="en">Call</span> · +90 537 776 82 52</a></div>
+    </div>
+  </section>
+</main>
+<script src="/markalar/brand.js"></script>
+<script>
+(function(){
+  var f=document.getElementById("rf"), t0=Date.now(), root=document.documentElement;
+  function L(){ return root.getAttribute("data-lang")==="en"?"en":"tr"; }
+  function today(){ var d=new Date(); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); return d.toISOString().slice(0,10); }
+  function rd(k){ try{ return JSON.parse(localStorage.getItem(k)||sessionStorage.getItem(k)||"null"); }catch(e){ return null; } }
+  var st=rd("kimera-stay")||{}, pl=rd("kimera-plan")||{}, t=today();
+  if(!(st.ci&&st.co&&st.co>t)) st={};
+  if(pl.date&&pl.date<t) delete pl.date;
+  var dv=(pl.date&&(!st.ci||(pl.date>=st.ci&&pl.date<=st.co)))?pl.date:(st.ci?(st.ci<t?t:st.ci):(pl.date||""));
+  var pv=+(pl.people||(st.ad?(st.ad+(st.ch||0)):0)||2);
+  var q=new URLSearchParams(location.search);
+  if(/^\d{4}-\d{2}-\d{2}$/.test(q.get("tarih")||q.get("date")||"")) dv=q.get("tarih")||q.get("date");
+  if(+(q.get("kisi")||q.get("guests"))) pv=+(q.get("kisi")||q.get("guests"));
+  var di=f.date; di.min=t; di.value=dv&&dv>=t?dv:"";
+  var ps=f.people, h=""; for(var i=1;i<=12;i++) h+='<option'+(i===Math.min(pv,12)?' selected':'')+'>'+i+'</option>'; ps.innerHTML=h;
+  if(st.ci) f.querySelector('[name=staying][value=yes]').checked=true;
+  try{ var me=JSON.parse(localStorage.getItem("erizo-guest")||"null"); if(me){ f.name.value=me.name||""; f.phone.value=me.phone||""; f.email.value=me.email||""; } }catch(e){}
+  var src=["utm_source","utm_medium","utm_campaign"].map(function(k){ return q.get(k); }).filter(Boolean).join(" / ");
+  if(q.get("fbclid")) src+=(src?" · ":"")+"Meta"; if(q.get("gclid")) src+=(src?" · ":"")+"Google Ads";
+  if(!src && document.referrer){ try{ var rh=new URL(document.referrer).hostname; if(rh!==location.hostname) src=rh; }catch(e){} }
+  /* etkinlikten gelindiyse: etkinliği göster, tarihi ona sabitle */
+  var evId=q.get("etkinlik")||q.get("event");
+  if(evId){ fetch("/erizo/events.json",{cache:"no-cache"}).then(function(r){ return r.json(); }).then(function(j){
+      var e=(j.events||[]).filter(function(x){ return x.id===evId; })[0]; if(!e||e.date<t) return; var l=L()==="en"?1:0;
+      f.event.value=e.title[0]+" ("+e.date+")"; di.value=e.date;
+      var b=document.getElementById("evb"); b.hidden=false;
+      b.innerHTML=(e.img?'<img src="/markalar/_img/'+e.img+'" alt="">':'')+'<div><small>'+fd(e.date)+' · '+e.type[l]+'</small><b>'+e.title[l]+'</b><a href="/erizo/events/#'+e.id+'">'+(l?"Event details":"Etkinlik ayrıntıları")+' →</a></div>';
+      root.addEventListener && new MutationObserver(function(){ var l2=L()==="en"?1:0; b.querySelector("small").textContent=fd(e.date)+" · "+e.type[l2]; b.querySelector("b").textContent=e.title[l2]; }).observe(root,{attributes:true,attributeFilter:["data-lang"]});
+    }).catch(function(){}); }
+  function save(n,v){ var o=rd("kimera-plan")||{}; o[n]=v; try{ localStorage.setItem("kimera-plan",JSON.stringify(o)); }catch(e){} }
+  di.addEventListener("change",function(){ save("date",di.value); }); ps.addEventListener("change",function(){ save("people",ps.value); });
+  function fd(v){ return new Date(v+"T12:00:00").toLocaleDateString(L()==="en"?"en-GB":"tr-TR",{weekday:"long",day:"numeric",month:"long"}); }
+  function data(){ var o={}; new FormData(f).forEach(function(v,k){ o[k]=v; }); o.consent=f.consent.checked; o.lang=L(); o.source=src; o.elapsed=Date.now()-t0; return o; }
+  function summary(o){ var en=L()==="en"; return (en?"":"")+fd(o.date)+" · "+o.time+" · "+o.people+(en?(o.people>1?" guests":" guest"):" kişi")+"<br>"+o.name.replace(/</g,"&lt;")+" · "+o.phone.replace(/</g,"&lt;")+(o.event?"<br>"+o.event.replace(/</g,"&lt;"):"")+(o.occasion?"<br>"+o.occasion:"")+(o.note?"<br>"+o.note.replace(/</g,"&lt;"):""); }
+  function waText(o){ var en=L()==="en"; return en
+      ? "Hello, I'd like to book a table at Erizo"+(o.event?" for "+o.event:"")+". Date: "+fd(o.date)+", "+o.time+", "+o.people+" guests. Name: "+o.name+"."+(o.occasion?" Occasion: "+o.occasion+".":"")+(o.note?" Note: "+o.note:"")
+      : "Merhaba, Erizo'da "+(o.event?o.event+" için ":"")+"masa ayırtmak istiyorum. Tarih: "+fd(o.date)+", saat "+o.time+", "+o.people+" kişi. Ad: "+o.name+"."+(o.occasion?" Özel gün: "+o.occasion+".":"")+(o.note?" Not: "+o.note:""); }
+  var err=document.getElementById("err"), btn=document.getElementById("send");
+  var M={tr:{date:"Lütfen bir tarih seçin.",name:"Lütfen adınızı yazın.",phone:"Lütfen WhatsApp kullandığınız telefon numarasını yazın.",consent:"Devam etmek için onay kutusunu işaretleyin.",rate:"Kısa sürede çok fazla talep gönderildi; lütfen biraz sonra deneyin."},
+         en:{date:"Please choose a date.",name:"Please enter your name.",phone:"Please enter the phone number you use on WhatsApp.",consent:"Please tick the consent box to continue.",rate:"Too many requests in a short time; please try again shortly."}};
+  function check(o){ if(!o.date||o.date<t) return "date"; if((o.name||"").trim().length<2) return "name"; if((o.phone||"").replace(/\D/g,"").length<9) return "phone"; if(!o.consent) return "consent"; return ""; }
+  function show(id,o){ document.getElementById("ask").hidden=true; var el=document.getElementById(id); el.hidden=false; el.querySelector(".sum").innerHTML=summary(o); window.scrollTo({top:document.getElementById("masa").offsetTop-10,behavior:"smooth"}); }
+  f.addEventListener("submit",function(e){ e.preventDefault(); var o=data(), c=check(o); err.textContent=c?M[L()][c]:""; if(c){ var fld=f.querySelector('[name="'+c+'"]'); if(fld) fld.focus(); return; }
+    try{ localStorage.setItem("erizo-guest",JSON.stringify({name:o.name,phone:o.phone,email:o.email})); }catch(_){}
+    btn.disabled=true;
+    fetch("/api/erizo",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(o)}).then(function(r){ return r.json().then(function(j){ return {s:r.status,j:j}; }); })
+      .then(function(x){ btn.disabled=false;
+        if(x.j&&x.j.ok){ show("done",o); document.getElementById("ref").textContent=(L()==="en"?"Request no. ":"Talep no. ")+String(x.j.id).toUpperCase(); return; }
+        if(x.s===400||x.s===429){ var k=(x.j&&x.j.error)||""; err.textContent=M[L()][k]||M[L()].date; return; }
+        throw new Error("down"); })
+      .catch(function(){ btn.disabled=false; show("fallback",o); document.getElementById("wa").href="https://wa.me/905305171717?text="+encodeURIComponent(waText(o)); });
+  });
+})();
+</script>
+</body>
+</html>
