@@ -1058,3 +1058,8 @@ html:not([data-lang="en"]) .jm-svg tspan.en,html[data-lang="en"] .jm-svg tspan.t
 @media (max-width:560px){.rm-spec{grid-template-columns:1fr 1fr}.rm-spec li{grid-template-columns:1fr;padding-right:8px}.rm-spec .rm-ic{grid-row:auto;margin-bottom:6px}}
 @supports (overflow:clip){body{overflow-x:clip}}
 .cmp tbody th a{text-decoration:none}.cmp tbody th a span{border-bottom:1px solid transparent;transition:border-color .2s}.cmp tbody th a:hover span{border-color:currentColor}
+/* Akdeniz Bahçesi: logolu başlık */
+.ak-lock{display:grid;gap:18px;justify-items:start;grid-column:1/-1;margin-bottom:clamp(8px,1.5vw,20px)}
+.lk-akdeniz{margin:0}
+.lk-akdeniz .lk-mark{display:block;width:clamp(220px,26vw,380px);height:auto;color:var(--ink)}
+.house-rm .rm-head h3{font-size:clamp(28px,2.6vw,38px)}
