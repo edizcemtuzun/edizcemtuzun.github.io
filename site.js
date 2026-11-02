@@ -591,46 +591,54 @@
   } else { imgs.forEach(function(i){ i.classList.add("in"); }); }
 })();
 
-/* Ortam sesi: bahçede kuşlar, çok kısık (%20). İlk dokunuşta yumuşakça başlar; sayfalar arasında kaldığı yerden,
-   sessizce açılıp kapanarak devam eder. Tercih tarayıcıda saklanır. Dosya yalnızca ses başlayacakken indirilir. */
+
+/* Oda fotoğrafları: küçük görsele dokununca sayfa kararır, büyük görsel açılır; oklar, klavye, kaydırma ve şerit */
 (function(){
-  var AC=window.AudioContext||window.webkitAudioContext; if(!AC||!window.fetch) return;
-  var me=document.currentScript||document.querySelector('script[src$="site.js"]');
-  var URL_=(me&&me.src?me.src.replace(/site\.js(\?.*)?$/,""):"")+"audio/forest.mp3";
-  var VOL=.07, KEY="kimera-sound", TK="kimera-sound-t";
-  function ls(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
-  function ss(k,v){ try{ if(v===undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k,v); }catch(e){ return null; } }
-  var off=ls(KEY)==="off", ctx=null, g=null, src=null, buf=null, t0=0, off0=parseFloat(ss(TK))||0, on=false, busy=false;
-  var lang=(document.documentElement.getAttribute("data-lang")||document.documentElement.lang||"tr").slice(0,2);
-  var LB={tr:["Sesi kapat","Sesi aç"],en:["Mute sound","Play sound"],de:["Ton aus","Ton an"],ru:["Выключить звук","Включить звук"]}[lang]||["Sesi kapat","Sesi aç"];
-  var b=document.createElement("button"); b.type="button"; b.className="snd";
-  b.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z" fill="currentColor"/><path class="snd-w" d="M15 9.2c1.4 1.5 1.4 4.1 0 5.6M17.6 7c2.6 2.8 2.6 7.2 0 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path class="snd-x" d="M15.5 9.5l5 5M20.5 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
-  document.body.appendChild(b);
-  var ht=0; function peek(ms){ b.classList.add("is-show"); clearTimeout(ht); ht=setTimeout(function(){ b.classList.remove("is-show"); },ms||4000); }
-  function ui(){ b.classList.toggle("is-off",!on); b.setAttribute("aria-pressed",on?"true":"false"); b.setAttribute("aria-label",on?LB[0]:LB[1]); b.title=on?LB[0]:LB[1]; }
-  function pos(){ return buf&&ctx&&on ? (ctx.currentTime-t0+off0)%buf.duration : off0; }
-  function fade(to,sec){ if(!g) return; var n=ctx.currentTime; g.gain.cancelScheduledValues(n); g.gain.setValueAtTime(g.gain.value,n); g.gain.linearRampToValueAtTime(to,n+sec); }
-  function play(){ if(on||busy||off) return; busy=true;
-    if(!ctx){ ctx=new AC(); g=ctx.createGain(); g.gain.value=0; g.connect(ctx.destination); }
-    var ready=buf?Promise.resolve(buf):fetch(URL_).then(function(r){ return r.arrayBuffer(); }).then(function(a){ return new Promise(function(res,rej){ ctx.decodeAudioData(a,res,rej); }); });
-    ready.then(function(d){ buf=d; return ctx.resume(); }).then(function(){
-      if(ctx.state!=="running"){ busy=false; return; }
-      src=ctx.createBufferSource(); src.buffer=buf; src.loop=true; src.loopStart=.04; src.loopEnd=buf.duration-.04; src.connect(g);
-      off0=off0%buf.duration; src.start(0,off0); t0=ctx.currentTime; on=true; busy=false; fade(VOL,2.8); ui(); peek(4500);
-    }).catch(function(){ busy=false; });
-  }
-  function stop(sec){ if(!on) return; off0=pos(); on=false; ui(); fade(0,sec||.9); var s=src; setTimeout(function(){ try{ s.stop(); }catch(e){} if(!on&&ctx) ctx.suspend(); },(sec||.9)*1000+80); }
-  b.addEventListener("click",function(e){ e.stopPropagation(); if(on){ off=true; ls(KEY,"off"); stop(.8); } else { off=false; ls(KEY,"on"); ss("kimera-sound-on","1"); play(); } peek(2500); });
-  ui(); b.classList.add("is-ready");
-  function gesture(){ if(!off) play(); }
-  ["pointerdown","keydown","touchend"].forEach(function(ev){ addEventListener(ev,gesture,{capture:true,passive:true}); });
-  /* önceki sayfada çalıyorduysa, izin varsa hemen (yumuşak) devam et */
-  if(!off && ss("kimera-sound-on")==="1"){ var idle=window.requestIdleCallback||function(f){ return setTimeout(f,300); }; idle(play); }
-  /* bağlantıya tıklayınca kesilmeden kısılsın; sayfa giderken konum saklansın */
-  document.addEventListener("click",function(e){ var a=e.target.closest&&e.target.closest("a[href]"); if(!a||!on||a.target==="_blank"||a.origin!==location.origin) return; fade(0,.35); },true);
-  addEventListener("pagehide",function(){ ss(TK,String(pos())); ss("kimera-sound-on",on?"1":"0"); });
-  addEventListener("pageshow",function(e){ if(e.persisted&&on){ fade(VOL,1.2); } });
-  document.addEventListener("visibilitychange",function(){ if(!ctx) return; if(document.hidden){ if(on) fade(0,.4); } else if(on){ ctx.resume(); fade(VOL,1.6); } });
-  /* düğme ara sıra görünür: yukarı kaydırınca kısa bir süre */
-  var ly=scrollY, acc=0; addEventListener("scroll",function(){ var y=scrollY, d=y-ly; ly=y; acc=d<0?acc-d:0; if(acc>140){ acc=0; peek(2600); } },{passive:true});
+  var dataEl=document.getElementById("room-gal"); if(!dataEl) return;
+  var G={}; try{ G=JSON.parse(dataEl.textContent); }catch(e){ return; }
+  var me=document.querySelector('script[src$="site.js"]'), base=me&&me.src?me.src.replace(/site\.js(\?.*)?$/,""):"";
+  var lang=function(){ return (document.documentElement.getAttribute("data-lang")||"tr").slice(0,2); };
+  var TX={tr:["Kapat","Önceki","Sonraki","Kat planı"],en:["Close","Previous","Next","Floor plan"],de:["Schließen","Zurück","Weiter","Grundriss"],ru:["Закрыть","Назад","Далее","План номера"]};
+  var t=function(i){ return (TX[lang()]||TX.tr)[i]; };
+  var arr='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
+  var box=document.createElement("div"); box.className="lbx"; box.setAttribute("role","dialog"); box.setAttribute("aria-modal","true"); box.hidden=true;
+  box.innerHTML='<div class="lbx-top"><span><b class="lbx-t"></b><span class="lbx-n"></span></span><button type="button" class="lbx-x"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>'+
+    '<div class="lbx-stage"><img alt=""><button type="button" class="lbx-nav lbx-prev">'+arr+'</button><button type="button" class="lbx-nav lbx-next" style="transform:scaleX(-1)">'+arr+'</button></div><div class="lbx-strip"></div>';
+  document.body.appendChild(box);
+  var img=box.querySelector(".lbx-stage img"), strip=box.querySelector(".lbx-strip"), cur=null, idx=0, last=null, cache={};
+  function src(p){ return base+p; }
+  function list(){ return G[cur].p; }
+  function isPlan(i){ return i===list().length-1; }
+  function show(i,dir){ var L=list(); idx=(i+L.length)%L.length; var u=src(L[idx]);
+    img.classList.remove("is-in"); var nim=new Image(); nim.onload=function(){ img.src=u; img.classList.toggle("is-plan",isPlan(idx)); requestAnimationFrame(function(){ img.classList.add("is-in"); }); }; nim.src=u;
+    var nm=box.dataset.name; img.alt=nm+" · "+(isPlan(idx)?t(3):(idx+1)+"/"+(L.length-1));
+    box.querySelector(".lbx-n").textContent=isPlan(idx)?t(3):(idx+1)+" / "+(L.length-1);
+    strip.querySelectorAll("button").forEach(function(b,k){ b.classList.toggle("is-on",k===idx); if(k===idx) b.scrollIntoView({block:"nearest",inline:"center"}); });
+    [idx+1,idx-1].forEach(function(k){ var p=L[(k+L.length)%L.length]; if(!cache[p]){ cache[p]=new Image(); cache[p].src=src(p); } }); }
+  function open(rid,i,from){ if(!G[rid]) return; cur=rid; last=from||document.activeElement;
+    var card=document.getElementById(rid); box.dataset.name=(card&&card.querySelector("h3"))?card.querySelector("h3").textContent:rid;
+    box.querySelector(".lbx-t").textContent=box.dataset.name; box.setAttribute("aria-label",box.dataset.name);
+    box.querySelector(".lbx-x").setAttribute("aria-label",t(0)); box.querySelector(".lbx-prev").setAttribute("aria-label",t(1)); box.querySelector(".lbx-next").setAttribute("aria-label",t(2));
+    strip.innerHTML=list().map(function(p,k){ var th=p.replace("/full/","/").replace(/-(\d+)\.jpg$/,function(m,n){ return +n<=3?m:m; });
+      return '<button type="button" data-k="'+k+'" class="'+(k===list().length-1?'pl':'')+'" style="background-image:url('+src(p.replace(/\.jpg$/,"-s.jpg"))+')" aria-label="'+(k===list().length-1?t(3):(k+1))+'"></button>'; }).join("");
+    var sw=window.innerWidth-document.documentElement.clientWidth; document.documentElement.style.paddingRight=sw?sw+"px":""; document.documentElement.classList.add("lbx-lock");
+    box.hidden=false; requestAnimationFrame(function(){ box.classList.add("is-open"); }); show(i||0); box.querySelector(".lbx-x").focus({preventScroll:true}); }
+  function close(){ box.classList.remove("is-open"); document.documentElement.classList.remove("lbx-lock"); document.documentElement.style.paddingRight="";
+    setTimeout(function(){ box.hidden=true; img.removeAttribute("src"); },350); if(last&&last.focus) last.focus({preventScroll:true}); }
+  document.addEventListener("click",function(e){
+    var th=e.target.closest(".rt"); if(th){ var g=th.closest("[data-gal]"); open(g.dataset.gal,+th.dataset.i,th); return; }
+    var o=e.target.closest("[data-gal-open]"); if(o){ open(o.dataset.galOpen,+o.dataset.i,o); return; } });
+  box.querySelector(".lbx-x").addEventListener("click",close);
+  box.querySelector(".lbx-prev").addEventListener("click",function(){ show(idx-1); });
+  box.querySelector(".lbx-next").addEventListener("click",function(){ show(idx+1); });
+  strip.addEventListener("click",function(e){ var b=e.target.closest("button"); if(b) show(+b.dataset.k); });
+  box.querySelector(".lbx-stage").addEventListener("click",function(e){ if(e.target===e.currentTarget) close(); });
+  document.addEventListener("keydown",function(e){ if(box.hidden) return;
+    if(e.key==="Escape") close(); else if(e.key==="ArrowRight") show(idx+1); else if(e.key==="ArrowLeft") show(idx-1);
+    else if(e.key==="Tab"){ var f=[].slice.call(box.querySelectorAll("button")).filter(function(b){ return b.offsetParent; }); var a=f.indexOf(document.activeElement);
+      if(e.shiftKey&&a<=0){ e.preventDefault(); f[f.length-1].focus(); } else if(!e.shiftKey&&a===f.length-1){ e.preventDefault(); f[0].focus(); } } });
+  var x0=null,y0=0; var st=box.querySelector(".lbx-stage");
+  st.addEventListener("touchstart",function(e){ x0=e.touches[0].clientX; y0=e.touches[0].clientY; },{passive:true});
+  st.addEventListener("touchend",function(e){ if(x0===null) return; var dx=e.changedTouches[0].clientX-x0, dy=e.changedTouches[0].clientY-y0; x0=null;
+    if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)) show(idx+(dx<0?1:-1)); },{passive:true});
 })();
