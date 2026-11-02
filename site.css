@@ -1103,3 +1103,14 @@ html.lbx-lock,html.lbx-lock body{overflow:hidden}
 .lbx-stage{overflow:hidden}
 .lbx-stage img{max-height:calc(100vh - 170px);max-height:calc(100dvh - 170px)}
 @media (max-width:700px){.lbx-stage img{max-height:calc(100dvh - 150px)}}
+/* Oda galerisi: büyük görsel + kartın tamamına yayılan alt şerit */
+.room-thumbs.rt1{display:block;margin-top:18px}
+.rt-count{position:absolute;left:10px;bottom:10px;padding:6px 10px 5px;background:rgba(20,22,16,.55);color:#fff;font:600 10px/1 var(--f-sans);letter-spacing:.16em;text-transform:uppercase;pointer-events:none}
+.rm-strip{grid-column:1/-1;display:flex;gap:8px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:thin;scrollbar-color:rgba(40,40,30,.25) transparent;padding-bottom:6px;margin-top:-4px;-webkit-mask:linear-gradient(90deg,#000 calc(100% - 40px),transparent);mask:linear-gradient(90deg,#000 calc(100% - 40px),transparent)}
+.rm-strip.is-end{-webkit-mask:none;mask:none}
+.rm-strip .rt{flex:0 0 clamp(112px,9.4vw,168px);scroll-snap-align:start}
+.rm-strip .rt::after{width:24px;height:24px;right:6px;top:6px;background-size:11px}
+.rt-plan-t .img{background:#faf8f3}
+.rt-cap{position:absolute;left:0;right:0;bottom:0;padding:6px 8px;background:rgba(20,22,16,.55);color:#fff;font:600 9.5px/1 var(--f-sans);letter-spacing:.16em;text-transform:uppercase;pointer-events:none}
+@media (max-width:860px){.rm-strip .rt{flex-basis:30vw}}
+@media (max-width:860px){.room.rm>.rm-body,.room.rm>.act{order:2}.rm-strip{order:1;margin-top:-8px}}

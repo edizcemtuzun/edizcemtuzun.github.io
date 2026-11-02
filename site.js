@@ -642,3 +642,5 @@
   st.addEventListener("touchend",function(e){ if(x0===null) return; var dx=e.changedTouches[0].clientX-x0, dy=e.changedTouches[0].clientY-y0; x0=null;
     if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)) show(idx+(dx<0?1:-1)); },{passive:true});
 })();
+/* Oda şeridi: sona gelince sağdaki solma kalksın */
+(function(){ document.querySelectorAll(".rm-strip").forEach(function(s){ function u(){ s.classList.toggle("is-end", s.scrollLeft+s.clientWidth>=s.scrollWidth-4); } s.addEventListener("scroll",u,{passive:true}); window.addEventListener("resize",u); u(); }); })();
