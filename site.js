@@ -345,7 +345,23 @@
     document.addEventListener("click",function(e){
       if(e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey) return;
       var a=e.target.closest&&e.target.closest("a[data-book]"); if(!a||a.closest(".bookbar")||a.closest(".bkm")) return;
-      e.preventDefault(); open(a); });
+      e.preventDefault();
+      var act=a.closest(".room .act");
+      if(act){ inline(a,act); return; }
+      open(a); });
+    /* oda kartlarında: takvim ve seçenekler tuşun hemen altında açılır */
+    function inline(a,act){
+      var p=act.querySelector(".bk-inl");
+      document.querySelectorAll(".bk-inl").forEach(function(x){ if(x!==p){ x.classList.remove("is-open"); x.hidden=true; var b=x.parentNode.querySelector("a[data-book]"); if(b) b.setAttribute("aria-expanded","false"); } });
+      if(p && !p.hidden){ p.classList.remove("is-open"); p.hidden=true; a.setAttribute("aria-expanded","false"); return; }
+      if(!p){ p=document.createElement("div"); p.className="bk-inl"; p.innerHTML='<form class="bookbar bb-compact" data-bookbar data-go-tr="Rezervasyon yap" data-go-en="Reserve"></form>'; a.insertAdjacentElement("afterend",p);
+        var ff=p.querySelector("form"); renderBB(ff);
+        ff.addEventListener("click",function(e){ if(e.target.closest("[id^='bb-go']") && getStay()) setTimeout(function(){ p.classList.remove("is-open"); p.hidden=true; a.setAttribute("aria-expanded","false"); },60); }); }
+      else { var ff2=p.querySelector("form"); ff2.__quiet=true; renderBB(ff2); ff2.__quiet=false; }
+      p.hidden=false; a.setAttribute("aria-expanded","true"); requestAnimationFrame(function(){ p.classList.add("is-open"); });
+      if(!getStay()){ var c=p.querySelector("[id^='bb-ci']"); if(c) c.click(); }
+      var r=p.getBoundingClientRect(); if(r.bottom>window.innerHeight) p.scrollIntoView({behavior:"smooth",block:"nearest"});
+    }
     f.addEventListener("click",function(e){ var g=e.target.closest("[id^='bb-go']"); if(g && getStay()) setTimeout(close,60); });
     m.querySelector(".bkm-x").addEventListener("click",close);
     m.addEventListener("click",function(e){ if(e.target===m) close(); });

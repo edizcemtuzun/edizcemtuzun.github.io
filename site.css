@@ -1140,3 +1140,17 @@ html.lbx-lock,html.lbx-lock body{overflow:hidden}
 .bkm .bb-compact .btn{order:9;margin-top:6px}
 .bkm .bb-compact .cal{border-bottom:1px solid var(--line);padding-bottom:10px}
 @media (max-width:600px){.bkm-card{margin:auto 0 0;padding-bottom:calc(22px + env(safe-area-inset-bottom,0px))}}
+/* Oda kartı: tuşun altında açılan takvim */
+.bk-inl{width:min(360px,100%);justify-self:stretch;background:var(--paper);border:1px solid var(--line);padding:16px;opacity:0;transform:translateY(-6px);transition:opacity .25s,transform .3s cubic-bezier(.2,.7,.2,1)}
+.room .act .bk-inl{justify-self:end}
+.bk-inl.is-open{opacity:1;transform:none}
+.bk-inl[hidden]{display:none}
+.bk-inl .bb-compact .btn{order:9;margin-top:4px}
+.bk-inl .bb-compact .cal{border-bottom:1px solid var(--line);padding-bottom:8px}
+.room .act a[data-book][aria-expanded="true"]{background:var(--ink);color:var(--paper)}
+@media (max-width:860px){.room .act .bk-inl{justify-self:stretch;width:100%}}
+@media (prefers-reduced-motion:reduce){.bk-inl{transition:none}}
+@media (min-width:861px){.room .act .bk-inl{width:340px;max-width:none;position:relative;z-index:5}.bk-inl .bb-d{white-space:nowrap}}
+@media (min-width:861px){.room .act{display:flex;flex-direction:column;align-items:flex-end;gap:12px}.room .act .bk-inl{flex:none}}
+@media (max-width:860px){.room .act{display:flex;flex-direction:column;align-items:flex-start;gap:12px}.room .act .bk-inl{align-self:stretch}}
+@media (min-width:861px){.room .act .bk-inl{width:min(272px,calc(100% + 64px));padding:14px}.bk-inl .bb-compact{gap:10px 12px}.bk-inl .bb-d{font-size:17px}}
