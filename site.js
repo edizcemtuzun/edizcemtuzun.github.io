@@ -600,9 +600,15 @@
   var lang=function(){ return (document.documentElement.getAttribute("data-lang")||"tr").slice(0,2); };
   var TX={tr:["Kapat","Önceki","Sonraki","Kat planı"],en:["Close","Previous","Next","Floor plan"],de:["Schließen","Zurück","Weiter","Grundriss"],ru:["Закрыть","Назад","Далее","План номера"]};
   var t=function(i){ return (TX[lang()]||TX.tr)[i]; };
+  var GL={tr:{dbl:"Çift kişilik oda",twn:"İki tek kişilik oda",room:"Oda",bed:"Yatak odası",liv:"Oturma alanı",bath:"Banyo",bal:"Balkon",ter:"Teras ve jakuzi",det:"Detaylar",plan:"Kat planı"},
+    en:{dbl:"Double room",twn:"Twin room",room:"Room",bed:"Bedroom",liv:"Living area",bath:"Bathroom",bal:"Balcony",ter:"Terrace and jacuzzi",det:"Details",plan:"Floor plan"},
+    de:{dbl:"Doppelzimmer",twn:"Zweibettzimmer",room:"Zimmer",bed:"Schlafzimmer",liv:"Wohnbereich",bath:"Bad",bal:"Balkon",ter:"Terrasse mit Whirlpool",det:"Details",plan:"Grundriss"},
+    ru:{dbl:"Комната с двуспальной кроватью",twn:"Комната с двумя кроватями",room:"Номер",bed:"Спальня",liv:"Гостиная",bath:"Ванная",bal:"Балкон",ter:"Терраса с джакузи",det:"Детали",plan:"План номера"}};
+  var gl=function(k){ return ((GL[lang()]||GL.tr)[k])||""; };
+  function cap(i){ var c=G[cur].c; return c&&c[i]?c[i]:""; }
   var arr='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
   var box=document.createElement("div"); box.className="lbx"; box.setAttribute("role","dialog"); box.setAttribute("aria-modal","true"); box.hidden=true;
-  box.innerHTML='<div class="lbx-top"><span><b class="lbx-t"></b><span class="lbx-n"></span></span><button type="button" class="lbx-x"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>'+
+  box.innerHTML='<div class="lbx-top"><span><b class="lbx-t"></b><span class="lbx-g"></span><span class="lbx-n"></span></span><button type="button" class="lbx-x"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>'+
     '<div class="lbx-stage"><img alt=""><button type="button" class="lbx-nav lbx-prev">'+arr+'</button><button type="button" class="lbx-nav lbx-next" style="transform:scaleX(-1)">'+arr+'</button></div><div class="lbx-strip"></div>';
   document.body.appendChild(box);
   var img=box.querySelector(".lbx-stage img"), strip=box.querySelector(".lbx-strip"), cur=null, idx=0, last=null, cache={};
@@ -612,7 +618,8 @@
   function show(i,dir){ var L=list(); idx=(i+L.length)%L.length; var u=src(L[idx]);
     img.classList.remove("is-in"); var nim=new Image(); nim.onload=function(){ img.src=u; img.classList.toggle("is-plan",isPlan(idx)); requestAnimationFrame(function(){ img.classList.add("is-in"); }); }; nim.src=u;
     var nm=box.dataset.name; img.alt=nm+" · "+(isPlan(idx)?t(3):(idx+1)+"/"+(L.length-1));
-    box.querySelector(".lbx-n").textContent=isPlan(idx)?t(3):(idx+1)+" / "+(L.length-1);
+    box.querySelector(".lbx-n").textContent=isPlan(idx)?"":(idx+1)+" / "+(L.length-1);
+    box.querySelector(".lbx-g").textContent=isPlan(idx)?t(3):gl(cap(idx));
     strip.querySelectorAll("button").forEach(function(b,k){ b.classList.toggle("is-on",k===idx); if(k===idx) b.scrollIntoView({block:"nearest",inline:"center"}); });
     [idx+1,idx-1].forEach(function(k){ var p=L[(k+L.length)%L.length]; if(!cache[p]){ cache[p]=new Image(); cache[p].src=src(p); } }); }
   function open(rid,i,from){ if(!G[rid]) return; cur=rid; last=from||document.activeElement;
@@ -620,7 +627,8 @@
     box.querySelector(".lbx-t").textContent=box.dataset.name; box.setAttribute("aria-label",box.dataset.name);
     box.querySelector(".lbx-x").setAttribute("aria-label",t(0)); box.querySelector(".lbx-prev").setAttribute("aria-label",t(1)); box.querySelector(".lbx-next").setAttribute("aria-label",t(2));
     strip.innerHTML=list().map(function(p,k){ var th=p.replace("/full/","/").replace(/-(\d+)\.jpg$/,function(m,n){ return +n<=3?m:m; });
-      return '<button type="button" data-k="'+k+'" class="'+(k===list().length-1?'pl':'')+'" style="background-image:url('+src(p.replace(/\.jpg$/,"-s.jpg"))+')" aria-label="'+(k===list().length-1?t(3):(k+1))+'"></button>'; }).join("");
+      var sep=(k>0&&cap(k)!==cap(k-1))?' sep':'';
+      return '<button type="button" data-k="'+k+'" class="'+(k===list().length-1?'pl':'')+sep+'" style="background-image:url('+src(p.replace(/\.(jpg|webp)$/,"-s.jpg"))+')" aria-label="'+(k===list().length-1?t(3):(gl(cap(k))+" "+(k+1)))+'"></button>'; }).join("");
     var sw=window.innerWidth-document.documentElement.clientWidth; document.documentElement.style.paddingRight=sw?sw+"px":""; document.documentElement.classList.add("lbx-lock");
     box.hidden=false; requestAnimationFrame(function(){ box.classList.add("is-open"); }); show(i||0); box.querySelector(".lbx-x").focus({preventScroll:true}); }
   function close(){ box.classList.remove("is-open"); document.documentElement.classList.remove("lbx-lock"); document.documentElement.style.paddingRight="";

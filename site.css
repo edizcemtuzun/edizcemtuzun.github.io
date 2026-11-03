@@ -1114,3 +1114,12 @@ html.lbx-lock,html.lbx-lock body{overflow:hidden}
 .rt-cap{position:absolute;left:0;right:0;bottom:0;padding:6px 8px;background:rgba(20,22,16,.55);color:#fff;font:600 9.5px/1 var(--f-sans);letter-spacing:.16em;text-transform:uppercase;pointer-events:none}
 @media (max-width:860px){.rm-strip .rt{flex-basis:30vw}}
 @media (max-width:860px){.room.rm>.rm-body,.room.rm>.act{order:2}.rm-strip{order:1;margin-top:-8px}}
+/* Oda şeridi: mekâna göre gruplar */
+.rs-g{flex:0 0 auto;display:flex;flex-direction:column;gap:8px;scroll-snap-align:start}
+.rs-g+.rs-g{padding-left:14px;border-left:1px solid rgba(40,40,30,.18)}
+.rs-row{display:flex;gap:8px}
+.rs-lab{font:600 9.5px/1 var(--f-sans);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.rm-strip{gap:14px}
+.lbx-g{margin-right:14px;opacity:.85}
+.lbx-g:empty{display:none}
+.lbx-strip button.sep{margin-left:14px}
