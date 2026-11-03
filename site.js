@@ -319,6 +319,42 @@
   /* bir çubukta seçilen tarih ve kişi, sayfadaki diğer çubuklara da yansısın */
   document.addEventListener("kimera:stay",function(e){ document.querySelectorAll("[data-bookbar]").forEach(function(g){ if(g!==e.detail){ g.__quiet=true; renderBB(g); g.__quiet=false; } }); });
 
+  /* Rezervasyon penceresi: "Müsaitlik" / "Rezervasyon" tuşları önce tarih ve kişi sorar,
+     "Rezervasyon yap" ile otel motoru seçilen tarih ve kişilerle açılır */
+  (function(){
+    var LG0=function(){ return document.documentElement.getAttribute("data-lang")||"tr"; };
+    var T=function(tr,e){ var l=LG0(); return l==="tr"?tr:l==="en"?e:I(e); };
+    var m=document.createElement("div"); m.className="bkm"; m.hidden=true; m.setAttribute("role","dialog"); m.setAttribute("aria-modal","true");
+    m.innerHTML='<div class="bkm-card"><button type="button" class="bkm-x"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button>'+
+      '<p class="eyebrow bkm-e"></p><h3 class="bkm-t"></h3><p class="bkm-s"></p>'+
+      '<form class="bookbar bb-compact" data-bookbar data-go-tr="Rezervasyon yap" data-go-en="Reserve"></form></div>';
+    document.body.appendChild(m);
+    var f=m.querySelector("form"), last=null;
+    function label(){ m.querySelector(".bkm-x").setAttribute("aria-label",T("Kapat","Close")); m.querySelector(".bkm-s").textContent=T("Tarihleri ve kişi sayısını seçin; fiyatlar bu seçime göre açılır.","Choose your dates and guests; prices open for that selection."); }
+    function open(a){
+      last=a; var card=a.closest(".room"), h=card&&card.querySelector("h3");
+      m.querySelector(".bkm-e").textContent=T("Rezervasyon","Reservation");
+      m.querySelector(".bkm-t").textContent=h?h.textContent:T("Kimera Hotel","Kimera Hotel");
+      label(); f.__quiet=true; renderBB(f); f.__quiet=false;
+      var sw=window.innerWidth-document.documentElement.clientWidth; document.documentElement.style.paddingRight=sw?sw+"px":"";
+      document.documentElement.classList.add("lbx-lock"); m.hidden=false; requestAnimationFrame(function(){ m.classList.add("is-open"); });
+      var st=getStay(); var b=f.querySelector(st?"[id^='bb-go']":"[id^='bb-ci']"); if(b){ b.focus({preventScroll:true}); if(!st) b.click(); }
+    }
+    function close(){ m.classList.remove("is-open"); document.documentElement.classList.remove("lbx-lock"); document.documentElement.style.paddingRight="";
+      setTimeout(function(){ m.hidden=true; },250); if(last&&last.focus) last.focus({preventScroll:true}); }
+    document.addEventListener("click",function(e){
+      if(e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey) return;
+      var a=e.target.closest&&e.target.closest("a[data-book]"); if(!a||a.closest(".bookbar")||a.closest(".bkm")) return;
+      e.preventDefault(); open(a); });
+    f.addEventListener("click",function(e){ var g=e.target.closest("[id^='bb-go']"); if(g && getStay()) setTimeout(close,60); });
+    m.querySelector(".bkm-x").addEventListener("click",close);
+    m.addEventListener("click",function(e){ if(e.target===m) close(); });
+    document.addEventListener("keydown",function(e){ if(m.hidden) return;
+      if(e.key==="Escape"){ var c=f.querySelector(".cal"); if(c&&!c.hidden) return; close(); }
+      else if(e.key==="Tab"){ var q=[].slice.call(m.querySelectorAll("button,select,a[href]")).filter(function(x){ return x.offsetParent&&!x.disabled; }), i=q.indexOf(document.activeElement);
+        if(e.shiftKey&&i<=0){ e.preventDefault(); q[q.length-1].focus(); } else if(!e.shiftKey&&i===q.length-1){ e.preventDefault(); q[0].focus(); } } });
+  })();
+
 
   /* Talep kutusu: <div data-ask="spa|farm|yoga|events|erizo">. Seçimlerden WhatsApp mesajı yazar;
      "İletişime geç" → WhatsApp ve Ara seçenekleri. Numaralar yalnızca sitede yazan hatlar. */
