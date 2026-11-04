@@ -189,11 +189,6 @@ footer a:hover{text-decoration:underline}
 .room .act{display:grid;gap:12px;justify-items:start}
 .room[hidden]{display:none}
 @media (max-width:860px){.room{grid-template-columns:1fr}}
-.houses{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,3vw,44px) var(--gap)}
-.house{display:grid;gap:14px;align-content:start;border-top:1px solid var(--ink);padding-top:18px}
-.house .num{font:500 11px/1 var(--f-sans);letter-spacing:.2em;color:var(--muted)}
-@media (max-width:980px){.houses{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:600px){.houses{grid-template-columns:1fr}}
 
 /* menu (spa) */
 .menu-sec{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:var(--gap);padding-block:clamp(32px,4vw,52px);border-top:1px solid var(--line)}
@@ -1048,11 +1043,6 @@ html:not([data-lang="en"]) .jm-svg tspan.en,html[data-lang="en"] .jm-svg tspan.t
 @media (max-width:560px){.rm-spec{grid-template-columns:1fr 1fr}.rm-spec li{grid-template-columns:1fr;padding-right:8px}.rm-spec .rm-ic{grid-row:auto;margin-bottom:6px}}
 @supports (overflow:clip){body{overflow-x:clip}}
 .cmp tbody th a{text-decoration:none}.cmp tbody th a span{border-bottom:1px solid transparent;transition:border-color .2s}.cmp tbody th a:hover span{border-color:currentColor}
-/* Akdeniz Bahçesi: logolu başlık */
-.ak-lock{display:grid;gap:18px;justify-items:start;grid-column:1/-1;margin-bottom:clamp(8px,1.5vw,20px)}
-.lk-akdeniz{margin:0}
-.lk-akdeniz .lk-mark{display:block;width:clamp(220px,26vw,380px);height:auto;color:var(--ink)}
-.house-rm .rm-head h3{font-size:clamp(28px,2.6vw,38px)}
 
 /* Odalar: başlangıç kaymasını önle — üst bar betikle eklenene kadar yerini ayır */
 body>main:first-child{margin-top:129px}
