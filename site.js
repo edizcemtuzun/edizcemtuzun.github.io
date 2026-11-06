@@ -721,3 +721,87 @@
     try{ navigator.clipboard.writeText(v).then(done,function(){ fall(); }); }catch(_){ fall(); }
     function fall(){ var t=document.createElement("textarea"); t.value=v; t.setAttribute("readonly",""); t.style.position="fixed"; t.style.opacity="0"; document.body.appendChild(t); t.select(); try{ document.execCommand("copy"); done(); }catch(_){} t.remove(); } });
 })();
+
+/* Etkinlik hikâyeleri: geçmiş etkinliklerden dikey, bölüm bölüm izlenen videolar (Instagram hikâyesi gibi) */
+(function(){
+  var opens=document.querySelectorAll("[data-story]"); if(!opens.length) return;
+  var LG=document.documentElement.getAttribute("data-lang")||"tr";
+  var TX={tr:["Kapat","Sesi aç","Sesi kapat","Duraklat","Devam","Önceki","Sonraki","Hikâye"],en:["Close","Unmute","Mute","Pause","Play","Previous","Next","Story"]};
+  var t=function(i){ var l=TX[LG]?LG:"en"; var v=TX[l][i]; return (LG!=="tr"&&LG!=="en"&&typeof I==="function")?I(TX.en[i]):v; };
+  function txt(el){ var x=el.querySelector("."+(LG==="tr"?"tr":"en")); return (x||el).textContent.trim(); }
+  /* hikâyeleri sayfadaki sıraya göre topla */
+  var S=[], idx={};
+  opens.forEach(function(b){ var id=b.dataset.story; if(idx[id]!=null) return; var li=b.closest("li,article")||document;
+    var caps=li.querySelector(".st-caps"); if(!caps) return;
+    var h=li.querySelector("h2"), d=li.querySelector(".date");
+    var ch=[].map.call(caps.children,function(c){ return {src:c.dataset.src, poster:c.dataset.poster, cap:txt(c)}; });
+    idx[id]=S.length; S.push({id:id, title:h?txt(h):"", date:d?d.firstChild.textContent.trim():"", ch:ch}); });
+  var box=null, vid, nxt, si=0, ci=0, muted=false, paused=false, raf=0, lastFocus=null, holdT=0;
+  function build(){
+    box=document.createElement("div"); box.className="stv"; box.setAttribute("role","dialog"); box.setAttribute("aria-modal","true"); box.hidden=true;
+    box.innerHTML='<div class="stv-frame"><div class="stv-bars"></div><div class="stv-top"><div class="stv-h"><b class="stv-t"></b><span class="stv-c"></span></div>'+
+      '<div class="stv-btns"><button type="button" class="stv-snd"></button><button type="button" class="stv-pp"></button><button type="button" class="stv-x" aria-label="'+t(0)+'"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div></div>'+
+      '<video class="stv-v" playsinline preload="auto"></video><button type="button" class="stv-tap stv-prev" aria-label="'+t(5)+'"></button><button type="button" class="stv-tap stv-next" aria-label="'+t(6)+'"></button>'+
+      '<div class="stv-load" aria-hidden="true"></div></div>'+
+      '<button type="button" class="stv-side stv-sp" aria-label="'+t(5)+'">‹</button><button type="button" class="stv-side stv-sn" aria-label="'+t(6)+'">›</button>';
+    document.body.appendChild(box); vid=box.querySelector(".stv-v"); nxt=document.createElement("video"); nxt.preload="auto"; nxt.muted=true;
+    box.querySelector(".stv-x").onclick=close;
+    box.querySelector(".stv-snd").onclick=function(){ muted=!muted; vid.muted=muted; ui(); };
+    box.querySelector(".stv-pp").onclick=function(){ paused?play():pause(); };
+    box.querySelector(".stv-prev").onclick=prev; box.querySelector(".stv-next").onclick=next;
+    box.querySelector(".stv-sp").onclick=prev; box.querySelector(".stv-sn").onclick=next;
+    box.addEventListener("click",function(e){ if(e.target===box) close(); });
+    vid.addEventListener("ended",next);
+    vid.addEventListener("waiting",function(){ box.classList.add("is-load"); }); vid.addEventListener("playing",function(){ box.classList.remove("is-load"); });
+    /* basılı tutunca durur, bırakınca devam eder; aşağı kaydırınca kapanır */
+    var y0=null, held=false;
+    box.querySelector(".stv-frame").addEventListener("pointerdown",function(e){ if(e.target.closest(".stv-btns")) return; y0=e.clientY; held=false; holdT=setTimeout(function(){ held=true; pause(true); },260); });
+    box.querySelector(".stv-frame").addEventListener("pointerup",function(e){ clearTimeout(holdT); if(held){ held=false; play(); e.preventDefault(); box.__skipTap=true; setTimeout(function(){ box.__skipTap=false; },50); }
+      if(y0!=null && e.clientY-y0>90) close(); y0=null; });
+    ["stv-prev","stv-next"].forEach(function(c){ var b=box.querySelector("."+c); var f=b.onclick; b.onclick=function(e){ if(box.__skipTap) return; f(e); }; });
+    document.addEventListener("keydown",function(e){ if(box.hidden) return;
+      if(e.key==="Escape") close(); else if(e.key==="ArrowRight") next(); else if(e.key==="ArrowLeft") prev();
+      else if(e.key===" "){ e.preventDefault(); paused?play():pause(); }
+      else if(e.key==="m"||e.key==="M"){ muted=!muted; vid.muted=muted; ui(); }
+      else if(e.key==="Tab"){ var q=[].slice.call(box.querySelectorAll("button")).filter(function(x){ return x.offsetParent; }), i=q.indexOf(document.activeElement);
+        if(e.shiftKey&&i<=0){ e.preventDefault(); q[q.length-1].focus(); } else if(!e.shiftKey&&i===q.length-1){ e.preventDefault(); q[0].focus(); } } });
+    document.addEventListener("visibilitychange",function(){ if(!box.hidden&&document.hidden) pause(); });
+  }
+  function ui(){
+    var s=S[si], c=s.ch[ci];
+    box.querySelector(".stv-t").textContent=(s.date?s.date+" · ":"")+s.title;
+    box.querySelector(".stv-c").textContent=c.cap+" · "+(ci+1)+"/"+s.ch.length;
+    var snd=box.querySelector(".stv-snd"); snd.setAttribute("aria-label",muted?t(1):t(2)); snd.innerHTML=muted?'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l4 6M21 9l-4 6" stroke-linecap="round"/></svg>':'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" stroke-linecap="round"/></svg>';
+    var pp=box.querySelector(".stv-pp"); pp.setAttribute("aria-label",paused?t(4):t(3)); pp.innerHTML=paused?'<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M7 5l12 7-12 7z"/></svg>':'<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>';
+    box.querySelector(".stv-sp").disabled=(si===0&&ci===0);
+  }
+  function bars(){ var s=S[si]; box.querySelector(".stv-bars").innerHTML=s.ch.map(function(_,i){ return '<span class="'+(i<ci?"done":"")+'"><i></i></span>'; }).join(""); }
+  function tick(){ cancelAnimationFrame(raf); var bar=box.querySelectorAll(".stv-bars span")[ci]; if(!bar) return; var i=bar.querySelector("i");
+    (function f(){ if(vid.duration) i.style.transform="scaleX("+Math.min(1,vid.currentTime/vid.duration)+")"; raf=requestAnimationFrame(f); })(); }
+  function load(){
+    var s=S[si], c=s.ch[ci]; paused=false; bars(); ui();
+    vid.poster=c.poster; vid.src=c.src; vid.muted=muted; vid.currentTime=0;
+    var p=vid.play(); if(p&&p.catch) p.catch(function(){ muted=true; vid.muted=true; ui(); vid.play().catch(function(){ paused=true; ui(); }); });
+    tick();
+    /* sıradaki bölümü önden yükle */
+    var n=s.ch[ci+1]||(S[si+1]&&S[si+1].ch[0]); if(n){ nxt.src=n.src; nxt.load(); }
+    var o=document.querySelector('[data-story="'+s.id+'"]'); if(o) o.classList.add("is-seen");
+  }
+  function next(){ var s=S[si]; if(ci<s.ch.length-1){ ci++; load(); } else if(si<S.length-1){ si++; ci=0; load(); } else close(); }
+  function prev(){ if(vid.currentTime>2.5 && false){ vid.currentTime=0; return; } if(ci>0){ ci--; load(); } else if(si>0){ si--; ci=S[si].ch.length-1; load(); } else { vid.currentTime=0; } }
+  function pause(hold){ vid.pause(); if(!hold){ paused=true; ui(); } box.classList.add("is-paused"); }
+  function play(){ paused=false; box.classList.remove("is-paused"); vid.play().catch(function(){}); ui(); }
+  function open(id,silent){
+    if(!box) build(); if(idx[id]==null) return; lastFocus=document.activeElement; si=idx[id]; ci=0; muted=!!silent;
+    var sw=window.innerWidth-document.documentElement.clientWidth; document.documentElement.style.paddingRight=sw?sw+"px":"";
+    document.documentElement.classList.add("lbx-lock"); box.hidden=false; requestAnimationFrame(function(){ box.classList.add("is-open"); });
+    load(); box.querySelector(".stv-x").focus({preventScroll:true});
+    try{ history.replaceState(null,"","#hikaye-"+id); }catch(e){}
+  }
+  function close(){ if(!box||box.hidden) return; vid.pause(); cancelAnimationFrame(raf); box.classList.remove("is-open","is-paused"); document.documentElement.classList.remove("lbx-lock"); document.documentElement.style.paddingRight="";
+    setTimeout(function(){ box.hidden=true; vid.removeAttribute("src"); vid.load(); },220); if(lastFocus&&lastFocus.focus) lastFocus.focus({preventScroll:true});
+    try{ history.replaceState(null,"",location.pathname+location.search); }catch(e){} }
+  document.addEventListener("click",function(e){ var b=e.target.closest&&e.target.closest("[data-story],[data-story-fig]"); if(!b||b.closest(".stv")) return; e.preventDefault(); open(b.dataset.story||b.dataset.storyFig); });
+  /* başka sayfadan #hikaye-... ile gelindiyse sessiz başlat */
+  var m=location.hash.match(/^#hikaye-(ev\d+)/); if(m) setTimeout(function(){ open(m[1],true); },300);
+})();
