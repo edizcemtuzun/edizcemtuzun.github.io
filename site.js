@@ -255,7 +255,10 @@
     }
     var cal=f.querySelector("#bb-cal"), months=cal.querySelector(".cal-months"), hint=cal.querySelector(".cal-hint"), sum=cal.querySelector(".cal-sum");
     var t0=today(), ci=st.ci||"", co=st.co||"", picking="ci";
-    var view=new Date((ci||t0)+"T12:00:00"); view.setDate(1);
+    /* isteğe bağlı tarih aralığı (kampanya sayfaları): data-min / data-max */
+    var MIN=(f.dataset.min&&f.dataset.min>t0)?f.dataset.min:t0, MAX=f.dataset.max||"";
+    if(ci && (ci<MIN || (MAX&&co>MAX))){ ci=""; co=""; }
+    var view=new Date((ci||MIN)+"T12:00:00"); view.setDate(1);
     function iso(d){ var x=new Date(d); x.setMinutes(x.getMinutes()-x.getTimezoneOffset()); return x.toISOString().slice(0,10); }
     function fmt(v){ if(!v) return '<span class="bb-ph">'+T("Tarih seçin","Select date")+'</span>'; var d=new Date(v+"T12:00:00"); return d.getDate()+" "+MS[d.getMonth()]+" "+d.getFullYear(); }
     function nights(){ return (ci&&co) ? Math.round((new Date(co+"T12:00:00")-new Date(ci+"T12:00:00"))/864e5) : 0; }
@@ -265,7 +268,7 @@
       DOW.forEach(function(d){ h+='<span class="cal-dow">'+d+'</span>'; });
       for(var i=0;i<start;i++) h+='<span></span>';
       for(var d=1; d<=days; d++){
-        var v=iso(new Date(y,m,d,12)), cls="cal-d", dis=v<t0;
+        var v=iso(new Date(y,m,d,12)), cls="cal-d", dis=v<MIN||(MAX&&v>MAX);
         if(v===ci) cls+=" is-ci"; if(v===co) cls+=" is-co"; if(ci&&co&&v>ci&&v<co) cls+=" is-in";
         if(v===t0) cls+=" is-today";
         h+='<button type="button" class="'+cls+'" data-v="'+v+'"'+(dis?' disabled':'')+' aria-label="'+d+" "+MON[m]+" "+y+'">'+d+'</button>';
@@ -275,7 +278,9 @@
     function draw(){
       var y=view.getFullYear(), m=view.getMonth(), y2=m===11?y+1:y, m2=(m+1)%12;
       months.innerHTML=month(y,m)+month(y2,m2);
-      cal.querySelector('[data-m="-1"]').disabled = (y<new Date().getFullYear()) || (y===new Date().getFullYear() && m<=new Date().getMonth());
+      var mn=new Date(MIN+"T12:00:00"), mx=MAX?new Date(MAX+"T12:00:00"):null;
+      cal.querySelector('[data-m="-1"]').disabled = (y<mn.getFullYear()) || (y===mn.getFullYear() && m<=mn.getMonth());
+      var nx=cal.querySelector('[data-m="1"]'); if(nx) nx.disabled = !!mx && ((y2>mx.getFullYear()) || (y2===mx.getFullYear() && m2>=mx.getMonth()));
       hint.textContent = picking==="ci" ? T("Giriş gününü seçin","Choose check-in") : T("Çıkış gününü seçin","Choose check-out");
       var n=nights(); sum.textContent = n ? (fmt(ci).replace(/<[^>]+>/g,"")+" → "+fmt(co).replace(/<[^>]+>/g,"")+" · "+n+" "+T("gece", n>1?"nights":"night")) : "";
       ciB.innerHTML=fmt(ci); coB.innerHTML=fmt(co);
@@ -354,7 +359,7 @@
       document.querySelectorAll(".bk-inl").forEach(function(x){ if(x!==p){ x.classList.remove("is-open"); x.hidden=true; var b=x.parentNode.querySelector("a[data-book]"); if(b) b.setAttribute("aria-expanded","false"); } });
       if(p && !p.hidden){ p.classList.remove("is-open"); p.hidden=true; a.setAttribute("aria-expanded","false"); return; }
       if(!p){ p=document.createElement("div"); p.className="bk-inl"; p.innerHTML='<form class="bookbar bb-compact" data-bookbar data-go-tr="Rezervasyon yap" data-go-en="Reserve"></form>'; a.insertAdjacentElement("afterend",p);
-        var ff=p.querySelector("form"); renderBB(ff);
+        var ff=p.querySelector("form"), rg=a.closest("[data-bk-min]"); if(rg){ ff.dataset.min=rg.dataset.bkMin||""; ff.dataset.max=rg.dataset.bkMax||""; } renderBB(ff);
         ff.addEventListener("click",function(e){ if(e.target.closest("[id^='bb-go']") && getStay()) setTimeout(function(){ p.classList.remove("is-open"); p.hidden=true; a.setAttribute("aria-expanded","false"); },60); }); }
       else { var ff2=p.querySelector("form"); ff2.__quiet=true; renderBB(ff2); ff2.__quiet=false; }
       p.hidden=false; a.setAttribute("aria-expanded","true"); requestAnimationFrame(function(){ p.classList.add("is-open"); });
@@ -703,3 +708,13 @@
 })();
 /* Oda şeridi: sona gelince sağdaki solma kalksın */
 (function(){ document.querySelectorAll(".rm-strip").forEach(function(s){ function u(){ s.classList.toggle("is-end", s.scrollLeft+s.clientWidth>=s.scrollWidth-4); } s.addEventListener("scroll",u,{passive:true}); window.addEventListener("resize",u); u(); }); })();
+
+/* Erken rezervasyon sayfası: bugünün tarihine göre geçerli indirim dönemini öne çıkar */
+(function(){
+  var root=document.querySelector("[data-eb]"); if(!root) return;
+  var d=new Date(), t=d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);
+  var rows=[].slice.call(root.querySelectorAll(".eb-tiers li")), cur=0;
+  rows.forEach(function(li,i){ var on=t<=li.dataset.to && (t>=li.dataset.from || i===0);
+    if(on && !cur) cur=i+1; li.classList.toggle("is-now", on && cur===i+1); li.classList.toggle("is-past", t>li.dataset.to); });
+  root.querySelectorAll(".eb-st").forEach(function(x){ x.hidden = (+x.dataset.tier)!==cur; });
+})();

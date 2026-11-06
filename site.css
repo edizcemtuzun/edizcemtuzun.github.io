@@ -1144,3 +1144,48 @@ html.lbx-lock,html.lbx-lock body{overflow:hidden}
 @media (min-width:861px){.room .act{display:flex;flex-direction:column;align-items:flex-end;gap:12px}.room .act .bk-inl{flex:none}}
 @media (max-width:860px){.room .act{display:flex;flex-direction:column;align-items:flex-start;gap:12px}.room .act .bk-inl{align-self:stretch}}
 @media (min-width:861px){.room .act .bk-inl{width:min(272px,calc(100% + 64px));padding:14px}.bk-inl .bb-compact{gap:10px 12px}.bk-inl .bb-d{font-size:17px}}
+/* Erken rezervasyon 2027 (kampanya sayfası) */
+.eb-head .wrap{align-content:end}
+.eb-now{display:flex;flex-wrap:wrap;align-items:center;gap:18px 28px;margin-top:clamp(18px,2.4vw,30px)}
+.eb-st{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+.eb-st[hidden]{display:none}
+.eb-pct{font:400 clamp(64px,8vw,112px)/.9 var(--f-display);letter-spacing:-.02em}
+.eb-st p{margin:0;max-width:22em;font-size:15.5px;line-height:1.5}
+.eb-tiers{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
+.eb-tiers li{display:grid;grid-template-columns:minmax(0,1fr) auto 120px;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid var(--line)}
+.eb-d{font:500 15px/1.4 var(--f-sans);letter-spacing:.04em}
+.eb-p{font:400 clamp(30px,3vw,42px)/1 var(--f-display)}
+.eb-tag{justify-self:end;font:600 10px/1 var(--f-sans);letter-spacing:.18em;text-transform:uppercase;padding:7px 10px;border:1px solid currentColor;visibility:hidden}
+.eb-tiers li.is-now .eb-tag{visibility:visible}
+.eb-tiers li.is-now{background:linear-gradient(90deg,rgba(55,62,45,.06),transparent)}
+.eb-tiers li.is-past{opacity:.42}
+.eb-tiers li.is-past .eb-p{text-decoration:line-through;text-decoration-thickness:1px}
+.eb-stay{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:8px}
+.eb-rooms{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(28px,3vw,44px) var(--gap)}
+.eb-room{display:grid;gap:16px;align-content:start}
+.eb-img{display:block;overflow:hidden}
+.eb-img img{transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.eb-img:hover img{transform:scale(1.035)}
+.eb-rb{display:grid;gap:10px;align-content:start}
+.eb-rh{display:flex;align-items:center;gap:10px}
+.eb-rh .rm-fruit{width:26px;height:26px;flex:none}
+.eb-room h3{font-size:clamp(22px,1.9vw,28px);margin:0}
+.eb-room .meta{margin-top:0}
+.eb-room p{margin:0;font-size:14.5px;line-height:1.55;color:var(--muted)}
+.room.eb-room .act,.eb-room .act{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:12px 18px;margin-top:6px}
+.room.eb-room .act .bk-inl{flex:1 0 100%;width:100%;max-width:none;align-self:stretch;justify-self:stretch}
+.eb-more{font:600 11px/1 var(--f-sans);letter-spacing:.16em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:4px;color:inherit}
+.eb-end .h3{max-width:24em}
+@media (max-width:1100px){.eb-rooms{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.eb-rooms{grid-template-columns:1fr}.eb-tiers li{grid-template-columns:minmax(0,1fr) auto;}.eb-tag{grid-column:1/-1;justify-self:start}.eb-tiers li:not(.is-now) .eb-tag{display:none}}
+.eb-head .eb-now{grid-column:1/-1}
+.eb-st p{max-width:30em}
+.eb-end .h3{font-family:var(--f-display);font-size:clamp(28px,3vw,42px);line-height:1.2}
+.eb-end .btn{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.eb-end .btn:hover{background:transparent;color:var(--paper)}
+.room.eb-room{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;padding:0;border:0;background:none}
+.eb-room > :first-child{align-self:auto}
+[data-eb] .stack.c-6-12,[data-eb] .eb-tiers,[data-eb] .eb-stay{max-width:none;width:100%}
+.eb-tiers li{grid-template-columns:minmax(0,1fr) 120px 140px}
+.eb-p{justify-self:start}
+@media (max-width:600px){.eb-tiers li{grid-template-columns:minmax(0,1fr) auto}.eb-d{font-size:14px;white-space:nowrap}}
