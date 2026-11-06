@@ -1289,3 +1289,15 @@ html.lbx-lock,html.lbx-lock body{overflow:hidden}
 @keyframes stvs{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.stv{transition:none}.st-ring{transition:none}}
 @media (max-width:699px){.stv{background:#000}.stv-frame{width:100vw;height:100dvh;aspect-ratio:auto;border-radius:0}.stv-top{padding-top:calc(22px + env(safe-area-inset-top,0px))}.stv-bars{top:calc(10px + env(safe-area-inset-top,0px))}}
+/* Hikâye düğmesi v2: sabit kare halka, metnin altında sakin bir satır */
+.st-row{margin:10px 0 2px;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.st-open{display:flex;align-items:center;gap:16px;width:100%;margin:0}
+.st-ring{position:relative;flex:0 0 58px;width:58px;height:58px;aspect-ratio:1/1;border-radius:50%;padding:2px;overflow:hidden;box-sizing:border-box}
+.st-ring img{position:absolute;inset:4px;width:calc(100% - 8px)!important;height:calc(100% - 8px)!important;max-width:none;aspect-ratio:1/1;object-fit:cover;border-radius:50%;border:0;box-shadow:0 0 0 2px var(--paper)}
+.st-l{flex:1;min-width:0}
+.st-l b{font:400 clamp(19px,1.6vw,22px)/1.15 var(--f-display)}
+.st-l small{font-size:10px;letter-spacing:.15em}
+.st-open::after{content:"";flex:none;width:40px;height:40px;border-radius:50%;border:1px solid var(--ink);background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23353b2c'%3E%3Cpath d='M9 6.5l9 5.5-9 5.5z'/%3E%3C/svg%3E") 55% 50%/16px no-repeat;transition:background-color .25s}
+.st-open:hover::after{background-color:rgba(55,62,45,.08)}
+.st-open:hover .st-ring{transform:none}
+.st-open:focus-visible{border-radius:4px}
