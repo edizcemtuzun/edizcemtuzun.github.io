@@ -1238,3 +1238,12 @@ html.lbx-lock,html.lbx-lock body{overflow:hidden}
 .eb-bookcol .bookbar{width:100%}
 [data-eb] .eb-end p.h3{font-family:var(--f-display);font-size:clamp(28px,3vw,42px);line-height:1.22;max-width:22em}
 [data-eb] .eb-end .eyebrow{font-size:11px}
+/* Etkinlikler: geçmiş etkinlikler */
+.ev-next{display:grid;gap:12px;padding:clamp(26px,3vw,40px) 0;margin-bottom:clamp(36px,4.5vw,64px);border-top:1px solid var(--ink);border-bottom:1px solid var(--line)}
+.ev-next .h4{margin:0}
+.ev-next-l{display:flex;flex-wrap:wrap;gap:12px 28px;margin:4px 0 0}
+.ev-done{display:block;width:max-content;margin:12px 0 2px;font:600 10px/1 var(--f-sans);letter-spacing:.18em;text-transform:uppercase;padding:6px 9px;border:1px solid currentColor;color:var(--muted)}
+.event.is-past .date{color:var(--muted)}
+.event.is-past figure img,.event.is-past figure video{filter:saturate(.8)}
+#sor .btn-light{background:var(--paper);color:var(--ink);border-color:var(--paper);justify-self:start}
+#sor .btn-light:hover{background:transparent;color:var(--paper)}

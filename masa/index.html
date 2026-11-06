@@ -160,7 +160,10 @@ fieldset.f{border:0;padding:0;margin:0}
   /* etkinlikten gelindiyse: etkinliği göster, tarihi ona sabitle */
   var evId=q.get("etkinlik")||q.get("event");
   if(evId){ fetch("/erizo/events.json",{cache:"no-cache"}).then(function(r){ return r.json(); }).then(function(j){
-      var e=(j.events||[]).filter(function(x){ return x.id===evId; })[0]; if(!e||e.date<t) return; var l=L()==="en"?1:0;
+      var e=(j.events||[]).filter(function(x){ return x.id===evId; })[0]; if(!e) return; var l=L()==="en"?1:0;
+      if(e.date<t){ var bp=document.getElementById("evb"); bp.hidden=false; bp.classList.add("is-past");
+        bp.innerHTML='<div><small><span class="tr">'+fd(e.date)+'</span></small><b><span class="tr">Bu etkinlik gerçekleşti.</span><span class="en">This event has taken place.</span></b><span class="tr">Başka bir akşam için masanızı aşağıdan ayırtabilirsiniz.</span><span class="en">You can book a table for another evening below.</span> <a href="/erizo/events/"><span class="tr">Etkinlik takvimi</span><span class="en">Events calendar</span> →</a></div>';
+        return; }
       f.event.value=e.title[0]+" ("+e.date+")"; di.value=e.date;
       var b=document.getElementById("evb"); b.hidden=false;
       b.innerHTML=(e.img?'<img src="/markalar/_img/'+e.img+'" alt="">':'')+'<div><small>'+fd(e.date)+' · '+e.type[l]+'</small><b>'+e.title[l]+'</b><a href="/erizo/events/#'+e.id+'">'+(l?"Event details":"Etkinlik ayrıntıları")+' →</a></div>';
