@@ -1045,9 +1045,9 @@ html:not([data-lang="en"]) .jm-svg tspan.en,html[data-lang="en"] .jm-svg tspan.t
 .cmp tbody th a{text-decoration:none}.cmp tbody th a span{border-bottom:1px solid transparent;transition:border-color .2s}.cmp tbody th a:hover span{border-color:currentColor}
 
 /* Odalar: başlangıç kaymasını önle — üst bar betikle eklenene kadar yerini ayır */
-body>main:first-child{margin-top:129px}
-body[data-page="home"]>main:first-child{margin-top:28px}
-@media (max-width:980px){body>main:first-child{margin-top:107px}}
+body>main:first-child{margin-top:101px}
+body[data-page="home"]>main:first-child{margin-top:2px}
+@media (max-width:980px){body>main:first-child{margin-top:79px}body[data-page="home"]>main:first-child{margin-top:0}}
 
 /* Oda görselleri: tıklanabilir küçük görseller */
 .room-thumbs.rt3{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px}
@@ -1189,3 +1189,52 @@ html.lbx-lock,html.lbx-lock body{overflow:hidden}
 .eb-tiers li{grid-template-columns:minmax(0,1fr) 120px 140px}
 .eb-p{justify-self:start}
 @media (max-width:600px){.eb-tiers li{grid-template-columns:minmax(0,1fr) auto}.eb-d{font-size:14px;white-space:nowrap}}
+/* Erken rezervasyon: boşluk ve okunurluk düzenlemesi */
+[data-eb] .sec{padding-block:clamp(64px,7.5vw,112px)}
+[data-eb] .stack p{font-size:16px;line-height:1.65;max-width:34em}
+.eb-head .lead{max-width:30em}
+.eb-now{display:grid;gap:22px;margin-top:clamp(24px,3vw,40px);padding-top:clamp(22px,2.6vw,32px);border-top:1px solid rgba(55,62,45,.25)}
+.eb-st{display:flex;align-items:center;gap:clamp(16px,2.4vw,32px)}
+.eb-st p{display:grid;gap:6px;margin:0;font-size:15.5px;line-height:1.45;max-width:24em}
+.eb-st p b{font:400 clamp(24px,2.2vw,30px)/1 var(--f-display);letter-spacing:0}
+.eb-st[data-tier="0"] p{font-size:17px;max-width:34em}
+.eb-cta{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px}
+.eb-chip{font:600 11px/1.3 var(--f-sans);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.eb-th{display:grid;grid-template-columns:minmax(0,1fr) 120px 140px;gap:16px;padding-bottom:12px;font:600 10.5px/1 var(--f-sans);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.eb-tiers li{padding:20px 0}
+.eb-d{font:500 16.5px/1.35 var(--f-sans);letter-spacing:.01em}
+.eb-stay{padding-top:18px}
+.eb-stay .h4{font-size:clamp(22px,2vw,28px)}
+.eb-rooms{row-gap:clamp(44px,4.5vw,64px)}
+.room.eb-room{grid-template-rows:auto 1fr;gap:18px}
+.eb-rb{display:flex;flex-direction:column;gap:10px;height:100%}
+.eb-room .meta{margin-top:2px}
+.eb-room p{font-size:15px;line-height:1.6;color:var(--ink);opacity:.8;flex:0 0 auto}
+.room.eb-room .act{margin-top:auto;padding-top:10px}
+#eb-book .bookbar{margin-top:6px}
+.eb-end .stack{gap:18px}
+.eb-end .h3{max-width:22em}
+@media (max-width:600px){
+  .eb-st{align-items:flex-start;flex-direction:column;gap:10px}
+  .eb-th{grid-template-columns:minmax(0,1fr) auto}.eb-th span:nth-child(2){justify-self:end}
+  .eb-tiers li{padding:16px 0}
+  .eb-d{font-size:15px}
+  [data-eb] .sec{padding-block:56px}
+  .eb-stay{flex-direction:column;gap:8px}
+}
+/* İndirim kodu */
+.eb-code{display:inline-flex;align-items:center;gap:14px 18px;flex-wrap:wrap;border:1px dashed rgba(55,62,45,.55);padding:12px 14px 12px 18px;background:rgba(255,255,255,.35);justify-self:start}
+.eb-code[hidden],.eb-how[hidden],.eb-steps li[hidden]{display:none}
+.eb-code-l{font:600 10.5px/1 var(--f-sans);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.eb-code code{font:500 clamp(20px,1.8vw,24px)/1 var(--f-sans);letter-spacing:.08em;color:var(--ink)}
+.eb-copy{all:unset;cursor:pointer;font:600 10.5px/1 var(--f-sans);letter-spacing:.16em;text-transform:uppercase;padding:9px 12px;background:var(--ink);color:var(--paper)}
+.eb-copy:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.eb-copy .cp-b,.eb-copy.is-done .cp-a{display:none}.eb-copy.is-done .cp-b{display:inline}
+.eb-how{margin:-8px 0 0;font-size:15px;line-height:1.5;max-width:34em}
+.eb-steps{margin:0;padding:0;list-style:none;counter-reset:s;display:grid;gap:12px;width:100%}
+.eb-steps li{counter-increment:s;display:grid;grid-template-columns:30px minmax(0,1fr);align-items:baseline;font-size:16px;line-height:1.55}
+.eb-steps li::before{content:counter(s);font:400 22px/1 var(--f-display)}
+.eb-bookcol{gap:26px}
+.eb-bookcol .bookbar{width:100%}
+[data-eb] .eb-end p.h3{font-family:var(--f-display);font-size:clamp(28px,3vw,42px);line-height:1.22;max-width:22em}
+[data-eb] .eb-end .eyebrow{font-size:11px}

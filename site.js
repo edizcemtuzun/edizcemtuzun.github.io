@@ -59,7 +59,6 @@
   }).join("");
 
   var header =
-    '<div class="draft">'+t("TASLAK ÖNİZLEME · Kesikli çerçeveler bekleyen görsel ve bilgileri gösterir · Rezervasyon butonları canlı Elektraweb sayfasını açar","DRAFT PREVIEW · Dashed frames mark photos and details still to come · Booking buttons open the live Elektraweb page")+'</div>'+
     '<header class="top" id="top"><div class="wrap top-row">'+
       '<div class="top-left"><div class="brand"><a class="home-amb" href="'+H("home","./")+'" aria-label="Kimera · '+(ROUTES?t("Ana sayfa","Home"):"Ana sayfa")+'"><svg class="menu-amb" viewBox="0 0 174.39 104.19" aria-hidden="true"><use href="#k-amblem"/></svg></a><button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="drawer" aria-label="'+(ROUTES?t("Menü","Menu"):"Menü / Menu")+'"><span class="burger" aria-hidden="true"><i></i><i></i></span><svg class="menu-chev" viewBox="0 0 12 20" aria-hidden="true"><path d="M2 2l8 8-8 8"/></svg></button></div><nav class="quick" aria-label="Kısayollar">'+quick+'</nav>'+(showMarks?'<nav class="marks'+(page==="home"?' marks-fade':'')+'" aria-label="Kimera markaları">'+
         '<a href="'+H("erizo","erizo.html")+'"'+(page==="erizo"?' aria-current="page"':'')+' title="Erizo Gastro & Bar"><img src="'+(ROUTES?"/":"")+'img/mark-erizo-e.svg" alt="Erizo" width="66" height="20" class="m-eri"></a>'+
@@ -716,5 +715,9 @@
   var rows=[].slice.call(root.querySelectorAll(".eb-tiers li")), cur=0;
   rows.forEach(function(li,i){ var on=t<=li.dataset.to && (t>=li.dataset.from || i===0);
     if(on && !cur) cur=i+1; li.classList.toggle("is-now", on && cur===i+1); li.classList.toggle("is-past", t>li.dataset.to); });
-  root.querySelectorAll(".eb-st").forEach(function(x){ x.hidden = (+x.dataset.tier)!==cur; });
+  root.querySelectorAll("[data-tier]").forEach(function(x){ x.hidden = (+x.dataset.tier)!==cur; });
+  root.addEventListener("click",function(e){ var b=e.target.closest(".eb-copy"); if(!b) return;
+    var v=b.dataset.copy, done=function(){ b.classList.add("is-done"); setTimeout(function(){ b.classList.remove("is-done"); },2200); };
+    try{ navigator.clipboard.writeText(v).then(done,function(){ fall(); }); }catch(_){ fall(); }
+    function fall(){ var t=document.createElement("textarea"); t.value=v; t.setAttribute("readonly",""); t.style.position="fixed"; t.style.opacity="0"; document.body.appendChild(t); t.select(); try{ document.execCommand("copy"); done(); }catch(_){} t.remove(); } });
 })();
